@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ElementType } from "react";
+import { useRef, useState, type ElementType } from "react";
 import {
   LazyMotion,
   domAnimation,
@@ -50,8 +50,10 @@ export function Reveal<T extends MotionTag = "div">({
   const probeRef = useRef<HTMLSpanElement>(null);
   const Component = m[(as ?? "div") as MotionTag] as ElementType;
 
+  const [settled, setSettled] = useState(false);
+
   const text = typeof children === "string" ? children : "";
-  const splitting = byLine && text.length > 0;
+  const splitting = byLine && text.length > 0 && !settled;
   const lines = useLineSplit(probeRef, text, splitting && !shouldReduceMotion);
 
   const defaultVariants: Variants = {
@@ -104,7 +106,13 @@ export function Reveal<T extends MotionTag = "div">({
               <span className="absolute inset-0 block">
                 {lines.map((line, index) => (
                   <span key={index} className="block overflow-hidden">
-                    <m.span className="block" variants={lineVariants}>
+                    <m.span
+                      className="block"
+                      variants={lineVariants}
+                      onAnimationComplete={
+                        once && index === lines.length - 1 ? () => setSettled(true) : undefined
+                      }
+                    >
                       {line}
                     </m.span>
                   </span>

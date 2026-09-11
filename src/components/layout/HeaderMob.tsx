@@ -22,7 +22,7 @@ const PANEL_ID = "mobile-menu";
 const DISCOVERY = {
   heading: "Prefer to discuss your project on live call?",
   subheading: "Start with a 25-minute discovery session instead",
-  host: { name: "Austin Page", role: "Co-founder and Dev Lead", avatar: "/team/austin.png" },
+  host: { name: "Austin Page", role: "Co-founder and Dev Lead", avatar: "/avatars/austin.webp" },
   cta: { label: "Book a Discovery call", href: "#" },
 } as const;
 

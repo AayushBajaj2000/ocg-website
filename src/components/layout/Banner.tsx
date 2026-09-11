@@ -1,20 +1,20 @@
 import Section from "@/components/layout/Section";
+import BannerShader from "@/components/shaders/banner-shader/BannerShader";
 import { Reveal } from "@/components/ui/Reveal";
 import { StripeReveal } from "@/components/ui/StripeReveal";
 
 type Props = {
-  shader?: React.ReactNode;
   title: string;
   description: string;
 };
 
-const Banner: React.FC<Props> = ({ title, description, shader }) => {
+const Banner: React.FC<Props> = ({ title, description }) => {
   return (
     <Section
       container
       containerClassName="bg-center bg-cover bg-no-repeat flex h-90.5 items-end pb-16 md:h-94 md:pb-12 border-x"
     >
-      {shader}
+      <BannerShader />
       <div className="z-50 flex w-full flex-wrap items-start justify-between gap-5 lg:flex-nowrap">
         <StripeReveal
           as="h1"

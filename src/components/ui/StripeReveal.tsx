@@ -21,6 +21,7 @@ type StripeRevealProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   delay?: number;
   stagger?: number;
   phase?: number;
+  bleed?: number;
   once?: boolean;
   amount?: number | "some" | "all";
 };
@@ -41,6 +42,7 @@ export function StripeReveal({
   delay = 0,
   stagger = 0.08,
   phase = 0.35,
+  bleed = 0.1,
   once = true,
   amount = 0.4,
   ...rest
@@ -86,7 +88,12 @@ export function StripeReveal({
               key={index}
               aria-hidden
               className="pointer-events-none absolute overflow-hidden"
-              style={{ top: box.top, left: box.left, width: box.width, height: box.height }}
+              style={{
+                top: box.top,
+                left: `calc(${box.left}px - ${bleed}em)`,
+                width: `calc(${box.width}px + ${bleed * 2}em)`,
+                height: box.height,
+              }}
             >
               <m.span
                 className="absolute inset-0 origin-left"

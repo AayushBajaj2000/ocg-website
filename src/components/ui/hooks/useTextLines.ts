@@ -13,6 +13,8 @@ type Span = { top: number; bottom: number; left: number; right: number };
 
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+const isRendered = (element: HTMLElement) => element.getClientRects().length > 0;
+
 const resolveLineHeight = (element: HTMLElement) => {
   const { lineHeight, fontSize } = getComputedStyle(element);
   const resolved = Number.parseFloat(lineHeight);
@@ -106,7 +108,7 @@ export const useLineBoxes = (
     const text = textRef.current;
     const origin = originRef.current;
 
-    if (!text || !origin) return;
+    if (!text || !origin || !isRendered(text)) return;
 
     const originRect = origin.getBoundingClientRect();
     const lineHeight = resolveLineHeight(text);
@@ -135,7 +137,11 @@ export const useLineSplit = (ref: RefObject<HTMLElement | null>, text: string, e
   const [lines, setLines] = useState<string[] | null>(null);
 
   const measure = useCallback(() => {
-    const node = ref.current?.firstChild;
+    const element = ref.current;
+
+    if (!element || !isRendered(element)) return;
+
+    const node = element.firstChild;
 
     if (node?.nodeType !== Node.TEXT_NODE) return;
 

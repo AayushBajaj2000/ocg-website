@@ -1,4 +1,4 @@
-import { INavLink, IProject, IWork } from "@/types";
+import { IFaq, INavLink, IProject, IWork } from "@/types";
 
 export const NAV_LINKS: INavLink[] = [
   { label: "Work", href: "/work" },
@@ -271,3 +271,26 @@ export const WORK_SECTION: IWork = {
     "The businesses we partner with aren't looking for websites, software, or branding in isolation. They're looking for growth, efficiency, credibility, and a stronger foundation for the future.",
   projects: PROJECTS,
 };
+
+export const FAQS: IFaq[] = [
+  {
+    question: "Do you work with businesses after launch?",
+    answer:
+      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
+  },
+  {
+    question: "Do you work with businesses after launch?",
+    answer:
+      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
+  },
+  {
+    question: "Do you work with businesses after launch?",
+    answer:
+      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
+  },
+  {
+    question: "Do you work with businesses after launch?",
+    answer:
+      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
+  },
+] as const;

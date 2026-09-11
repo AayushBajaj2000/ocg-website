@@ -67,6 +67,9 @@
 
   --text-p2: 1.25rem;
   --text-p2--line-height: 1.875rem;
+
+  --text-h2: 3.5rem;
+  --text-h2--line-height: 4.1875rem;
 }
 
 body {

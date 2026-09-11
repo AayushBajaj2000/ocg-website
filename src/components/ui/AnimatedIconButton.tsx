@@ -6,6 +6,7 @@ type AnimatedIconButtonProps = {
   href: string;
   icon: ReactNode;
   label: string;
+  className?: string;
 };
 
 const EASE = "ease-[cubic-bezier(.83,0,.17,1)]";
@@ -33,23 +34,28 @@ const DURATION = "transition-transform duration-700";
  * Every state is driven by `group-hover`/`group-focus-visible` off the anchor,
  * so this is a Server Component — no hover state, no client bundle.
  */
-export function AnimatedIconButton({ href, icon, label }: AnimatedIconButtonProps) {
+export function AnimatedIconButton({
+  href,
+  icon,
+  label,
+  className = "bg-brand-blue text-white",
+}: AnimatedIconButtonProps) {
   return (
     <Link href={href} aria-label={label} className="group flex items-center gap-1">
       <span
-        className={`bg-brand-blue flex size-10 scale-0 rotate-90 items-center justify-center text-white group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE}`}
+        className={`flex size-10 scale-0 rotate-90 items-center justify-center group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE} ${className}`}
       >
         {icon}
       </span>
 
       <span
-        className={`bg-brand-blue text-button inline-flex h-10 items-center justify-center px-4 font-normal tracking-[-0.0175rem] text-neutral-50 transition-[margin] duration-700 group-hover:ml-0 group-focus-visible:ml-0 ${EASE} -ml-11 group-hover:-mr-11 group-hover:ml-0`}
+        className={`text-button inline-flex h-10 items-center justify-center px-4 font-normal tracking-[-0.0175rem] transition-[margin] duration-700 group-hover:ml-0 group-focus-visible:ml-0 ${EASE} -ml-11 group-hover:-mr-11 group-hover:ml-0 ${className}`}
       >
         <SweepText>{label}</SweepText>
       </span>
 
       <span
-        className={`bg-brand-blue flex size-10 scale-100 items-center justify-center text-white ${DURATION} ${EASE} group-hover:scale-0 group-hover:-rotate-90`}
+        className={`flex size-10 scale-100 items-center justify-center ${DURATION} ${EASE} group-hover:scale-0 group-hover:-rotate-90 ${className}`}
       >
         {icon}
       </span>

@@ -7,3 +7,8 @@ export interface INavLink {
 
 export type ClassValue =
   string | number | null | undefined | false | ClassValue[] | { [key: string]: unknown };
+
+export interface IFaq {
+  question: string;
+  answer: string;
+}

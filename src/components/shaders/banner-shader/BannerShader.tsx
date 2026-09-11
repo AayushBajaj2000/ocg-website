@@ -24,7 +24,7 @@ export type DotFieldProps = Partial<DotFieldOptions> & {
  *     <YourContent />
  *   </div>
  */
-export default function WorkShader({ className, style, ...options }: DotFieldProps) {
+export default function BannerShader({ className, style, ...options }: DotFieldProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<DotFieldHandle | null>(null);
 
