@@ -1,0 +1,7 @@
+allowBuilds:
+  unrs-resolver: set this to true or false
+# Dependencies allowed to run install/postinstall scripts (pnpm 10 blocks them by default).
+# unrs-resolver links its native binding here; without it eslint-config-next's
+# import resolver fails to load.
+onlyBuiltDependencies:
+  - unrs-resolver

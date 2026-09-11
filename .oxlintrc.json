@@ -1,0 +1,18 @@
+{
+  "jsPlugins": ["oxlint-tailwindcss"],
+  "rules": {
+    "tailwindcss/prefer-scale-token": [
+      "warn",
+      {
+        "entryPoint": "src/app/globals.css",
+        "step": 0.25,
+        // h-[1em] tracks the odometer's font-size; h-4 would pin it to a fixed 1rem.
+        "allow": ["h-[1em]"]
+      }
+    ],
+    "tailwindcss/no-unnecessary-arbitrary-value": [
+      "warn",
+      { "entryPoint": "src/app/globals.css" }
+    ]
+  }
+}

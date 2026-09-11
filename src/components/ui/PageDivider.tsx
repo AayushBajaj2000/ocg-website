@@ -1,0 +1,16 @@
+import Section from "@/components/layout/Section";
+import DividerLines from "@/components/ui/DividerLines";
+
+const PageDivider: React.FC = () => {
+  return (
+    <Section
+      className="border-y-hairline border-y"
+      container
+      containerClassName="border-x border-x-hairline xl:px-0!"
+    >
+      <DividerLines />
+    </Section>
+  );
+};
+
+export default PageDivider;
