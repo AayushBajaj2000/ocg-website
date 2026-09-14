@@ -10,9 +10,6 @@
         "allow": ["h-[1em]"]
       }
     ],
-    "tailwindcss/no-unnecessary-arbitrary-value": [
-      "warn",
-      { "entryPoint": "src/app/globals.css" }
-    ]
+    "tailwindcss/no-unnecessary-arbitrary-value": ["warn", { "entryPoint": "src/app/globals.css" }]
   }
 }

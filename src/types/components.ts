@@ -19,7 +19,10 @@ export type IFooterAiIconName = "perplexity" | "gemini" | "chatgpt" | "claude" |
 
 export type IFooterSocialIconName = "linkedin" | "facebook" | "instagram" | "x";
 
-export type IFooterIcons<K extends IFooterAiIconName | IFooterSocialIconName> = Record<K, ReactNode>;
+export type IFooterIcons<K extends IFooterAiIconName | IFooterSocialIconName> = Record<
+  K,
+  ReactNode
+>;
 
 export interface IFooterLink {
   label?: string;

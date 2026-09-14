@@ -11,12 +11,12 @@
  *   field.destroy();
  */
 
-import { FRAG, VERT } from './dotfield.shaders.js';
+import { FRAG, VERT } from "./dotfield.shaders.js";
 
 /** @type {import('./dotfield.core').DotFieldOptions} */
 export const DOTFIELD_DEFAULTS = {
-  dotColor: '#D0D5DD',
-  accentColor: '#2068CC',
+  dotColor: "#D0D5DD",
+  accentColor: "#2068CC",
   block: 0.61,
   scale: 0.5,
   density: 0.5,
@@ -31,13 +31,26 @@ export const DOTFIELD_DEFAULTS = {
 };
 
 const UNIFORMS = [
-  'uRes', 'uDpr', 'uTime', 'uMouse', 'uMouseN', 'uHover', 'uBlock', 'uScale',
-  'uDensity', 'uIntensity', 'uDot', 'uAccent', 'uHoverRadius', 'uBox', 'uBoxOn',
-  'uFadeEdges',
+  "uRes",
+  "uDpr",
+  "uTime",
+  "uMouse",
+  "uMouseN",
+  "uHover",
+  "uBlock",
+  "uScale",
+  "uDensity",
+  "uIntensity",
+  "uDot",
+  "uAccent",
+  "uHoverRadius",
+  "uBox",
+  "uBoxOn",
+  "uFadeEdges",
 ];
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
-const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+const SVG_NS = "http://www.w3.org/2000/svg";
+const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 
 function toRgb(hex) {
   const m = /^#?([0-9a-f]{6})$/i.exec(String(hex).trim());
@@ -71,28 +84,43 @@ function el(tag, attrs) {
 export function createDotField(host, options = {}) {
   const opts = { ...DOTFIELD_DEFAULTS, ...options };
 
-  const canvas = document.createElement('canvas');
-  canvas.style.cssText = 'display:block;width:100%;height:100%';
+  const canvas = document.createElement("canvas");
+  canvas.style.cssText = "display:block;width:100%;height:100%";
   host.appendChild(canvas);
 
-  const svg = el('svg', { width: '100%', height: '100%', 'aria-hidden': 'true' });
-  svg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none';
+  const svg = el("svg", { width: "100%", height: "100%", "aria-hidden": "true" });
+  svg.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none";
   host.appendChild(svg);
 
-  const gl = canvas.getContext('webgl2', {
-    alpha: true, antialias: false, premultipliedAlpha: false, powerPreference: 'low-power',
+  const gl = canvas.getContext("webgl2", {
+    alpha: true,
+    antialias: false,
+    premultipliedAlpha: false,
+    powerPreference: "low-power",
   });
 
   if (!gl) {
-    host.dataset.dotfield = 'unsupported';
-    return { setOptions() {}, destroy() { canvas.remove(); svg.remove(); } };
+    host.dataset.dotfield = "unsupported";
+    return {
+      setOptions() {},
+      destroy() {
+        canvas.remove();
+        svg.remove();
+      },
+    };
   }
 
-  const vs = compile(gl, gl.VERTEX_SHADER, VERT, 'vertex');
-  const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG, 'fragment');
+  const vs = compile(gl, gl.VERTEX_SHADER, VERT, "vertex");
+  const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG, "fragment");
   if (!vs || !fs) {
-    host.dataset.dotfield = 'unsupported';
-    return { setOptions() {}, destroy() { canvas.remove(); svg.remove(); } };
+    host.dataset.dotfield = "unsupported";
+    return {
+      setOptions() {},
+      destroy() {
+        canvas.remove();
+        svg.remove();
+      },
+    };
   }
 
   const prog = gl.createProgram();
@@ -100,9 +128,15 @@ export function createDotField(host, options = {}) {
   gl.attachShader(prog, fs);
   gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-    console.error('DotField: program failed to link:', gl.getProgramInfoLog(prog));
-    host.dataset.dotfield = 'unsupported';
-    return { setOptions() {}, destroy() { canvas.remove(); svg.remove(); } };
+    console.error("DotField: program failed to link:", gl.getProgramInfoLog(prog));
+    host.dataset.dotfield = "unsupported";
+    return {
+      setOptions() {},
+      destroy() {
+        canvas.remove();
+        svg.remove();
+      },
+    };
   }
   gl.deleteShader(vs);
   gl.deleteShader(fs);
@@ -117,16 +151,21 @@ export function createDotField(host, options = {}) {
 
   // ── Overlay ───────────────────────────────────────────────────────────────
 
-  const overlay = el('g', { opacity: '0' });
+  const overlay = el("g", { opacity: "0" });
   svg.appendChild(overlay);
 
-  const boxRect = el('rect', {
-    fill: 'none', stroke: opts.accentColor, 'stroke-width': '1',
-    'stroke-opacity': '0.8', 'shape-rendering': 'crispEdges',
+  const boxRect = el("rect", {
+    fill: "none",
+    stroke: opts.accentColor,
+    "stroke-width": "1",
+    "stroke-opacity": "0.8",
+    "shape-rendering": "crispEdges",
   });
-  const boxLabel = el('text', {
-    fill: opts.accentColor, 'font-family': MONO, 'font-size': '9',
-    'letter-spacing': '0.06em',
+  const boxLabel = el("text", {
+    fill: opts.accentColor,
+    "font-family": MONO,
+    "font-size": "9",
+    "letter-spacing": "0.06em",
   });
   overlay.append(boxRect, boxLabel);
 
@@ -135,9 +174,9 @@ export function createDotField(host, options = {}) {
   const box = { x: 0, y: 0, side: 0, ready: false };
 
   function syncOverlay() {
-    overlay.setAttribute('display', opts.tracking ? '' : 'none');
-    boxRect.setAttribute('stroke', opts.accentColor);
-    boxLabel.setAttribute('fill', opts.accentColor);
+    overlay.setAttribute("display", opts.tracking ? "" : "none");
+    boxRect.setAttribute("stroke", opts.accentColor);
+    boxLabel.setAttribute("fill", opts.accentColor);
   }
   syncOverlay();
 
@@ -159,13 +198,16 @@ export function createDotField(host, options = {}) {
       canvas.width = w;
       canvas.height = h;
     }
-    svg.setAttribute('viewBox', `0 0 ${cssW} ${cssH}`);
+    svg.setAttribute("viewBox", `0 0 ${cssW} ${cssH}`);
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
   resize();
 
   // Resizing the canvas clears it, so a held static frame has to be redrawn.
-  const ro = new ResizeObserver(() => { resize(); sync(); });
+  const ro = new ResizeObserver(() => {
+    resize();
+    sync();
+  });
   ro.observe(host);
 
   // ── Pointer ───────────────────────────────────────────────────────────────
@@ -195,12 +237,14 @@ export function createDotField(host, options = {}) {
       }
     }
   }
-  function onLeave() { hoverTarget = 0; }
+  function onLeave() {
+    hoverTarget = 0;
+  }
 
-  window.addEventListener('pointermove', onPointerMove, { passive: true });
-  window.addEventListener('pointerdown', onPointerMove, { passive: true });
-  document.addEventListener('pointerleave', onLeave);
-  window.addEventListener('blur', onLeave);
+  window.addEventListener("pointermove", onPointerMove, { passive: true });
+  window.addEventListener("pointerdown", onPointerMove, { passive: true });
+  document.addEventListener("pointerleave", onLeave);
+  window.addEventListener("blur", onLeave);
 
   // ── Visibility ────────────────────────────────────────────────────────────
 
@@ -210,20 +254,20 @@ export function createDotField(host, options = {}) {
       visible = entries.some((en) => en.isIntersecting);
       sync();
     },
-    { rootMargin: '96px' },
+    { rootMargin: "96px" },
   );
   io.observe(host);
 
   const onVisibilityChange = () => sync();
-  document.addEventListener('visibilitychange', onVisibilityChange);
+  document.addEventListener("visibilitychange", onVisibilityChange);
 
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   // A software rasteriser (SwiftShader, llvmpipe) runs this fragment shader on
   // the CPU, where a full-viewport draw per frame costs more than the effect is
   // worth. Render one frame and hold it, same as reduced motion.
-  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-  const renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+  const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+  const renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : "";
   const software = /swiftshader|llvmpipe|software|basic render/i.test(renderer);
 
   const isStatic = () => motion.matches || software;
@@ -235,7 +279,7 @@ export function createDotField(host, options = {}) {
   let clock = 0;
 
   function updateBox(dt) {
-    const side = Math.max(48, Math.min(cssW, cssH) * 0.30);
+    const side = Math.max(48, Math.min(cssW, cssH) * 0.3);
     const tx = Math.min(Math.max(mouse.x - side / 2, 3), Math.max(3, cssW - side - 3));
     const ty = Math.min(Math.max(mouse.y - side / 2, 3), Math.max(3, cssH - side - 14));
 
@@ -252,11 +296,11 @@ export function createDotField(host, options = {}) {
     box.side = side;
   }
 
-  let lastOpacity = '';
+  let lastOpacity = "";
   function updateOverlay() {
     const opacity = hover.toFixed(3);
     if (opacity !== lastOpacity) {
-      overlay.setAttribute('opacity', opacity);
+      overlay.setAttribute("opacity", opacity);
       lastOpacity = opacity;
     }
     if (hover < 0.002 || !opts.tracking) return;
@@ -265,15 +309,14 @@ export function createDotField(host, options = {}) {
     const y = Math.round(box.y) + 0.5;
     const s = Math.round(box.side);
 
-    boxRect.setAttribute('x', x);
-    boxRect.setAttribute('y', y);
-    boxRect.setAttribute('width', s);
-    boxRect.setAttribute('height', s);
+    boxRect.setAttribute("x", x);
+    boxRect.setAttribute("y", y);
+    boxRect.setAttribute("width", s);
+    boxRect.setAttribute("height", s);
 
-    boxLabel.setAttribute('x', x);
-    boxLabel.setAttribute('y', y + s + 11);
-    boxLabel.textContent =
-      `${((box.x + box.side / 2) / cssW).toFixed(3)}, ${((box.y + box.side / 2) / cssH).toFixed(3)}`;
+    boxLabel.setAttribute("x", x);
+    boxLabel.setAttribute("y", y + s + 11);
+    boxLabel.textContent = `${((box.x + box.side / 2) / cssW).toFixed(3)}, ${((box.y + box.side / 2) / cssH).toFixed(3)}`;
   }
 
   function draw(dt) {
@@ -364,13 +407,13 @@ export function createDotField(host, options = {}) {
       stop();
       ro.disconnect();
       io.disconnect();
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerdown', onPointerMove);
-      document.removeEventListener('pointerleave', onLeave);
-      window.removeEventListener('blur', onLeave);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", onPointerMove);
+      document.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("blur", onLeave);
       gl.deleteProgram(prog);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
       canvas.remove();
       svg.remove();
     },
