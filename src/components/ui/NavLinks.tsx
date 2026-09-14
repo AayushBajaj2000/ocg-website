@@ -69,12 +69,23 @@ export const NavLink: React.FC<Props> = ({
       aria-current={isActive ? "page" : undefined}
       data-active={isActive || undefined}
       className={joinClassNames(
+        "group flex items-center gap-2 overflow-hidden",
         resolve(className, state),
-        isActive ? activeClassName : inactiveClassName,
+        isActive ? "text-brand-blue" : "text-black-3",
       )}
       {...rest}
     >
-      {resolve(children, state)}
+      {/* Slide with transform, not margin: the link keeps its width, so neighbours never shift.
+          Inactive, the row is nudged left by the bullet's width and clipped by the outer span.
+          The clip lives on this span (not the link) so link padding can't leave room to show the bullet. */}
+      <span className="flex min-w-0 overflow-hidden">
+        <span
+          className={`${isActive ? "translate-x-0" : "-translate-x-1.5"} flex min-w-0 items-center gap-2 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0 motion-reduce:transition-none`}
+        >
+          <BulletIcon className="size-1.5 shrink-0" />
+          {resolve(children, state)}
+        </span>
+      </span>
     </Link>
   );
 };
@@ -84,15 +95,7 @@ const NavLinks: React.FC = () => {
     <>
       <div className="hidden items-center gap-10 lg:flex">
         {NAV_LINKS.map((link) => (
-          <NavLink
-            key={link.label}
-            href={link.href}
-            prefetch={false}
-            className="flex items-center gap-2"
-            activeClassName="text-brand-blue"
-            inactiveClassName="text-black-3"
-          >
-            <BulletIcon className="size-1.5" />
+          <NavLink key={link.label} href={link.href} prefetch={false}>
             {link.label}
           </NavLink>
         ))}

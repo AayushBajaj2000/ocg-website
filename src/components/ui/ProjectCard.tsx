@@ -75,7 +75,7 @@ const ProjectCard: React.FC<Props> = ({
             <Reveal
               as="span"
               delay={STEP}
-              className="font-switzer text-black-3 order-first text-xs tracking-[-2%] sm:text-base md:order-last"
+              className="text-black-3 order-first text-xs tracking-[-2%] sm:text-base md:order-last"
             >
               {new Date(startDate).getFullYear()} -{" "}
               {present ? "PRESENT" : endDate ? new Date(endDate).getFullYear() : ""}
@@ -84,21 +84,21 @@ const ProjectCard: React.FC<Props> = ({
           <Reveal
             as="h2"
             delay={STEP * 2}
-            className="text-black-1 font-switzer text-base font-medium tracking-[-2%] sm:text-xl"
+            className="text-black-1 text-base font-medium tracking-[-2%] sm:text-xl"
           >
             {title}
           </Reveal>
           <Reveal
             as="p"
             delay={STEP * 3}
-            className="text-black-3 font-switzer line-clamp-3 text-sm font-medium tracking-[-2%] sm:text-base"
+            className="text-black-3 line-clamp-3 text-sm font-medium tracking-[-2%] sm:text-base"
           >
             {caption}
           </Reveal>
           <Reveal
             as="span"
             delay={STEP * 4}
-            className="font-switzer text-black-1 group-hover:text-brand-blue mt-4 flex items-center gap-2 text-base font-medium transition-colors duration-300 ease-in-out"
+            className="text-black-1 group-hover:text-brand-blue mt-4 flex items-center gap-2 text-base font-medium transition-colors duration-300 ease-in-out"
           >
             Read case study
             <ArrowIcon className="h-4 w-4.5 transition-transform duration-300 ease-in-out group-hover:translate-x-4" />
@@ -106,7 +106,7 @@ const ProjectCard: React.FC<Props> = ({
         </div>
 
         <div className="bg-sunken flex flex-col gap-8 p-4">
-          <Reveal as="span" className="font-switzer text-black-3 text-base font-medium">
+          <Reveal as="span" className="text-black-3 text-base font-medium">
             &quot;{testimonial?.feedback}&quot;
           </Reveal>
           <Reveal as="div" delay={STEP} className="flex items-center gap-2">
@@ -121,12 +121,10 @@ const ProjectCard: React.FC<Props> = ({
               />
             )}
             <div className="flex flex-col">
-              <span className="font-switzer text-black-1 text-base font-normal">
+              <span className="text-black-1 text-base font-normal">
                 {testimonial?.client?.name}
               </span>
-              <span className="font-switzer text-black-3 text-sm font-normal">
-                {testimonial?.client?.role}
-              </span>
+              <span className="text-black-3 text-sm font-normal">{testimonial?.client?.role}</span>
             </div>
           </Reveal>
         </div>

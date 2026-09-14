@@ -19,7 +19,7 @@ export const switzer = localFont({
       style: "normal",
     },
   ],
-  variable: "--font-switzer",
+  variable: "--font-switzer-local",
   display: "swap",
 });
 

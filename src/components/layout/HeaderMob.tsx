@@ -100,18 +100,9 @@ const HeaderMob: React.FC = () => {
                             href={link.href}
                             prefetch={false}
                             onClick={close}
-                            className="border-hairline group flex items-center gap-2 border p-4 text-sm"
-                            activeClassName="text-brand-blue"
-                            inactiveClassName="text-black-1"
+                            className="border-hairline border p-4 text-sm"
                           >
-                            {({ isActive }) => (
-                              <>
-                                <BulletIcon
-                                  className={`size-1.5 transition-[margin,opacity] duration-300 ease-in-out ${!isActive && "-ml-1.5 opacity-0 group-hover:ml-0 group-hover:opacity-100"}`}
-                                />
-                                {link.label}
-                              </>
-                            )}
+                            {link.label}
                           </NavLink>
                         </m.li>
                       ))}

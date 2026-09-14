@@ -1,7 +1,17 @@
 @import "tailwindcss";
 
+/* `static` always emits these variables. Tailwind otherwise drops theme variables it can't find
+   written out in source, and the footer builds these names at runtime: var(--color-${name}). */
+@theme static {
+  --color-perplexity: #fbfaf4;
+  --color-gemini: #4796e3;
+  --color-chatgpt: #10a37f;
+  --color-claude: #d97757;
+  --color-grok: #fa4202;
+}
+
 @theme inline {
-  --font-switzer: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  --font-switzer: var(--font-switzer-local), ui-sans-serif, system-ui, sans-serif;
   --font-book-call: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-dancing-script: var(--font-dancing-script), cursive;
   --font-allura: var(--font-allura), cursive;
@@ -70,6 +80,12 @@
 
   --text-h2: 3.5rem;
   --text-h2--line-height: 4.1875rem;
+
+  --text-footer-desktop: 2.5rem;
+  --text-footer-desktop--line-height: 3rem;
+
+  --text-footer-mobile: 1.75rem;
+  --text-footer-mobile--line-height: 2.625rem;
 }
 
 body {
@@ -112,7 +128,22 @@ body {
   }
 }
 
+/* Footer image reel: the strip holds N stacked images; steps(N) lands on each one in turn. */
+.footer-reel {
+  animation: footer-reel var(--reel-duration) steps(var(--reel-steps)) infinite;
+}
+
+@keyframes footer-reel {
+  to {
+    translate: 0 -100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .footer-reel {
+    animation: none;
+  }
+
   .group:hover .text-sweep,
   .group:focus-visible .text-sweep {
     animation: none;
@@ -129,6 +160,6 @@ body {
 
 @layer utilities {
   .app-container {
-    @apply mx-auto max-w-85.75 overflow-hidden sm:max-w-152 md:max-w-182 lg:max-w-246 xl:max-w-300 xl:px-16 2xl:max-w-359.25;
+    @apply mx-auto max-w-95 overflow-hidden sm:max-w-152 md:max-w-182 lg:max-w-246 xl:max-w-300 xl:px-16 2xl:max-w-359.25;
   }
 }

@@ -24,7 +24,7 @@ const FaqSection: React.FC = () => {
       <div className="flex flex-col gap-12">
         <StripeReveal
           as="h2"
-          className="text-hero-mobile font-switzer mx-auto max-w-110 text-center font-medium text-black md:text-5xl lg:mx-0 lg:text-left"
+          className="text-hero-mobile mx-auto max-w-110 text-center font-medium text-black md:text-5xl lg:mx-0 lg:text-left"
         >
           Have question? We've got answers!
         </StripeReveal>

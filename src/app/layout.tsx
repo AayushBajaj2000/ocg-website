@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { switzer, inter, dancingScript, allura } from "@/lib/fonts";
-import "./globals.css";
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import FaqSection from "@/components/layout/FaqSection";
+import PageDivider from "@/components/ui/PageDivider";
+import BuildingSection from "@/components/layout/BuildingSection";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "OpenCore Group",
@@ -15,9 +19,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${switzer.variable} ${inter.variable} ${dancingScript.variable} ${allura.variable} h-full antialiased`}
     >
-      <body className="bg-neutral-25 flex min-h-full flex-col font-sans">
+      <body className="bg-page-alt font-switzer flex min-h-full flex-col">
         <Header />
         <main className="mt-19.25 md:mt-24.75">{children}</main>
+        <PageDivider />
+        <FaqSection />
+        <PageDivider />
+        <BuildingSection />
+        <PageDivider />
+        <Footer />
       </body>
     </html>
   );

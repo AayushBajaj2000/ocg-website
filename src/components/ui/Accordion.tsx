@@ -49,7 +49,7 @@ const Accordion: React.FC<Props> = ({
           aria-controls={panelId}
           className="flex w-full cursor-pointer items-start justify-between gap-2 text-left"
         >
-          <span className="font-switzer text-base text-black md:text-2xl">{question}</span>
+          <span className="text-base text-black md:text-2xl">{question}</span>
           <PlusToggleIcon
             isOpen={open}
             className={`mt-1 size-4 shrink-0 transition-colors duration-300 md:size-6 ${open ? "text-black" : "text-numeral"}`}
@@ -77,7 +77,7 @@ const Accordion: React.FC<Props> = ({
                 animate={{ y: 0 }}
                 exit={{ y: prefersReducedMotion ? 0 : -6 }}
                 transition={{ duration, ease: EASE }}
-                className="font-switzer pt-2 text-xs text-black/60 md:text-base"
+                className="pt-2 text-xs text-black/60 md:text-base"
               >
                 {answer}
               </m.p>

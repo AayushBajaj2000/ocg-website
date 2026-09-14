@@ -76,7 +76,7 @@ const BuildingSection: React.FC = () => {
           ref={copyRef}
           className="relative mx-auto flex max-w-97 flex-col items-center gap-2 pt-8 text-center md:pt-16"
         >
-          <h2 className="md:text-h2 text-hero-mobile font-switzer font-medium tracking-[-2%] text-white">
+          <h2 className="md:text-h2 text-hero-mobile font-medium tracking-[-2%] text-white">
             Tell us what you're building.
           </h2>
           <p className="max-w-90 text-sm font-medium tracking-[-2%] text-white md:text-base">

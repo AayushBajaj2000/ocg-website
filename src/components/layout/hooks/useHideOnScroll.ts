@@ -11,9 +11,23 @@ export const useHideOnScroll = () => {
   useEffect(() => {
     let last = window.scrollY;
     let queued = false;
+    let resync = false;
 
     const update = () => {
       queued = false;
+
+      // The mobile menu locks scrolling by pinning <body> (position: fixed), which
+      // snaps scrollY to 0, then restores it with scrollTo on close. Neither jump is
+      // the user scrolling, so skip them and re-baseline on the first real reading.
+      if (document.body.style.position === "fixed") {
+        resync = true;
+        return;
+      }
+      if (resync) {
+        resync = false;
+        last = window.scrollY;
+        return;
+      }
 
       // Clamp: iOS rubber-banding reports scrollY past both ends, and the
       // bounce back reads as a direction change the user never made.
