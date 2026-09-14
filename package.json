@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "GITHUB_PAGES=true next build && touch out/.nojekyll",
     "start": "next start",
     "lighthouse": "node scripts/lighthouse.mjs",
     "lighthouse:quick": "LH_SKIP_BUILD=1 node scripts/lighthouse.mjs",
