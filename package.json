@@ -16,6 +16,7 @@
     "lighthouse:quick": "LH_SKIP_BUILD=1 node scripts/lighthouse.mjs",
     "lighthouse:open": "open .lighthouse/home.mobile.html",
     "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
