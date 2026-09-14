@@ -10,6 +10,8 @@ export interface BuildingAsciiOptions {
   ink: string;
   /** Grid cell size in CSS px, clamped 5–18. Lower is denser. Default `7`. */
   cellSize: number;
+  /** Glyph height as a fraction of its cell, clamped 0.2–1. `1` matches the reference. Default `0.65`. */
+  glyphScale: number;
   /** Cycle the four shapes on a timer. Default `true`. */
   autoplay: boolean;
   /** Milliseconds between shapes. Default `1800`. */

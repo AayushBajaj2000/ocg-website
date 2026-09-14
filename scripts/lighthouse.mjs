@@ -3,46 +3,43 @@
  * Local Lighthouse audit against a production build.
  *
  *   pnpm lighthouse                 # build, serve, audit / and /work on mobile + desktop
- *   LH_SKIP_BUILD=1 pnpm lighthouse # reuse the existing .next build
+ *   LH_SKIP_BUILD=1 pnpm lighthouse # reuse the existing .next-lighthouse build
  *   LH_ROUTES=/,/work pnpm lighthouse
  *   LH_RUNS=3 pnpm lighthouse       # 3 passes per target, median-performance run reported
  *
+ * Builds with source maps (see next.config.ts) so every issue can be traced to source files.
  * Always exits 0 on low scores — this reports, it does not gate.
  */
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import lighthouse from "lighthouse";
 import * as chromeLauncher from "chrome-launcher";
+import { createSourceLocator } from "./lighthouse/attribution.mjs";
+import {
+  CATEGORIES,
+  SHORT_NAMES,
+  TARGETS,
+  c,
+  paint,
+  renderTarget,
+  stripAnsi,
+} from "./lighthouse/report.mjs";
 
 const PORT = Number(process.env.LH_PORT ?? 4310);
 const ORIGIN = `http://127.0.0.1:${PORT}`;
 const OUT_DIR = path.resolve(process.cwd(), ".lighthouse");
 const NEXT_BIN = path.resolve(process.cwd(), "node_modules/.bin/next");
+// next.config.ts switches to a source-mapped build in `.next-lighthouse` when this is set.
+const LIGHTHOUSE_ENV = { ...process.env, LIGHTHOUSE: "1" };
+const BUILD_DIR = path.resolve(process.cwd(), ".next-lighthouse");
 const RUNS = Math.max(1, Number(process.env.LH_RUNS ?? 1));
 const ROUTES = (process.env.LH_ROUTES ?? "/,/work")
   .split(",")
   .map((route) => route.trim())
   .filter(Boolean);
-
-const CATEGORIES = ["performance", "accessibility", "best-practices", "seo"];
-
-// Short column headings for the summary table.
-const SHORT_NAMES = {
-  performance: "perf",
-  accessibility: "a11y",
-  "best-practices": "bestPr",
-  seo: "seo",
-};
-
-// Advisory only — printed as a pass/fail mark, never reflected in the exit code.
-const TARGETS = {
-  performance: 90,
-  accessibility: 100,
-  "best-practices": 95,
-  seo: 100,
-};
 
 // Lighthouse's own mobile/desktop presets, inlined so we don't import internal paths.
 const FORM_FACTORS = {
@@ -73,28 +70,6 @@ const FORM_FACTORS = {
   },
 };
 
-const KEY_METRICS = [
-  "first-contentful-paint",
-  "largest-contentful-paint",
-  "total-blocking-time",
-  "cumulative-layout-shift",
-  "speed-index",
-];
-
-// These display modes carry no pass/fail signal.
-const IGNORED_MODES = new Set(["notApplicable", "manual", "informative"]);
-
-const c = {
-  reset: "\x1b[0m",
-  bold: "\x1b[1m",
-  dim: "\x1b[2m",
-  red: "\x1b[31m",
-  green: "\x1b[32m",
-  yellow: "\x1b[33m",
-  cyan: "\x1b[36m",
-};
-const paint = (score) => (score >= 90 ? c.green : score >= 50 ? c.yellow : c.red);
-
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, { stdio: "inherit", ...opts });
@@ -119,86 +94,6 @@ async function waitForServer(url, timeoutMs = 90_000) {
     await new Promise((resolve) => setTimeout(resolve, 400));
   }
   throw new Error(`Server never became ready at ${url}`);
-}
-
-/** Every audit in a category that did not fully pass, heaviest-weighted first. */
-function failingAudits(lhr, categoryId) {
-  return lhr.categories[categoryId].auditRefs
-    .map((ref) => {
-      const audit = lhr.audits[ref.id];
-      return audit && { ...audit, weight: ref.weight };
-    })
-    .filter(
-      (audit) =>
-        audit &&
-        audit.score !== null &&
-        audit.score < 1 &&
-        !IGNORED_MODES.has(audit.scoreDisplayMode),
-    )
-    .sort((a, b) => b.weight - a.weight || a.score - b.score);
-}
-
-/** A few concrete offenders — DOM nodes for a11y, URLs for perf. */
-function evidence(audit) {
-  return (audit.details?.items ?? [])
-    .slice(0, 3)
-    .map((item) => {
-      const text =
-        item.node?.snippet ??
-        item.node?.selector ??
-        item.url ??
-        item.source?.url ??
-        item.sourceLocation?.url ??
-        item.label ??
-        null;
-      if (!text) return null;
-      const saving =
-        item.wastedBytes != null
-          ? ` (${Math.round(item.wastedBytes / 1024)} KiB)`
-          : item.wastedMs != null
-            ? ` (${Math.round(item.wastedMs)} ms)`
-            : "";
-      return `${String(text).replace(/\s+/g, " ").slice(0, 140)}${saving}`;
-    })
-    .filter(Boolean);
-}
-
-function reportTarget(lhr, label) {
-  console.log(`\n${c.bold}━━ ${label}${c.reset}`);
-
-  const scores = {};
-  for (const id of CATEGORIES) {
-    const score = Math.round((lhr.categories[id].score ?? 0) * 100);
-    scores[id] = score;
-    const mark = score >= TARGETS[id] ? `${c.green}✓${c.reset}` : `${c.red}✗${c.reset}`;
-    console.log(
-      `  ${mark} ${lhr.categories[id].title.padEnd(16)}` +
-        `${paint(score)}${c.bold}${String(score).padStart(3)}${c.reset}` +
-        ` ${c.dim}(target ${TARGETS[id]})${c.reset}`,
-    );
-  }
-
-  const metrics = KEY_METRICS.map(
-    (id) => `${lhr.audits[id]?.title}: ${lhr.audits[id]?.displayValue ?? "n/a"}`,
-  );
-  console.log(`  ${c.dim}${metrics.join("  ·  ")}${c.reset}`);
-
-  for (const id of CATEGORIES) {
-    const failures = failingAudits(lhr, id);
-    if (!failures.length) continue;
-    console.log(`\n  ${c.cyan}${lhr.categories[id].title} — ${failures.length} issue(s)${c.reset}`);
-    for (const audit of failures) {
-      const value = audit.displayValue ? ` ${c.dim}— ${audit.displayValue}${c.reset}` : "";
-      const savings = audit.details?.overallSavingsMs
-        ? ` ${c.dim}[~${Math.round(audit.details.overallSavingsMs)} ms]${c.reset}`
-        : "";
-      const weight = audit.weight ? `${c.dim}(w${audit.weight})${c.reset} ` : "";
-      console.log(`    ${c.red}•${c.reset} ${weight}${audit.title}${value}${savings}`);
-      for (const line of evidence(audit)) console.log(`        ${c.dim}↳ ${line}${c.reset}`);
-    }
-  }
-
-  return scores;
 }
 
 async function auditOnce(url, formFactor, chromePort) {
@@ -234,7 +129,9 @@ function slugFor(route, formFactor) {
 async function main() {
   if (process.env.LH_SKIP_BUILD !== "1") {
     console.log(`${c.bold}› next build${c.reset}`);
-    await run(NEXT_BIN, ["build"]);
+    await run(NEXT_BIN, ["build"], { env: LIGHTHOUSE_ENV });
+  } else if (!existsSync(path.join(BUILD_DIR, "BUILD_ID"))) {
+    throw new Error("No .next-lighthouse build to reuse — run `pnpm lighthouse` once first.");
   }
 
   await rm(OUT_DIR, { recursive: true, force: true });
@@ -245,7 +142,7 @@ async function main() {
   let chrome;
   const server = spawn(NEXT_BIN, ["start", "--port", String(PORT), "--hostname", "127.0.0.1"], {
     stdio: ["ignore", "ignore", "inherit"],
-    env: { ...process.env, PORT: String(PORT) },
+    env: { ...LIGHTHOUSE_ENV, PORT: String(PORT) },
   });
   server.on("exit", (code) => {
     if (code && !shuttingDown) console.error(`next start exited with ${code}`);
@@ -261,6 +158,7 @@ async function main() {
     process.exit(130);
   });
 
+  const locate = createSourceLocator(process.cwd());
   const summary = [];
   try {
     await waitForServer(ORIGIN);
@@ -280,8 +178,24 @@ async function main() {
         await writeFile(path.join(OUT_DIR, `${slug}.html`), html);
         await writeFile(path.join(OUT_DIR, `${slug}.json`), json);
 
-        const scores = reportTarget(chosen.lhr, `${route}  ${c.dim}(${formFactor})${c.reset}`);
-        summary.push({ route, formFactor, scores, report: `.lighthouse/${slug}.html` });
+        const { lines, scores } = renderTarget(chosen.lhr, {
+          label: `${route}  ${c.dim}(${formFactor})${c.reset}`,
+          origin: ORIGIN,
+          locate,
+          buildDir: BUILD_DIR,
+        });
+        console.log(lines.join("\n"));
+        await writeFile(
+          path.join(OUT_DIR, `${slug}.issues.txt`),
+          `${stripAnsi(lines.join("\n")).trim()}\n`,
+        );
+        summary.push({
+          route,
+          formFactor,
+          scores,
+          report: `.lighthouse/${slug}.html`,
+          issues: `.lighthouse/${slug}.issues.txt`,
+        });
       }
     }
   } finally {
@@ -308,7 +222,9 @@ async function main() {
     ).join("");
     console.log(`  ${row.route.padEnd(14)}${row.formFactor.padEnd(9)}${cells}`);
   }
-  console.log(`\n${c.dim}Full reports in ${OUT_DIR}${c.reset}`);
+  console.log(
+    `\n${c.dim}Full reports in ${OUT_DIR} — *.issues.txt has the text above per target${c.reset}`,
+  );
   console.log(
     `${c.dim}Note: localhost has no real network latency or CDN — treat performance as a ` +
       `relative signal, not a production number.${c.reset}`,

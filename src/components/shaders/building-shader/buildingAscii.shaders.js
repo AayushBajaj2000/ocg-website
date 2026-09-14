@@ -26,7 +26,7 @@ export const VERTEX = `attribute vec2 position;void main(){gl_Position=vec4(posi
 export const FRAGMENT = `precision mediump float;
  uniform vec2 resolution;uniform vec2 mouse;uniform vec3 shapeLayout;uniform float cell;uniform float clock;
  uniform float reveal;uniform float blend;uniform float previous;uniform float current;
- uniform vec3 ink;uniform sampler2D masks;uniform sampler2D glyphs;
+ uniform vec3 ink;uniform float glyphScale;uniform sampler2D masks;uniform sampler2D glyphs;
  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
  float sampleMask(vec2 uv,float i){if(uv.x<0.||uv.x>1.||uv.y<0.||uv.y>1.)return 0.;return texture2D(masks,vec2((uv.x+i)/4.,uv.y)).r;}
  void main(){
@@ -44,7 +44,8 @@ export const FRAGMENT = `precision mediump float;
   float shimmer=sin(clock*1.3+noise*22.)*.035;
   float glyphIndex=clamp(floor((value+shimmer)*7.5),1.,8.);
   vec2 within=fract(xy/cell);
-  float glyph=texture2D(glyphs,vec2((within.x+glyphIndex)/9.,within.y)).a;
+  float glyphY=(within.y-.5)/glyphScale+.5;
+  float glyph=texture2D(glyphs,vec2((within.x+glyphIndex)/9.,clamp(glyphY,0.,1.))).a*step(0.,glyphY)*step(glyphY,1.);
   float dotAlpha=1.-smoothstep(.065,.13,length(within-.5));
   float fade=1.-smoothstep(.2,.72,length((center-resolution*.5)/resolution));
   float nearMouse=1.-smoothstep(0.,100.,length(center-mouse));

@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Source-mapped build used by `pnpm lighthouse`.
+    ".next-lighthouse/**",
   ]),
 ]);
 

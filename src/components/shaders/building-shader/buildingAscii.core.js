@@ -33,6 +33,7 @@ import {
 export const BUILDING_ASCII_DEFAULTS = {
   ink: "#ffffff",
   cellSize: 7,
+  glyphScale: 0.65,
   autoplay: true,
   interval: 1800,
   interactive: false,
@@ -59,6 +60,7 @@ const UNIFORMS = [
   "previous",
   "current",
   "ink",
+  "glyphScale",
   "masks",
   "glyphs",
 ];
@@ -204,8 +206,13 @@ export function createBuildingAscii(host, options = {}) {
 
     gl.uniform2f(loc.resolution, width, height);
     gl.uniform1f(loc.cell, cell);
+    gl.uniform1f(loc.glyphScale, clampGlyphScale(opts.glyphScale));
     gl.uniform3f(loc.ink, ink[0], ink[1], ink[2]);
     gl.uniform3f(loc.shapeLayout, width / 2, height - centerY, size);
+  }
+
+  function clampGlyphScale(value) {
+    return Math.max(0.2, Math.min(1, Number(value) || 1));
   }
 
   function clampCell(value) {
@@ -304,7 +311,11 @@ export function createBuildingAscii(host, options = {}) {
         ctx2d.fillStyle = opts.ink;
         if (value > 0.06) {
           ctx2d.globalAlpha = 0.5 + value * 0.5;
-          ctx2d.fillText(CHARS[Math.max(1, Math.min(8, Math.floor(value * 7.5)))], x, y);
+          ctx2d.save();
+          ctx2d.translate(x, y);
+          ctx2d.scale(1, clampGlyphScale(opts.glyphScale));
+          ctx2d.fillText(CHARS[Math.max(1, Math.min(8, Math.floor(value * 7.5)))], 0, 0);
+          ctx2d.restore();
         } else {
           ctx2d.globalAlpha = y < height * 0.4 ? 0.06 : 0.26;
           ctx2d.beginPath();
