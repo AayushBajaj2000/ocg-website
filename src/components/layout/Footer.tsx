@@ -52,7 +52,7 @@ export const FooterHeadingLink: React.FC<IFooterHeadingLink> = ({ label, link })
     <div className="flex flex-col gap-1">
       <span className="text-xs tracking-[-2%] text-black/50 uppercase">{label}</span>
       <Link
-        href={link?.href!}
+        href={link?.href ?? "#"}
         className="text-black-2 text-base tracking-[-2%] underline underline-offset-2"
       >
         {link?.label}
@@ -154,7 +154,7 @@ const Footer: React.FC = () => {
                     {t.text}
                   </span>
                 )}
-                {i + 1 < FOOTER.footerText?.length! && (
+                {i + 1 < (FOOTER.footerText?.length ?? 0) && (
                   <span className="bg-black-3 size-1.5 rounded-full" />
                 )}
               </Fragment>

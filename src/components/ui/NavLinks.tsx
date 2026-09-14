@@ -72,6 +72,7 @@ export const NavLink: React.FC<Props> = ({
         "group flex items-center gap-2 overflow-hidden",
         resolve(className, state),
         isActive ? "text-brand-blue" : "text-black-3",
+        isActive ? activeClassName : inactiveClassName,
       )}
       {...rest}
     >

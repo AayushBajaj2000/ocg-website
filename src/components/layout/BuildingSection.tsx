@@ -77,10 +77,10 @@ const BuildingSection: React.FC = () => {
           className="relative mx-auto flex max-w-97 flex-col items-center gap-2 pt-8 text-center md:pt-16"
         >
           <h2 className="md:text-h2 text-hero-mobile font-medium tracking-[-2%] text-white">
-            Tell us what you're building.
+            Tell us what you&apos;re building.
           </h2>
           <p className="max-w-90 text-sm font-medium tracking-[-2%] text-white md:text-base">
-            We'll help you map the right scope, team, timeline, and next steps
+            We&apos;ll help you map the right scope, team, timeline, and next steps
           </p>
           <AnimatedIconButton
             href="#"

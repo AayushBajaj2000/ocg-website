@@ -11,7 +11,6 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import { BulletIcon } from "@/components/icons/BulletIcon";
 import { MenuToggleIcon } from "@/components/icons/MenuToggleIcon";
 import { NavLink } from "@/components/ui/NavLinks";
 import { NAV_LINKS } from "@/lib/constants";

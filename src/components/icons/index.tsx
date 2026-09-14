@@ -58,6 +58,7 @@ export const MinusIcon: React.FC<Props> = ({ className }) => {
       viewBox="0 0 26 5"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <path d="M13.5269 0.000402451H18.2023V4.54213H13.5269V0.000402451Z" />
       <path d="M20.5103 0H25.1856V4.54173H20.5103V0Z" />

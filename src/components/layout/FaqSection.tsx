@@ -26,7 +26,7 @@ const FaqSection: React.FC = () => {
           as="h2"
           className="text-hero-mobile mx-auto max-w-110 text-center font-medium text-black md:text-5xl lg:mx-0 lg:text-left"
         >
-          Have question? We've got answers!
+          Have question? We&apos;ve got answers!
         </StripeReveal>
         <div className="hidden lg:block">
           <AskMe delay={ASK_ME_DELAY} step={STEP} />
