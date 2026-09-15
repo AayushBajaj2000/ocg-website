@@ -15,22 +15,33 @@ const AskMe: React.FC<Props> = ({ delay = 0, step = 0.06 }) => {
         <Reveal delay={delay}>
           <Image src="/logo-filled.svg" alt="logo filled" width={64} height={64} />
         </Reveal>
-        <Reveal as="p" className="text-base text-black md:text-2xl" byLine delay={delay + step}>
-          Didn&apos;t find the answer? I&apos;m human being, just like you - ask me anything 👇🏻
-        </Reveal>
+        <div className="flex flex-col gap-1">
+          <Reveal as="p" className="text-base text-black" byLine delay={delay + step}>
+            Didn&apos;t find the answer?
+          </Reveal>
+          <Reveal as="span" className="text-black-3 text-base" byLine delay={delay * 1.5}>
+            Book a call and let&apos;s have a chat.
+          </Reveal>
+        </div>
       </div>
-      <div className="flex w-full flex-col gap-4">
+      <div className="flex w-full flex-col gap-2">
         <Reveal delay={delay + step * 2}>
           <Button href="/" variant="book-call">
-            <CalIcon className="size-6" />
+            <CalIcon className="size-5" />
             Book a call
           </Button>
         </Reveal>
         <Reveal delay={delay + step * 3}>
           <Button href="/" variant="book-call">
-            <WhatsAppIcon className="size-6" />
+            <WhatsAppIcon className="size-5" />
             Chat on WhatsApp
           </Button>
+        </Reveal>
+        <Reveal as="span" className="text-black-3 mt-4 text-base" byLine delay={delay * 4}>
+          or email us:{" "}
+          <a href="mailto:info@opencouregroup.com" className="underline underline-offset-2">
+            info@opencoregroup.com
+          </a>
         </Reveal>
       </div>
     </div>

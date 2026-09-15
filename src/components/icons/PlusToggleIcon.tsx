@@ -19,9 +19,23 @@ const ROW = [
   [27.3247, 13.7291],
 ] as const;
 
-const [CENTER_X, CENTER_Y] = COLUMN[2];
+const CENTER_INDEX = 2;
 
-const SPRING: Transition = { type: "spring", stiffness: 420, damping: 34, mass: 0.8 };
+const ROTATE_DURATION = 0.5;
+
+const FADE_DURATION = ROTATE_DURATION * 0.4;
+
+const ROTATE: Transition = { duration: ROTATE_DURATION, ease: [0.65, 0, 0.35, 1] };
+
+const FADE_OUT: Transition = {
+  duration: FADE_DURATION,
+  delay: ROTATE_DURATION - FADE_DURATION,
+  ease: "easeIn",
+};
+
+const FADE_IN: Transition = { duration: FADE_DURATION, ease: "easeOut" };
+
+const INSTANT: Transition = { duration: 0 };
 
 type Props = {
   isOpen: boolean;
@@ -30,7 +44,9 @@ type Props = {
 
 export const PlusToggleIcon: React.FC<Props> = ({ isOpen, className }) => {
   const prefersReducedMotion = useReducedMotion();
-  const transition = prefersReducedMotion ? { duration: 0 } : SPRING;
+
+  const rotateTransition = prefersReducedMotion ? INSTANT : ROTATE;
+  const fadeTransition = prefersReducedMotion ? INSTANT : isOpen ? FADE_OUT : FADE_IN;
 
   return (
     <LazyMotion features={domAnimation}>
@@ -41,26 +57,28 @@ export const PlusToggleIcon: React.FC<Props> = ({ isOpen, className }) => {
         className={className}
         aria-hidden="true"
         initial={false}
-        animate={{ rotate: isOpen ? -90 : 0 }}
-        transition={transition}
+        animate={{ rotate: isOpen ? 180 : 0 }}
+        transition={rotateTransition}
       >
-        {COLUMN.map(([x, y], index) => (
-          <rect key={`column-${index}`} x={x} y={y} {...MARK} />
+        {ROW.map(([x, y], index) => (
+          <rect key={`row-${index}`} x={x} y={y} {...MARK} />
         ))}
 
-        {ROW.map(([x, y], index) => (
-          <m.rect
-            key={`row-${index}`}
-            {...MARK}
-            initial={false}
-            animate={{
-              attrX: isOpen ? CENTER_X : x,
-              attrY: isOpen ? CENTER_Y : y,
-              opacity: isOpen ? 0 : 1,
-            }}
-            transition={{ ...transition, delay: prefersReducedMotion ? 0 : index * 0.03 }}
-          />
-        ))}
+        {COLUMN.map(([x, y], index) =>
+          index === CENTER_INDEX ? (
+            <rect key={`column-${index}`} x={x} y={y} {...MARK} />
+          ) : (
+            <m.rect
+              key={`column-${index}`}
+              x={x}
+              y={y}
+              {...MARK}
+              initial={false}
+              animate={{ opacity: isOpen ? 0 : 1 }}
+              transition={fadeTransition}
+            />
+          ),
+        )}
       </m.svg>
     </LazyMotion>
   );

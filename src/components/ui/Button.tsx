@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import type { PointerEvent, ReactNode } from "react";
+import type { CSSProperties, PointerEvent, ReactNode } from "react";
 
 type ButtonVariant = "book-call";
+
+type FillStyle = CSSProperties & Record<"--icon-color" | "--icon-contrast", string>;
 
 type ButtonProps = {
   href: string;
@@ -35,7 +37,7 @@ const fillClasses = [
 
 const variantClasses: Record<ButtonVariant, string> = {
   "book-call":
-    "w-full md:py-5 py-4 bg-white flex items-center justify-center gap-4 text-black font-switzer md:text-xl text-base",
+    "w-full h-11 bg-white flex items-center justify-center gap-2 text-black font-switzer text-sm",
 };
 
 // CSS can't read the pointer position, so this is the only JS: store it as CSS variables.
@@ -69,6 +71,12 @@ export function Button({
   hoverTextColor = "white",
   ...rest
 }: ButtonProps) {
+  const fillStyle: FillStyle = {
+    color: hoverTextColor,
+    "--icon-color": hoverTextColor,
+    "--icon-contrast": "var(--color-brand-blue)",
+  };
+
   return (
     <Link
       href={href}
@@ -78,7 +86,7 @@ export function Button({
       {...rest}
     >
       {children}
-      <span aria-hidden="true" className={fillClasses} style={{ color: hoverTextColor }}>
+      <span aria-hidden="true" className={fillClasses} style={fillStyle}>
         {children}
       </span>
     </Link>

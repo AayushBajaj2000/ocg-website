@@ -3,7 +3,9 @@
 import { useId, useState } from "react";
 import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "motion/react";
 
+import { BulletIcon } from "@/components/icons/BulletIcon";
 import { PlusToggleIcon } from "@/components/icons/PlusToggleIcon";
+import { cn } from "@/lib/utils";
 
 type Props = {
   question: string;
@@ -40,7 +42,12 @@ const Accordion: React.FC<Props> = ({
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="border-hairline border p-4 md:p-5">
+      <div
+        className={cn(
+          "border p-4 transition-colors duration-300 ease-in-out motion-reduce:transition-none md:p-5",
+          open ? "border-hairline" : "group border-hairline hover:border-brand-blue",
+        )}
+      >
         <button
           type="button"
           id={triggerId}
@@ -49,10 +56,20 @@ const Accordion: React.FC<Props> = ({
           aria-controls={panelId}
           className="flex w-full cursor-pointer items-start justify-between gap-2 text-left"
         >
-          <span className="text-base text-black md:text-2xl">{question}</span>
+          <span className="flex min-w-0 overflow-hidden">
+            <span className="group-hover:text-brand-blue flex min-w-0 -translate-x-3.5 items-start gap-2 text-base text-black transition-[translate,color] duration-300 ease-in-out group-hover:translate-x-0 motion-reduce:transition-none md:-translate-x-5 md:gap-3 md:text-2xl">
+              <span className="flex h-lh shrink-0 items-center">
+                <BulletIcon className="size-1.5 md:size-2" />
+              </span>
+              {question}
+            </span>
+          </span>
           <PlusToggleIcon
             isOpen={open}
-            className={`mt-1 size-4 shrink-0 transition-colors duration-300 md:size-6 ${open ? "text-black" : "text-numeral"}`}
+            className={cn(
+              "group-hover:text-brand-blue mt-1 size-4 shrink-0 transition-colors duration-300 md:size-6",
+              open ? "text-black" : "text-numeral",
+            )}
           />
         </button>
 
