@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter, Dancing_Script, Allura } from "next/font/google";
+import { Inter, Dancing_Script, Allura, JetBrains_Mono } from "next/font/google";
 
 export const switzer = localFont({
   src: [
@@ -34,6 +34,13 @@ export const dancingScript = Dancing_Script({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-dancing-script",
+  display: "swap",
+});
+
+export const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 

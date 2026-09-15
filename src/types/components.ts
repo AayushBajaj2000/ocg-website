@@ -2,9 +2,40 @@ import type { LinkProps } from "next/link";
 import type { ReactNode } from "react";
 import type { ImageProps } from "next/image";
 
+export interface INavLinkDropdown {
+  icon?: ReactNode;
+  title?: string;
+  description?: string;
+  href?: LinkProps["href"];
+}
+
 export interface INavLink {
   label: string;
+  href?: LinkProps["href"];
+  isDropdown?: boolean;
+  dropdownLinks?: INavLinkDropdown[];
+  dropdownViewAll?: INavLinkDropdown;
+}
+
+export type INavLinkCardIcon = "file";
+
+export interface INavLinkCard {
   href: LinkProps["href"];
+  img: {
+    url: ImageProps["src"];
+    alt: ImageProps["alt"];
+  };
+  category?: string;
+  headline?: {
+    icon?: INavLinkCardIcon;
+    text?: string;
+  };
+  title?: string;
+  caption?: {
+    authorName?: string;
+    readTime?: string;
+    text?: string;
+  };
 }
 
 export type ClassValue =

@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-
-const DESKTOP_QUERY = "(min-width: 64rem)";
+import { useScrollLock } from "@/components/layout/hooks/useScrollLock";
+import { DESKTOP_MEDIA_QUERY } from "@/lib/constants";
 
 type MobileMenu = {
   isOpen: boolean;
@@ -27,7 +27,7 @@ export const useMobileMenu = (): MobileMenu => {
   }
 
   useEffect(() => {
-    const desktop = window.matchMedia(DESKTOP_QUERY);
+    const desktop = window.matchMedia(DESKTOP_MEDIA_QUERY);
     const onChange = (event: MediaQueryListEvent) => event.matches && setIsOpen(false);
 
     desktop.addEventListener("change", onChange);
@@ -43,27 +43,7 @@ export const useMobileMenu = (): MobileMenu => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const { body, documentElement } = document;
-    const offset = window.scrollY;
-    const scrollbar = window.innerWidth - documentElement.clientWidth;
-    const previousStyle = body.style.cssText;
-
-    Object.assign(body.style, {
-      position: "fixed",
-      top: `-${offset}px`,
-      left: "0",
-      right: "0",
-      paddingRight: scrollbar > 0 ? `${scrollbar}px` : "",
-    });
-
-    return () => {
-      body.style.cssText = previousStyle;
-      window.scrollTo(0, offset);
-    };
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   return { isOpen, open, close, toggle };
 };

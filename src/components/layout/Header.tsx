@@ -18,7 +18,7 @@ const Header: React.FC = () => {
     >
       <nav
         aria-label="Main"
-        className="border-x-hairline app-container flex h-18 w-full items-center justify-between border-x px-4 md:mx-5 md:h-23.5 md:px-5"
+        className="border-x-hairline app-container flex h-18 overflow-visible! w-full items-center justify-between border-x px-4 md:mx-5 md:h-23.5 md:px-5"
       >
         <Link href="/" aria-label="OpenCore Group, home" className="relative z-30">
           <Image

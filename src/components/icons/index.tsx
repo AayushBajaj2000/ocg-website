@@ -394,3 +394,82 @@ export const XIcon: React.FC<Props> = ({ className }) => {
     </svg>
   );
 };
+
+export const ChevronIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="12"
+      height="7"
+      viewBox="0 0 12 7"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M6.90474 4.95604V6.96332H4.95482V4.95604H6.90474Z" />
+      <path d="M4.36678 2.462V4.46929H2.41686V2.462H4.36678Z" />
+      <path d="M1.94992 0V2.00728L0 2.00728V0L1.94992 0Z" />
+      <path d="M12 2.34718V0.339901L10.0501 0.339901V2.34718H12Z" />
+      <path d="M9.58314 4.80919V2.8019L7.63322 2.8019V4.80919H9.58314Z" />
+    </svg>
+  );
+};
+
+export const BlogIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M5 2.5H12L15.5 6V17.5H5V2.5Z" strokeWidth="1.25" strokeLinejoin="round" />
+      <path d="M12 2.5V6H15.5M7.5 10H12.5M7.5 13H12.5" strokeWidth="1.25" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+export const OpenSourceIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7 6L3 10L7 14M13 6L17 10L13 14M11 4.5L9 15.5"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const FileIcon: React.FC<Props> = ({ className }) => (
+  <svg
+    width="12"
+    height="14"
+    viewBox="0 0 12 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
+    className={className}
+  >
+    <g clipPath="url(#clip0_1144_2648)">
+      <path d="M7.5 0.5H1.5C0.947715 0.5 0.5 0.947715 0.5 1.5V12.5C0.5 13.0523 0.947715 13.5 1.5 13.5H10.5C11.0523 13.5 11.5 13.0523 11.5 12.5V4.5L7.5 0.5Z" />
+      <path d="M7.5 0.5V4.5H11.5" />
+    </g>
+    <defs>
+      <clipPath id="clip0_1144_2648">
+        <rect width="12" height="14" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);

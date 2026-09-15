@@ -15,6 +15,7 @@
   --font-book-call: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-dancing-script: var(--font-dancing-script), cursive;
   --font-allura: var(--font-allura), cursive;
+  --font-jetbrains-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
   --color-brand-blue: #2068cc;
 
@@ -86,6 +87,8 @@
 
   --text-footer-mobile: 1.75rem;
   --text-footer-mobile--line-height: 2.625rem;
+
+  --shadow-header-dropdown: 0 1rem 2.5rem 0 #13131314;
 }
 
 body {

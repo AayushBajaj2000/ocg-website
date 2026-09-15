@@ -13,6 +13,7 @@ import {
 } from "motion/react";
 import { MenuToggleIcon } from "@/components/icons/MenuToggleIcon";
 import { NavLink } from "@/components/ui/NavLinks";
+import MobileNavDropdown from "@/components/layout/MobileNavDropdown";
 import { NAV_LINKS } from "@/lib/constants";
 import { useMobileMenu } from "@/components/layout/hooks/useMobileMenu";
 
@@ -95,14 +96,20 @@ const HeaderMob: React.FC = () => {
                     <ul className="grid gap-4">
                       {NAV_LINKS.map((link) => (
                         <m.li key={link.label} variants={row}>
-                          <NavLink
-                            href={link.href}
-                            prefetch={false}
-                            onClick={close}
-                            className="border-hairline border p-4 text-sm"
-                          >
-                            {link.label}
-                          </NavLink>
+                          {link.isDropdown ? (
+                            <MobileNavDropdown link={link} onNavigate={close} />
+                          ) : (
+                            link.href && (
+                              <NavLink
+                                href={link.href}
+                                prefetch={false}
+                                onClick={close}
+                                className="border-hairline border p-4 text-sm"
+                              >
+                                {link.label}
+                              </NavLink>
+                            )
+                          )}
                         </m.li>
                       ))}
                     </ul>

@@ -1,10 +1,35 @@
+import { BlogIcon, OpenSourceIcon } from "@/components/icons";
 import { IFaq, IFooter, INavLink } from "@/types";
+
+export const DESKTOP_MEDIA_QUERY = "(min-width: 64rem)";
 
 export const NAV_LINKS: INavLink[] = [
   { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Company", href: "/company" },
+  {
+    label: "Resources",
+    isDropdown: true,
+    dropdownLinks: [
+      {
+        icon: <BlogIcon />,
+        title: "Blog",
+        description: "Field notes on design, development and AI.",
+        href: "/blog",
+      },
+      {
+        icon: <OpenSourceIcon />,
+        title: "Open Source",
+        description: "Free skills, components and Figma files",
+        href: "/opensource",
+      },
+    ],
+    dropdownViewAll: {
+      title: "View all resources  →",
+      href: "/resources",
+    },
+  },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const FAQS: IFaq[] = [
