@@ -40,6 +40,21 @@ const icons: IFooterIcons<IFooterAiIconName> = {
   grok: <GrokIcon />,
 };
 
+const aiNames: Record<IFooterAiIconName, string> = {
+  perplexity: "Perplexity",
+  gemini: "Gemini",
+  chatgpt: "ChatGPT",
+  claude: "Claude",
+  grok: "Grok",
+};
+
+const socialNames: Record<IFooterSocialIconName, string> = {
+  linkedin: "LinkedIn",
+  facebook: "Facebook",
+  instagram: "Instagram",
+  x: "X",
+};
+
 const socialIcons: IFooterIcons<IFooterSocialIconName> = {
   linkedin: <LinkedInIcon />,
   facebook: <FacebookIcon />,
@@ -50,7 +65,7 @@ const socialIcons: IFooterIcons<IFooterSocialIconName> = {
 export const FooterHeadingLink: React.FC<IFooterHeadingLink> = ({ label, link }) => {
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs tracking-[-2%] text-black/50 uppercase">{label}</span>
+      <span className="text-black-3 text-xs tracking-[-2%] uppercase">{label}</span>
       <Link
         href={link?.href ?? "#"}
         className="text-black-2 text-base tracking-[-2%] underline underline-offset-2"
@@ -81,6 +96,7 @@ export const FooterAILinks: React.FC<IFooterAiFooterLink> = ({ title, links }) =
               key={`${l.name}-${i}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`Ask ${aiNames[l.name as IFooterAiIconName]} about OpenCore Group (opens in a new tab)`}
             >
               {icons[l.name! as IFooterAiIconName]}
             </Button>
@@ -170,6 +186,7 @@ const Footer: React.FC = () => {
                 key={`${l.name}-${i}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`OpenCore Group on ${socialNames[l.name as IFooterSocialIconName]} (opens in a new tab)`}
               >
                 {socialIcons[l.name! as IFooterSocialIconName]}
               </Button>

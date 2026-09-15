@@ -1,5 +1,3 @@
-"use client";
-
 import { useId, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, m, stagger, useReducedMotion, type Variants } from "motion/react";

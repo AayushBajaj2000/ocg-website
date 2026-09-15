@@ -1,5 +1,3 @@
-"use client";
-
 import { useId, useState } from "react";
 import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "motion/react";
 
@@ -68,7 +66,7 @@ const Accordion: React.FC<Props> = ({
             isOpen={open}
             className={cn(
               "group-hover:text-brand-blue mt-1 size-4 shrink-0 transition-colors duration-300 md:size-6",
-              open ? "text-black" : "text-numeral",
+              open ? "text-black" : "text-neutral-500",
             )}
           />
         </button>

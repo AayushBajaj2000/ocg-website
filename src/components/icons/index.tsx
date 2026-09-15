@@ -479,3 +479,32 @@ export const FileIcon: React.FC<Props> = ({ className }) => (
     </defs>
   </svg>
 );
+
+export const PauseIcon: React.FC<Props> = ({ className }) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    className={className}
+  >
+    <rect x="3" y="2" width="3.5" height="12" />
+    <rect x="9.5" y="2" width="3.5" height="12" />
+  </svg>
+);
+
+export const PlayIcon: React.FC<Props> = ({ className }) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    className={className}
+  >
+    <path d="M4 2L13.5 8L4 14V2Z" />
+  </svg>
+);
