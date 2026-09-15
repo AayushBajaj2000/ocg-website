@@ -105,6 +105,7 @@ const HeaderMob: React.FC = () => {
                                 prefetch={false}
                                 onClick={close}
                                 className="border-hairline border p-4 text-sm"
+                                activeClassName="border-brand-blue!"
                               >
                                 {link.label}
                               </NavLink>

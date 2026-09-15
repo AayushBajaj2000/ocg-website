@@ -18,7 +18,7 @@ const Banner: React.FC<Props> = ({ title, description }) => {
       <div className="z-50 flex w-full flex-wrap items-start justify-between gap-5 lg:flex-nowrap">
         <StripeReveal
           as="h1"
-          className="md:text-hero-desktop text-hero-mobile text-black-1 max-w-77.25 font-medium tracking-[-4%] md:max-w-163.25"
+          className="md:text-hero-desktop text-hero-mobile text-black-1 max-w-77.25 font-medium tracking-[-4%] md:max-w-125"
         >
           {title}
         </StripeReveal>

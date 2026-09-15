@@ -508,3 +508,34 @@ export const PlayIcon: React.FC<Props> = ({ className }) => (
     <path d="M4 2L13.5 8L4 14V2Z" />
   </svg>
 );
+
+export const CarrotIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="29"
+      height="15"
+      viewBox="0 0 29 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M14.1849 0L28.3697 14.0444H0L14.1849 0Z" fill="#2068CC" />
+    </svg>
+  );
+};
+
+export const QuoteIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="18"
+      height="14"
+      viewBox="0 0 18 14"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M0 0H7V6.5C7 10.1 5.2 12.7 1.8 14L0.6 12.1C2.3 11.3 3.2 10 3.4 8.4H0V0Z" />
+      <path d="M11 0H18V6.5C18 10.1 16.2 12.7 12.8 14L11.6 12.1C13.3 11.3 14.2 10 14.4 8.4H11V0Z" />
+    </svg>
+  );
+};
