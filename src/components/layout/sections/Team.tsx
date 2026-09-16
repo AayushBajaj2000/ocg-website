@@ -2,52 +2,78 @@ import Image from "next/image";
 import Section from "@/components/layout/sections/Section";
 import { Reveal } from "@/components/ui/animations/Reveal";
 import { StripeReveal } from "@/components/ui/animations/StripeReveal";
-import TeamCard, { TeamCardWrapper } from "@/components/ui/cards/TeamCard";
+import TeamCarousel from "@/components/ui/carousels/TeamCarousel";
+import { TeamCardWrapper } from "@/components/ui/cards/TeamCard";
+import { TEAM_SECTION } from "@/lib/constants";
 
 const Team: React.FC = () => {
   return (
-    <Section container containerClassName="md:py-20 py-10">
+    <Section container containerClassName="md:py-20 py-10 border-x">
       <div className="flex flex-col gap-8 md:gap-16">
         <div className="flex flex-col gap-4 text-center">
           <StripeReveal
             as="h2"
             className="text-black-1 font-switzer md:text-hero-desktop text-hero-mobile font-medium"
           >
-            Meet the team
+            {TEAM_SECTION.title}
           </StripeReveal>
           <Reveal
             as="p"
             byLine
             className="font-switzer text-black-2 mx-auto max-w-lg text-sm tracking-[-2%] md:text-base"
           >
-            Our team members are the heartbeat of our company. Get to know a team and culture that
-            prioritizes work ethic, collaboration, and kindness!
+            {TEAM_SECTION.description}
           </Reveal>
         </div>
-        <div className="grid grid-cols-1 md:gap-8 xl:grid-cols-2">
-          <TeamCardWrapper>
+        <div className="flex md:gap-8">
+          <TeamCardWrapper className="hidden p-4 md:p-5 lg:flex lg:w-[40%]">
             <Reveal>
               <Image
-                src="/graphics/ontario-badge.webp"
-                alt="ontario badge"
+                src={TEAM_SECTION.badge?.url!}
+                alt={TEAM_SECTION.badge?.alt!}
                 width={187}
                 height={129}
-                className="w-20 object-cover md:w-46.75"
+                className="object-cover"
+                style={{
+                  height: "auto",
+                  width: "auto",
+                }}
               />
             </Reveal>
-            <div className="flex flex-col gap-4 md:gap-10">
-              <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-2xl" byLine>
-                OpenCore was intentionally built differently. No unnecessary layers. No handing
-                projects from one department to another.
+            <div className="flex flex-col gap-4">
+              <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>
+                {TEAM_SECTION.lineOne}
               </Reveal>
-              <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-2xl" byLine>
-                You work directly with the people designing, building, and shaping your product from
-                day one.
+              <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>
+                {TEAM_SECTION.lineTwo}
               </Reveal>
             </div>
           </TeamCardWrapper>
-          <TeamCardWrapper className="items-center justify-center p-0!">
-            <TeamCard />
+          <TeamCardWrapper className="flex-1">
+            <TeamCarousel team={TEAM_SECTION.team ?? []} className="flex-1" />
+            <div className="flex flex-col gap-8 px-4 pb-10 lg:hidden">
+              <div className="flex flex-col gap-4">
+                <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>
+                  {TEAM_SECTION.lineOne}
+                </Reveal>
+                <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>
+                  {TEAM_SECTION.lineTwo}
+                </Reveal>
+              </div>
+              <Reveal>
+                <Image
+                  src={TEAM_SECTION.badge?.url!}
+                  alt={TEAM_SECTION.badge?.alt!}
+                  width={120}
+                  height={80}
+                  className="object-cover"
+                  style={{
+                    height: "auto",
+                    width: "auto",
+                  }}
+                />
+              </Reveal>
+            </div>
           </TeamCardWrapper>
         </div>
       </div>

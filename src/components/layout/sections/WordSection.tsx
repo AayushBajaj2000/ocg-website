@@ -71,7 +71,7 @@ const WordSection: React.FC = () => {
   const total = headingWords.length + descriptionWords.length;
 
   return (
-    <Section container containerClassName="lg:py-25 py-16">
+    <Section container containerClassName="lg:py-25 py-16 border-x">
       <LazyMotion features={domAnimation}>
         <div
           ref={targetRef}

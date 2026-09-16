@@ -1,61 +1,103 @@
 import Image from "next/image";
+import SequentialDrawSvg from "@/components/ui/animations/SequentialDrawSvg";
 import { cn } from "@/lib/utils";
 import { ITeamCard } from "@/types";
 
-type Props = ITeamCard;
+export type TeamCardTilt = "left" | "right";
+
+type Props = ITeamCard & {
+  tilt: TeamCardTilt;
+  /** The centred card leans fully; the rest lean less and ease into it as they arrive. */
+  isActive: boolean;
+  /** Whether the doodles are traced in. */
+  drawn: boolean;
+  /** Whether the doodle markup should be fetched yet. */
+  loadDoodles: boolean;
+};
 
 export const TeamCardWrapper: React.FC<{ children?: React.ReactNode; className?: string }> = ({
   children,
   className,
 }) => {
   return (
-    <div
-      className={cn(
-        "border-hairline flex flex-col justify-between gap-8 border p-5 md:p-10 xl:min-h-181.75",
-        className,
-      )}
-    >
+    <div className={cn("border-hairline flex flex-col justify-between gap-8 border", className)}>
       {children}
     </div>
   );
 };
 
-const TeamCard: React.FC<Props> = ({ img, name, role }) => {
+const TILT_ROTATION: Record<TeamCardTilt, { active: string; idle: string }> = {
+  right: { active: "rotate-[10deg]", idle: "rotate-[4deg]" },
+  left: { active: "rotate-[-10deg]", idle: "rotate-[-4deg]" },
+};
+
+// Doodles sit on the corners the card leans away from, so they never overlap it.
+const DOODLE_POSITIONS: Record<TeamCardTilt, { top: string; bottom: string }> = {
+  right: {
+    top: "-top-12 -left-14 md:-top-22 md:-left-26",
+    bottom: "-right-14 -bottom-12 md:-right-26 md:-bottom-22",
+  },
+  left: {
+    top: "-top-12 -right-14 md:-top-22 md:-right-26",
+    bottom: "-bottom-12 -left-14 md:-bottom-22 md:-left-26",
+  },
+};
+
+const TeamCard: React.FC<Props> = ({
+  img,
+  name,
+  role,
+  topDoodle,
+  bottomDoodle,
+  tilt,
+  isActive,
+  drawn,
+  loadDoodles,
+}) => {
+  const doodleClass = "z-10 w-16 md:w-30";
+
   return (
     <div className="relative">
-      <Image
-        src="/team/austin/top-left-icon.svg"
-        alt="top left icon austin"
-        width={110}
-        height={86}
-        className="absolute -top-20 -left-20 z-10 object-cover"
-      />
-      <div className="shadow-team-card flex w-35 rotate-[13.87deg] flex-col gap-3.5 bg-white px-2 py-3.75 md:w-71 md:gap-7 md:px-3.75 md:py-7.5">
-        <div className="h-24.25 w-full bg-black/25 md:h-49.25">
+      {topDoodle && (
+        <SequentialDrawSvg
+          doodle={topDoodle}
+          load={loadDoodles}
+          drawn={drawn}
+          className={cn(doodleClass, DOODLE_POSITIONS[tilt].top)}
+        />
+      )}
+      <figure
+        className={cn(
+          "shadow-team-card flex w-50 flex-col gap-3.5 bg-white px-2 py-3.75 transition-[rotate] duration-600 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none md:w-71 md:gap-7 md:px-3.75 md:py-7.5",
+          TILT_ROTATION[tilt][isActive ? "active" : "idle"],
+        )}
+      >
+        <div className="relative h-35 w-full bg-black/25 md:h-49.25">
           <Image
-            src="/team/austin/austin.webp"
-            alt="austin"
-            width={254}
-            height={197}
+            src={img.url}
+            alt={img.alt}
+            fill
+            sizes="(min-width: 768px) 254px, 124px"
             className="object-cover"
           />
         </div>
-        <div className="flex flex-col text-center">
+        <figcaption className="flex flex-col text-center">
           <span className="font-switzer text-base tracking-[-2%] text-black md:text-xl">
-            Austin Page
+            {name}
           </span>
           <span className="font-switzer text-xs tracking-[-2%] text-black/70 md:text-sm">
-            Co-Founder, OpenCore Group
+            {role}
           </span>
-        </div>
-      </div>
-      <Image
-        src="/team/austin/bottom-right-icon.svg"
-        alt="top left icon austin"
-        width={110}
-        height={86}
-        className="absolute -right-20 -bottom-20 z-10 object-cover"
-      />
+        </figcaption>
+      </figure>
+      {bottomDoodle && (
+        <SequentialDrawSvg
+          doodle={bottomDoodle}
+          load={loadDoodles}
+          drawn={drawn}
+          className={cn(doodleClass, DOODLE_POSITIONS[tilt].bottom)}
+        />
+      )}
     </div>
   );
 };

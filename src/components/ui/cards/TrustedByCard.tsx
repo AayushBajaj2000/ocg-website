@@ -24,12 +24,20 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
+import {
+  DRAW_EASING,
+  DRAW_STYLES,
+  drawKeyframes,
+  hideShapes,
+  loadSvg,
+  parseSvg,
+  type DrawTarget,
+} from "@/components/ui/animations/drawSvg";
 import { CarrotIcon, PlusIcon, QuoteIcon } from "@/components/icons";
 import {
   dropdownItemReducedVariants,
   dropdownItemVariants,
 } from "@/components/layout/header/headerDropdownMotion";
-import { withBasePath } from "@/lib/assets";
 import { cn } from "@/lib/utils";
 import type { ITrustedByClient, ITrustedByCta, ITrustedByLogo } from "@/types";
 
@@ -39,21 +47,10 @@ type Side = "top" | "bottom";
 
 type Placement = { left: number; arrow: number; side: Side };
 
-type DrawTarget = { el: SVGGeometryElement; fillOpacity: string; addedStroke: boolean };
-
 const GUTTER = 16;
 const ARROW_INSET = 28;
 const DRAW_DURATION = 1400;
 const DRAW_SPREAD = 500;
-const SHAPES = "path, circle, rect, ellipse, line, polyline, polygon";
-const DRAW_STYLES = [
-  "stroke",
-  "stroke-width",
-  "stroke-dasharray",
-  "stroke-dashoffset",
-  "fill-opacity",
-  "vector-effect",
-];
 
 const bubbleVariants: Variants = {
   closed: { opacity: 0, scale: 0.96, transition: { duration: 0.15, ease: "easeIn" } },
@@ -74,75 +71,14 @@ const bubbleReducedVariants: Variants = {
   open: { opacity: 1, transition: { duration: 0.2, delayChildren: stagger(0.03) } },
 };
 
-const svgCache = new Map<string, Promise<string>>();
-
-const loadSvg = (url: string): Promise<string> => {
-  let request = svgCache.get(url);
-  if (!request) {
-    request = fetch(withBasePath(url)).then((res) =>
-      res.ok ? res.text() : Promise.reject(new Error(`Failed to load ${url}`)),
-    );
-    request.catch(() => svgCache.delete(url));
-    svgCache.set(url, request);
-  }
-  return request;
-};
-
-const parseSvg = (markup: string, idPrefix: string): SVGSVGElement | null => {
-  const root = new DOMParser().parseFromString(markup, "image/svg+xml").documentElement;
-  if (root.nodeName !== "svg") return null;
-
-  root.querySelectorAll("script, foreignObject").forEach((node) => node.remove());
-
-  for (const el of [root, ...root.querySelectorAll("*")]) {
-    for (const { name, value } of Array.from(el.attributes)) {
-      const attr = name.toLowerCase();
-      if (attr.startsWith("on")) el.removeAttribute(name);
-      else if (attr === "id") el.setAttribute(name, `${idPrefix}${value}`);
-      else if (attr === "href" || attr === "xlink:href") {
-        if (value.startsWith("#")) el.setAttribute(name, `#${idPrefix}${value.slice(1)}`);
-        else el.removeAttribute(name);
-      } else if (value.includes("url(#")) {
-        el.setAttribute(name, value.replaceAll("url(#", `url(#${idPrefix}`));
-      }
-    }
-  }
-
-  root.setAttribute("width", "100%");
-  root.setAttribute("height", "100%");
-  root.setAttribute("aria-hidden", "true");
-  root.setAttribute("focusable", "false");
-  return document.importNode(root, true) as unknown as SVGSVGElement;
-};
-
-// Computed styles need the svg attached, so this runs after it is in the DOM.
-const hideShapes = (svg: SVGSVGElement): DrawTarget[] =>
-  [...svg.querySelectorAll<SVGGeometryElement>(SHAPES)]
-    .filter((el) => !el.closest("defs, clipPath, mask, pattern, symbol"))
-    .map((el) => {
-      const { fill, stroke, fillOpacity } = getComputedStyle(el);
-      const addedStroke = stroke === "none";
-      el.setAttribute("pathLength", "1");
-      if (addedStroke) {
-        el.style.setProperty("stroke", fill === "none" ? "currentColor" : fill);
-        el.style.setProperty("stroke-width", "1");
-        el.style.setProperty("vector-effect", "non-scaling-stroke");
-      }
-      el.style.setProperty("stroke-dasharray", "1");
-      el.style.setProperty("stroke-dashoffset", "1");
-      el.style.setProperty("fill-opacity", "0");
-      return { el, fillOpacity, addedStroke };
-    });
-
-const drawShape = ({ el, fillOpacity, addedStroke }: DrawTarget, delay: number): Animation => {
-  const animation = el.animate(
-    [
-      { strokeDashoffset: "1", fillOpacity: "0", strokeOpacity: "1" },
-      { strokeDashoffset: "0", fillOpacity: "0", strokeOpacity: "1", offset: 0.6 },
-      { strokeDashoffset: "0", fillOpacity, strokeOpacity: addedStroke ? "0" : "1" },
-    ],
-    { duration: DRAW_DURATION, delay, easing: "cubic-bezier(0.65, 0, 0.35, 1)", fill: "forwards" },
-  );
+const drawShape = (target: DrawTarget, delay: number): Animation => {
+  const { el } = target;
+  const animation = el.animate(drawKeyframes(target), {
+    duration: DRAW_DURATION,
+    delay,
+    easing: DRAW_EASING,
+    fill: "forwards",
+  });
 
   animation.finished
     .then(() => {

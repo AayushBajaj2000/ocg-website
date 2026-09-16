@@ -180,6 +180,7 @@ const HighlightContent: React.FC<PlayProps & { stat: IStatHighlight }> = ({
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          loading="eager"
         />
       </m.div>
       <span aria-hidden className="absolute inset-0 bg-linear-to-b from-black/0 to-black" />
