@@ -10,12 +10,12 @@ import {
   type Variants,
 } from "motion/react";
 import { PlusToggleIcon } from "@/components/icons/PlusToggleIcon";
-import AutoplayVideo from "@/components/ui/AutoplayVideo";
-import PortableContent from "@/components/ui/PortableContent";
+import AutoplayVideo from "@/components/ui/misc/AutoplayVideo";
+import PortableContent from "@/components/ui/misc/PortableContent";
 import {
   dropdownItemReducedVariants,
   dropdownItemVariants,
-} from "@/components/layout/headerDropdownMotion";
+} from "@/components/layout/header/headerDropdownMotion";
 import { cn } from "@/lib/utils";
 import type { IService, PortableTextComponents } from "@/types";
 

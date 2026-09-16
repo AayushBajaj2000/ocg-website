@@ -1,6 +1,6 @@
-import Section from "@/components/layout/Section";
-import StatCard from "@/components/ui/StatCard";
-import TrustedByCard from "@/components/ui/TrustedByCard";
+import Section from "@/components/layout/sections/Section";
+import StatCard from "@/components/ui/cards/StatCard";
+import TrustedByCard from "@/components/ui/cards/TrustedByCard";
 import { TRUSTED_BY_SECTION } from "@/lib/constants";
 
 const TrustedBy: React.FC = () => {

@@ -1,6 +1,6 @@
-import Banner from "@/components/layout/Banner";
-import Section from "@/components/layout/Section";
-import ServiceAccordions from "@/app/services/_components/ServiceAccordions";
+import Banner from "@/components/layout/sections/Banner";
+import Section from "@/components/layout/sections/Section";
+import ServiceAccordions from "@/components/layout/sections/ServiceAccordions";
 import { SERVICES_SECTION } from "@/lib/constants";
 
 const Services: React.FC = () => {

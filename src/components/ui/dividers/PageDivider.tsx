@@ -1,5 +1,5 @@
-import Section from "@/components/layout/Section";
-import DividerLines from "@/components/ui/DividerLines";
+import Section from "@/components/layout/sections/Section";
+import DividerLines from "@/components/ui/dividers/DividerLines";
 
 const PageDivider: React.FC = () => {
   return (

@@ -2,8 +2,11 @@
 
 import { m, useReducedMotion } from "motion/react";
 import { ChevronIcon } from "@/components/icons";
-import NavLinkLabel from "@/components/ui/NavLinkLabel";
-import { CHEVRON_OPEN_ROTATION, SETTLE_SPRING } from "@/components/layout/headerDropdownMotion";
+import NavLinkLabel from "@/components/layout/header/NavLinkLabel";
+import {
+  CHEVRON_OPEN_ROTATION,
+  SETTLE_SPRING,
+} from "@/components/layout/header/headerDropdownMotion";
 
 type Props = {
   label: string;

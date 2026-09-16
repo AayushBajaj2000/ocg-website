@@ -3,8 +3,8 @@
 import type { ComponentProps, ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import NavLinkLabel from "@/components/ui/NavLinkLabel";
-import HeaderDropdown from "@/components/layout/HeaderDropdown";
+import NavLinkLabel from "@/components/layout/header/NavLinkLabel";
+import HeaderDropdown from "@/components/layout/header/HeaderDropdown";
 import { NAV_LINKS } from "@/lib/constants";
 import { isHrefActive, type NavLinkMatch } from "@/lib/navigation";
 

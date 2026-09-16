@@ -1,13 +1,13 @@
 import { useId, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, m, stagger, useReducedMotion, type Variants } from "motion/react";
-import NavDropdownTriggerContent from "@/components/layout/NavDropdownTriggerContent";
+import NavDropdownTriggerContent from "@/components/layout/header/NavDropdownTriggerContent";
 import { useIsNavGroupActive } from "@/components/layout/hooks/useIsNavGroupActive";
 import {
   DROPDOWN_EASE,
   dropdownItemReducedVariants,
   dropdownItemVariants,
-} from "@/components/layout/headerDropdownMotion";
+} from "@/components/layout/header/headerDropdownMotion";
 import { cn } from "@/lib/utils";
 import type { INavLink } from "@/types";
 

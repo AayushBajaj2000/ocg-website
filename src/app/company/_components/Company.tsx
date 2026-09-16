@@ -1,8 +1,8 @@
-import Team from "@/app/_components/Team";
-import TrustedBy from "@/app/_components/TrustedBy";
-import WordSection from "@/app/_components/WordSection";
-import Banner from "@/components/layout/Banner";
-import PageDivider from "@/components/ui/PageDivider";
+import Team from "@/components/layout/sections/Team";
+import TrustedBy from "@/components/layout/sections/TrustedBy";
+import WordSection from "@/components/layout/sections/WordSection";
+import Banner from "@/components/layout/sections/Banner";
+import PageDivider from "@/components/ui/dividers/PageDivider";
 import { COMPANY_SECTION } from "@/lib/constants";
 
 const Company: React.FC = () => {

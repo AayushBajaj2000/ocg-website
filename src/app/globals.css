@@ -89,6 +89,7 @@
   --text-footer-mobile--line-height: 2.625rem;
 
   --shadow-header-dropdown: 0 1rem 2.5rem 0 #13131314;
+  --shadow-team-card: 0 0.275rem 0.5975rem 0 #00000014;
 }
 
 body {

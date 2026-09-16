@@ -1,7 +1,8 @@
-import Section from "@/components/layout/Section";
-import { Reveal } from "@/components/ui/Reveal";
-import { StripeReveal } from "@/components/ui/StripeReveal";
 import Image from "next/image";
+import Section from "@/components/layout/sections/Section";
+import { Reveal } from "@/components/ui/animations/Reveal";
+import { StripeReveal } from "@/components/ui/animations/StripeReveal";
+import TeamCard, { TeamCardWrapper } from "@/components/ui/cards/TeamCard";
 
 const Team: React.FC = () => {
   return (
@@ -24,7 +25,7 @@ const Team: React.FC = () => {
           </Reveal>
         </div>
         <div className="grid grid-cols-1 md:gap-8 xl:grid-cols-2">
-          <div className="border-hairline flex flex-col justify-between gap-8 border p-5 md:p-10 xl:min-h-181.75">
+          <TeamCardWrapper>
             <Reveal>
               <Image
                 src="/graphics/ontario-badge.webp"
@@ -44,14 +45,10 @@ const Team: React.FC = () => {
                 day one.
               </Reveal>
             </div>
-          </div>
-          <Image
-            src="/placeholders/team.webp"
-            alt="team"
-            width={661}
-            height={727}
-            className="h-full object-cover"
-          />
+          </TeamCardWrapper>
+          <TeamCardWrapper className="items-center justify-center p-0!">
+            <TeamCard />
+          </TeamCardWrapper>
         </div>
       </div>
     </Section>

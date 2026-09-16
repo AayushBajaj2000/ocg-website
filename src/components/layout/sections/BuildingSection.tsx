@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PlusIcon } from "@/components/icons";
-import Section from "@/components/layout/Section";
+import Section from "@/components/layout/sections/Section";
 import {
   BuildingShader,
   INK_HEIGHT,
@@ -11,7 +11,7 @@ import {
   SHAPE_CAPTIONS,
 } from "@/components/shaders/building-shader";
 import type { ShapeLayout } from "@/components/shaders/building-shader";
-import { AnimatedIconButton } from "@/components/ui/AnimatedIconButton";
+import { AnimatedIconButton } from "@/components/ui/buttons/AnimatedIconButton";
 
 const GAP = 12;
 const WIDTH_RATIO = 0.82;
@@ -65,10 +65,7 @@ const BuildingSection: React.FC = () => {
   }, [measure]);
 
   return (
-    <Section
-      container
-      containerClassName="lg:h-206 h-162.5 bg-brand-blue relative isolate overflow-hidden"
-    >
+    <Section container containerClassName="h-162.5 bg-brand-blue relative isolate overflow-hidden">
       <div ref={hostRef} className="relative h-full">
         <BuildingShader shapeLayout={layout} onShapeChange={setIndex} />
 
@@ -79,7 +76,7 @@ const BuildingSection: React.FC = () => {
           <h2 className="md:text-h2 text-hero-mobile font-medium tracking-[-2%] text-white">
             Tell us what you&apos;re building.
           </h2>
-          <p className="max-w-90 text-sm font-medium tracking-[-2%] text-white md:text-base">
+          <p className="mb-5 max-w-90 text-sm font-normal tracking-[-2%] text-white md:text-base">
             We&apos;ll help you map the right scope, team, timeline, and next steps
           </p>
           <AnimatedIconButton

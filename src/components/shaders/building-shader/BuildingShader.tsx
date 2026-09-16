@@ -9,21 +9,6 @@ export type BuildingShaderProps = Partial<BuildingAsciiOptions> & {
   style?: React.CSSProperties;
 };
 
-/**
- * Ambient CTA artwork: a field of ASCII glyphs that resolves into a building,
- * a computer, a storefront and a lightbulb, cycling every 1.8s and morphing
- * between them. Cells outside the shape stay as a faint dot field, dimmed in
- * the upper half so copy layered over it stays readable.
- *
- * The host is `pointer-events: none` and transparent, so it sits behind page
- * content without stealing clicks and lets the section's own background show
- * through. The parent must be positioned.
- *
- *   <div style={{ position: 'relative' }}>
- *     <BuildingShader />
- *     <YourContent />
- *   </div>
- */
 export default function BuildingShader({ className, style, ...options }: BuildingShaderProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<BuildingAsciiHandle | null>(null);

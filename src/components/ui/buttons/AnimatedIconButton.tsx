@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { SweepText } from "@/components/ui/SweepText";
+import { SweepText } from "@/components/ui/animations/SweepText";
 
 type AnimatedIconButtonProps = {
   href: string;

@@ -1,5 +1,5 @@
-import Section from "@/components/layout/Section";
-import ProjectCard from "@/components/ui/ProjectCard";
+import Section from "@/components/layout/sections/Section";
+import ProjectCard from "@/components/ui/cards/ProjectCard";
 import { IProject } from "@/types";
 
 type Props = {

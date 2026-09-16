@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { switzer, inter, dancingScript, allura, jetbrainsMono } from "@/lib/fonts";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import FaqSection from "@/components/layout/FaqSection";
-import PageDivider from "@/components/ui/PageDivider";
-import BuildingSection from "@/components/layout/BuildingSection";
+import Header from "@/components/layout/header/Header";
+import Footer from "@/components/layout/footer/Footer";
+import FaqSection from "@/components/layout/sections/FaqSection";
+import PageDivider from "@/components/ui/dividers/PageDivider";
+import BuildingSection from "@/components/layout/sections/BuildingSection";
 import "./globals.css";
 
 export const metadata: Metadata = {

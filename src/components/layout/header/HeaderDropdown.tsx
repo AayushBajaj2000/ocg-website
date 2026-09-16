@@ -11,15 +11,15 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import HeaderLinkCard, { preloadHeaderLinkCardImage } from "@/components/ui/HeaderLinkCard";
-import NavDropdownTriggerContent from "@/components/layout/NavDropdownTriggerContent";
+import HeaderLinkCard, { preloadHeaderLinkCardImage } from "@/components/ui/cards/HeaderLinkCard";
+import NavDropdownTriggerContent from "@/components/layout/header/NavDropdownTriggerContent";
 import { useHeaderDropdown } from "@/components/layout/hooks/useHeaderDropdown";
 import { useIsNavGroupActive } from "@/components/layout/hooks/useIsNavGroupActive";
 import {
   DROPDOWN_EASE,
   dropdownItemReducedVariants,
   dropdownItemVariants,
-} from "@/components/layout/headerDropdownMotion";
+} from "@/components/layout/header/headerDropdownMotion";
 import { cn } from "@/lib/utils";
 import type { INavLink, INavLinkCard } from "@/types";
 

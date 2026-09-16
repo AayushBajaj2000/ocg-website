@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import AccordionLg from "@/components/ui/AccordionLg";
-import { Reveal } from "@/components/ui/Reveal";
+import AccordionLg from "@/components/ui/accordions/AccordionLg";
+import { Reveal } from "@/components/ui/animations/Reveal";
 import type { IService } from "@/types";
 
 type Props = {

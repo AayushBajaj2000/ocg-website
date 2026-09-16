@@ -65,7 +65,7 @@ const Accordion: React.FC<Props> = ({
           <PlusToggleIcon
             isOpen={open}
             className={cn(
-              "group-hover:text-brand-blue mt-1 size-4 shrink-0 transition-colors duration-300 md:size-6",
+              "group-hover:text-brand-blue mt-1 size-5 shrink-0 transition-colors duration-300 md:size-6",
               open ? "text-black" : "text-neutral-500",
             )}
           />

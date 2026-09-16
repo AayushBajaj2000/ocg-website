@@ -11,7 +11,7 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import Section from "@/components/layout/Section";
+import Section from "@/components/layout/sections/Section";
 import { WORD_SECTION } from "@/lib/constants";
 
 type FillTextProps = {

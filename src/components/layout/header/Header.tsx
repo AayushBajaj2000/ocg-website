@@ -3,11 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { PlusIcon } from "@/components/icons";
-import NavLinks from "@/components/ui/NavLinks";
-import { AnimatedIconButton } from "@/components/ui/AnimatedIconButton";
+import NavLinks from "@/components/layout/header/NavLinks";
+import { AnimatedIconButton } from "@/components/ui/buttons/AnimatedIconButton";
 import { useHideOnScroll } from "@/components/layout/hooks/useHideOnScroll";
-import HeaderMob from "@/components/layout/HeaderMob";
-import DividerLines from "@/components/ui/DividerLines";
+import HeaderMob from "@/components/layout/header/HeaderMob";
+import DividerLines from "@/components/ui/dividers/DividerLines";
 
 const Header: React.FC = () => {
   const hidden = useHideOnScroll();

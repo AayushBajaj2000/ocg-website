@@ -2,6 +2,11 @@ import type { LinkProps } from "next/link";
 import type { ReactNode } from "react";
 import type { ImageProps } from "next/image";
 
+export interface IImage {
+  url: ImageProps["src"];
+  alt: ImageProps["alt"];
+}
+
 export interface INavLinkDropdown {
   icon?: ReactNode;
   title?: string;
@@ -21,10 +26,7 @@ export type INavLinkCardIcon = "file";
 
 export interface INavLinkCard {
   href: LinkProps["href"];
-  img: {
-    url: ImageProps["src"];
-    alt: ImageProps["alt"];
-  };
+  img: IImage;
   category?: string;
   headline?: {
     icon?: INavLinkCardIcon;

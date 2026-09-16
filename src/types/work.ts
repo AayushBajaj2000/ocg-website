@@ -1,3 +1,4 @@
+import { IImage } from "@/types";
 import type { ImageProps } from "next/image";
 import type { LinkProps } from "next/link";
 
@@ -6,14 +7,8 @@ export interface ITestimonial {
   client?: {
     name?: string;
     role?: string;
-    img?: {
-      url?: ImageProps["src"];
-      alt?: string;
-    };
-    logo?: {
-      url?: ImageProps["src"];
-      alt?: string;
-    };
+    img?: IImage;
+    logo?: IImage;
   };
 }
 
@@ -31,14 +26,8 @@ export interface IProjectScope {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     content?: any;
   }[];
-  img?: {
-    url?: ImageProps["src"];
-    alt?: string;
-  };
-  stack?: {
-    url?: ImageProps["src"];
-    alt?: string;
-  }[];
+  img?: IImage;
+  stack?: IImage[];
   font?: {
     name?: string;
     source?: string;
@@ -50,10 +39,7 @@ export interface IProjectScope {
     hex?: string;
     name?: string;
   }[];
-  moreImgs?: {
-    url?: ImageProps["src"];
-    alt?: string;
-  }[];
+  moreImgs?: IImage[];
 }
 
 export interface IProject {
@@ -65,14 +51,8 @@ export interface IProject {
   tags?: string[];
   slug?: LinkProps["href"];
   testimonial?: ITestimonial;
-  cardImg?: {
-    url?: ImageProps["src"];
-    alt?: string;
-  };
-  heroImg?: {
-    url?: ImageProps["src"];
-    alt?: string;
-  };
+  cardImg?: IImage;
+  heroImg?: IImage;
   intro?: IProjectIntro;
   scope?: IProjectScope;
 }

@@ -12,11 +12,11 @@ import {
   PlusIcon,
   XIcon,
 } from "@/components/icons";
-import Section from "@/components/layout/Section";
-import { AnimatedIconButton } from "@/components/ui/AnimatedIconButton";
-import { Button } from "@/components/ui/Button";
-import { NavLink } from "@/components/ui/NavLinks";
-import { StripeReveal } from "@/components/ui/StripeReveal";
+import Section from "@/components/layout/sections/Section";
+import { AnimatedIconButton } from "@/components/ui/buttons/AnimatedIconButton";
+import { Button } from "@/components/ui/buttons/Button";
+import { NavLink } from "@/components/layout/header/NavLinks";
+import { StripeReveal } from "@/components/ui/animations/StripeReveal";
 import {
   IFooterAiFooterLink,
   IFooterHeadingLink,
@@ -30,7 +30,7 @@ import { CoreSvg, OpenSvg } from "@/components/icons/FooterLogo";
 import Image from "next/image";
 
 /** Seconds each footer image stays on screen. */
-const FOOTER_IMAGE_INTERVAL = 2;
+const FOOTER_IMAGE_INTERVAL = 1;
 
 const icons: IFooterIcons<IFooterAiIconName> = {
   perplexity: <PerplexityIcon />,
@@ -153,30 +153,33 @@ const Footer: React.FC = () => {
         )}
         {FOOTER.links && <FooterLinks links={FOOTER.links} />}
       </div>
-      <div className="flex w-full flex-wrap items-center justify-between gap-4 py-8 md:py-12">
-        <div className="flex items-center gap-4">
+      <div className="flex w-full flex-wrap items-center justify-between gap-4 py-8 text-center md:py-12">
+        <div className="flex w-full flex-wrap items-center justify-center gap-2 text-center md:w-auto md:justify-start md:text-left">
           {FOOTER.footerText &&
             FOOTER.footerText.map((t, i) => (
               <Fragment key={`${t.text}-${i}`}>
                 {t.isLink ? (
                   <a
                     href={t.href}
-                    className="text-black-3 font-switzer text-sm tracking-[-2%] underline underline-offset-2 md:text-xl"
+                    className="text-black-3 font-switzer text-sm tracking-[-2%] underline underline-offset-2"
                   >
                     {t.text}
                   </a>
                 ) : (
-                  <span className="text-black-3 font-switzer text-sm tracking-[-2%] md:text-xl">
-                    {t.text}
-                  </span>
+                  <span className="text-black-3 font-switzer text-sm tracking-[-2%]">{t.text}</span>
                 )}
                 {i + 1 < (FOOTER.footerText?.length ?? 0) && (
-                  <span className="bg-black-3 size-1.5 rounded-full" />
+                  <span className="bg-black-3 hidden size-1 rounded-full min-[348px]:block" />
                 )}
               </Fragment>
             ))}
         </div>
-        <div className="flex w-full items-center gap-2 lg:w-auto">
+        <div className="w-full text-center md:w-auto md:text-left">
+          <p className="text-black-3 text-sm">
+            Copyright &copy; {new Date().getFullYear()} OpenCore Group, All rights reserved
+          </p>
+        </div>
+        <div className="flex w-full items-center justify-center gap-2 lg:justify-start">
           {FOOTER.socialLinks &&
             FOOTER.socialLinks.map((l, i) => (
               <Button
@@ -191,11 +194,6 @@ const Footer: React.FC = () => {
                 {socialIcons[l.name! as IFooterSocialIconName]}
               </Button>
             ))}
-        </div>
-        <div className="w-full">
-          <p className="text-black-3 text-sm">
-            Copyright &copy; {new Date().getFullYear()} OpenCore Group, All rights reserved
-          </p>
         </div>
       </div>
       <div className="flex items-center justify-center gap-2 pb-4 md:gap-7 md:pb-6">

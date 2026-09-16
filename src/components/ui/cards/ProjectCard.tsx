@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import CardPill from "@/components/ui/CardPill";
+import CardPill from "@/components/ui/cards/CardPill";
 import { cn } from "@/lib/utils";
 import { IProject } from "@/types";
 import { ArrowIcon } from "@/components/icons";
-import { Reveal } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/animations/Reveal";
 
 type Props = IProject & { rtl?: boolean; priority?: boolean };
 
@@ -45,7 +45,7 @@ const ProjectCard: React.FC<Props> = ({
             height={1080}
             sizes="(min-width: 1024px) 50vw, 100vw"
             className={cn(
-              "size-full object-cover transition-all duration-300 ease-in-out group-hover:scale-103 group-hover:rounded-2xl",
+              "size-full object-cover transition-all duration-300 ease-in-out group-hover:scale-103",
               {
                 "group-hover:rotate-3": !rtl,
                 "group-hover:-rotate-3": rtl,

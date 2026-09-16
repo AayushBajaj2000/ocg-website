@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import Section from "@/components/layout/Section";
-import Accordion from "@/components/ui/Accordion";
-import AskMe from "@/components/ui/AskMe";
-import { Reveal } from "@/components/ui/Reveal";
-import { StripeReveal } from "@/components/ui/StripeReveal";
+import Section from "@/components/layout/sections/Section";
+import Accordion from "@/components/ui/accordions/Accordion";
+import AskMe from "@/components/layout/sections/AskMe";
+import { Reveal } from "@/components/ui/animations/Reveal";
+import { StripeReveal } from "@/components/ui/animations/StripeReveal";
 import { FAQS } from "@/lib/constants";
 
 const STEP = 0.06;

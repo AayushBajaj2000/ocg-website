@@ -11,8 +11,8 @@ import {
   type Transition,
   type Variants,
 } from "motion/react";
-import Reveal from "@/components/ui/Reveal";
-import StripeReveal from "@/components/ui/StripeReveal";
+import Reveal from "@/components/ui/animations/Reveal";
+import StripeReveal from "@/components/ui/animations/StripeReveal";
 import { cn } from "@/lib/utils";
 import type { IStatHighlight, IStatMetric, StatItem } from "@/types";
 

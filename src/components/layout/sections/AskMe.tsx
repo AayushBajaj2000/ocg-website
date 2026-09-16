@@ -1,6 +1,6 @@
 import { CalIcon, WhatsAppIcon } from "@/components/icons";
-import { Button } from "@/components/ui/Button";
-import { Reveal } from "@/components/ui/Reveal";
+import { Button } from "@/components/ui/buttons/Button";
+import { Reveal } from "@/components/ui/animations/Reveal";
 import Image from "next/image";
 
 type Props = {

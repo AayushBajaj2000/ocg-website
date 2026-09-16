@@ -1,4 +1,4 @@
-import Banner from "@/components/layout/Banner";
+import Banner from "@/components/layout/sections/Banner";
 import Projects from "@/app/work/_components/Projects";
 import { WORK_SECTION } from "@/lib/constants";
 

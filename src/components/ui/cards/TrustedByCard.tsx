@@ -28,7 +28,7 @@ import { CarrotIcon, PlusIcon, QuoteIcon } from "@/components/icons";
 import {
   dropdownItemReducedVariants,
   dropdownItemVariants,
-} from "@/components/layout/headerDropdownMotion";
+} from "@/components/layout/header/headerDropdownMotion";
 import { withBasePath } from "@/lib/assets";
 import { cn } from "@/lib/utils";
 import type { ITrustedByClient, ITrustedByCta, ITrustedByLogo } from "@/types";

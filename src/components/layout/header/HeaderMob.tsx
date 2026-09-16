@@ -12,8 +12,8 @@ import {
   type Variants,
 } from "motion/react";
 import { MenuToggleIcon } from "@/components/icons/MenuToggleIcon";
-import { NavLink } from "@/components/ui/NavLinks";
-import MobileNavDropdown from "@/components/layout/MobileNavDropdown";
+import { NavLink } from "@/components/layout/header/NavLinks";
+import MobileNavDropdown from "@/components/layout/header/MobileNavDropdown";
 import { NAV_LINKS } from "@/lib/constants";
 import { useMobileMenu } from "@/components/layout/hooks/useMobileMenu";
 

@@ -1,7 +1,7 @@
-import Section from "@/components/layout/Section";
+import Section from "@/components/layout/sections/Section";
 import BannerShader from "@/components/shaders/banner-shader/BannerShader";
-import { Reveal } from "@/components/ui/Reveal";
-import { StripeReveal } from "@/components/ui/StripeReveal";
+import { Reveal } from "@/components/ui/animations/Reveal";
+import { StripeReveal } from "@/components/ui/animations/StripeReveal";
 
 type Props = {
   title: string;
@@ -15,7 +15,7 @@ const Banner: React.FC<Props> = ({ title, description }) => {
       containerClassName="bg-center bg-cover bg-no-repeat flex h-90.5 items-end pb-16 md:h-94 md:pb-12 border-x"
     >
       <BannerShader />
-      <div className="z-50 flex w-full flex-wrap items-start justify-between gap-5 lg:flex-nowrap">
+      <div className="z-50 flex w-full flex-wrap items-end justify-between gap-5 lg:flex-nowrap">
         <StripeReveal
           as="h1"
           className="md:text-hero-desktop text-hero-mobile text-black-1 max-w-77.25 font-medium tracking-[-4%] md:max-w-125"
