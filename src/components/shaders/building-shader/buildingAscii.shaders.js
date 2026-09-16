@@ -24,8 +24,11 @@
 export const VERTEX = `attribute vec2 position;void main(){gl_Position=vec4(position,0.,1.);}`;
 
 // highp matters: iOS GPUs implement mediump as 16-bit floats, where the hash
-// (dot(grid, ...) * 43758) and the offscreen-mouse distance overflow to inf/NaN,
-// and a NaN alpha paints the whole canvas as an opaque white sheet.
+// (dot(grid, ...) * 43758) and the offscreen-mouse distance overflow to inf/NaN.
+//
+// Output is premultiplied (the context default). With premultipliedAlpha:false,
+// iOS WebKit and Chromium's mobile compositor treat transparent cells
+// (rgb 1, a 0) as additive white and the section renders as a white tile.
 export const FRAGMENT = `#ifdef GL_FRAGMENT_PRECISION_HIGH
  precision highp float;
  #else
@@ -60,5 +63,5 @@ export const FRAGMENT = `#ifdef GL_FRAGMENT_PRECISION_HIGH
   float base=.06+belowCopy*(.15+fade*.10)+nearMouse*.08;
   vec3 color=ink;
   float alpha=mix(dotAlpha*base,glyph*(.50+value*.50),inside);
-  gl_FragColor=vec4(color,alpha);
+  gl_FragColor=vec4(color*alpha,alpha);
  }`;

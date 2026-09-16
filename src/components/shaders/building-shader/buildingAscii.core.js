@@ -120,7 +120,6 @@ export function createBuildingAscii(host, options = {}) {
     gl = canvas.getContext("webgl", {
       alpha: true,
       antialias: false,
-      premultipliedAlpha: false,
       powerPreference: "low-power",
     });
 

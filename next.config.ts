@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
     images: { loader: "custom", loaderFile: "./src/lib/pages-image-loader.ts" },
     env: { NEXT_PUBLIC_BASE_PATH: pagesBasePath },
   }),
+  allowedDevOrigins: ["172.20.10.3"],
 };
 
 export default nextConfig;
