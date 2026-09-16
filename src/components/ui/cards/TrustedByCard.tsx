@@ -20,19 +20,9 @@ import {
   domAnimation,
   m,
   stagger,
-  useInView,
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import {
-  DRAW_EASING,
-  DRAW_STYLES,
-  drawKeyframes,
-  hideShapes,
-  loadSvg,
-  parseSvg,
-  type DrawTarget,
-} from "@/components/ui/animations/drawSvg";
 import { CarrotIcon, PlusIcon, QuoteIcon } from "@/components/icons";
 import {
   dropdownItemReducedVariants,
@@ -49,8 +39,6 @@ type Placement = { left: number; arrow: number; side: Side };
 
 const GUTTER = 16;
 const ARROW_INSET = 28;
-const DRAW_DURATION = 1400;
-const DRAW_SPREAD = 500;
 
 const bubbleVariants: Variants = {
   closed: { opacity: 0, scale: 0.96, transition: { duration: 0.15, ease: "easeIn" } },
@@ -71,81 +59,25 @@ const bubbleReducedVariants: Variants = {
   open: { opacity: 1, transition: { duration: 0.2, delayChildren: stagger(0.03) } },
 };
 
-const drawShape = (target: DrawTarget, delay: number): Animation => {
-  const { el } = target;
-  const animation = el.animate(drawKeyframes(target), {
-    duration: DRAW_DURATION,
-    delay,
-    easing: DRAW_EASING,
-    fill: "forwards",
-  });
-
-  animation.finished
-    .then(() => {
-      DRAW_STYLES.forEach((prop) => el.style.removeProperty(prop));
-      el.removeAttribute("pathLength");
-      animation.cancel();
-    })
-    .catch(() => {});
-
-  return animation;
-};
-
-const DrawnLogo: React.FC<{ logo: ITrustedByLogo }> = ({ logo }) => {
-  const hostRef = useRef<HTMLSpanElement>(null);
-  const idPrefix = `${useId().replace(/[^\w-]/g, "")}-`;
-  const shouldReduceMotion = useReducedMotion();
-  const isNear = useInView(hostRef, { once: true, margin: "200px" });
-  const isVisible = useInView(hostRef, { once: true, amount: 0.6 });
-  const [targets, setTargets] = useState<DrawTarget[] | null>(null);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    if (!isNear) return;
-    let cancelled = false;
-
-    loadSvg(logo.url)
-      .then((markup) => {
-        const host = hostRef.current;
-        const svg = parseSvg(markup, idPrefix);
-        if (cancelled || !host) return;
-        if (!svg) return setFailed(true);
-        host.replaceChildren(svg);
-        setTargets(shouldReduceMotion ? [] : hideShapes(svg));
-      })
-      .catch(() => !cancelled && setFailed(true));
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isNear, logo.url, idPrefix, shouldReduceMotion]);
-
-  useEffect(() => {
-    if (!isVisible || !targets?.length) return;
-    const step = DRAW_SPREAD / Math.max(targets.length - 1, 1);
-    const animations = targets.map((target, index) => drawShape(target, index * step));
-    return () => animations.forEach((animation) => animation.cancel());
-  }, [isVisible, targets]);
-
-  return (
-    <span
-      role="img"
-      aria-label={logo.alt}
-      style={
-        {
-          "--logo-w": `${logo.width}px`,
-          aspectRatio: `${logo.width} / ${logo.height}`,
-        } as CSSProperties
-      }
-      className="relative block w-[calc(var(--logo-w)*0.6)] max-w-[80%] opacity-60 grayscale-100 transition-[filter,opacity] duration-300 group-hover:opacity-100 group-hover:grayscale-0 group-data-open:opacity-100 group-data-open:grayscale-0 md:w-(--logo-w)"
-    >
-      <span ref={hostRef} className="block size-full" />
-      {failed && (
-        <Image src={logo.url} alt="" fill sizes={`${logo.width}px`} className="object-contain" />
-      )}
-    </span>
-  );
-};
+const ClientLogo: React.FC<{ logo: ITrustedByLogo }> = ({ logo }) => (
+  <span
+    style={
+      {
+        "--logo-w": `${logo.width}px`,
+        aspectRatio: `${logo.width} / ${logo.height}`,
+      } as CSSProperties
+    }
+    className="relative block w-[calc(var(--logo-w)*0.6)] max-w-[80%] opacity-60 grayscale-100 transition-[filter,opacity] duration-300 group-hover:opacity-100 group-hover:grayscale-0 group-data-open:opacity-100 group-data-open:grayscale-0 md:w-(--logo-w)"
+  >
+    <Image
+      src={logo.url}
+      alt={logo.alt}
+      fill
+      sizes={`${logo.width}px`}
+      className="object-contain"
+    />
+  </span>
+);
 
 const TooltipBubble: React.FC<{
   anchorRef: RefObject<HTMLElement | null>;
@@ -311,7 +243,7 @@ const TrustedByCard: React.FC<Props> = ({ client, cta }) => {
               onClick={() => pointerTypeRef.current === "touch" && setIsOpen((open) => !open)}
               className="focus-visible:outline-brand-blue relative grid size-full cursor-pointer place-items-center -outline-offset-2 focus-visible:outline-2"
             >
-              <DrawnLogo logo={client.logo} />
+              <ClientLogo logo={client.logo} />
             </button>
             <AnimatePresence>
               {isOpen && (
@@ -347,7 +279,7 @@ const TrustedByCard: React.FC<Props> = ({ client, cta }) => {
           </>
         ) : (
           <div className="relative grid size-full place-items-center">
-            <DrawnLogo logo={client.logo} />
+            <ClientLogo logo={client.logo} />
           </div>
         )}
 

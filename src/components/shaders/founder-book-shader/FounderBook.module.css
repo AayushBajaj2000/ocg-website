@@ -1,0 +1,814 @@
+.root {
+  --blue: #2068cc;
+  --ink: #17345b;
+  --hand: var(--font-caveat), "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  --header-offset: 83px;
+  --gap: 32px;
+  position: relative;
+  height: calc(100svh - var(--header-offset) + 580px);
+  padding-top: var(--gap);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: normal;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+.stage {
+  position: sticky;
+  top: calc(var(--header-offset) + var(--gap));
+  height: calc(100svh - var(--header-offset) - 2 * var(--gap));
+  padding-bottom: 15px;
+  perspective: 2200px;
+  perspective-origin: 50% 45%;
+}
+
+.book {
+  position: relative;
+  width: 100%;
+  max-width: 1160px;
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  transform: translateX(var(--book-shift, -25%));
+  transform-style: preserve-3d;
+}
+
+.spread {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  display: block;
+  width: 50%;
+  overflow: visible;
+  background: #fff;
+  border: 12px solid var(--blue);
+  border-left-width: 0;
+  border-radius: 0 13px 13px 0;
+  box-shadow:
+    9px 12px 20px #17345b26,
+    3px 3px 0 #d1d8df,
+    6px 6px 0 #fbfcff,
+    8px 8px 0 #b7c3d3;
+}
+
+.spread::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #10294766, transparent 80%);
+  opacity: var(--page-shadow, 0.75);
+}
+
+.book[data-open] .spread::after {
+  opacity: var(--page-shadow, 0);
+}
+
+.page {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 25px;
+  background-color: #fff;
+  background-image: radial-gradient(circle, #8ea4bc77 0.9px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.collage {
+  box-shadow: inset -14px 0 17px -14px #0009;
+}
+
+.letter {
+  color: #2f333a;
+  box-shadow: inset 14px 0 17px -14px #0009;
+}
+
+.letter::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: #babec666;
+}
+
+.spread > .letter {
+  height: 100%;
+  padding-bottom: 32px;
+  overflow: auto;
+  overscroll-behavior: auto;
+  border-radius: 0 3px 3px 0;
+}
+
+.spread,
+.spread > .letter {
+  scrollbar-width: none;
+}
+
+.spread::-webkit-scrollbar,
+.spread > .letter::-webkit-scrollbar {
+  display: none;
+}
+
+.book:not([data-open]) .letter,
+.book:not([data-open]) .scrap,
+.book:not([data-open]) .easterEgg {
+  pointer-events: none;
+}
+
+.heading {
+  margin: 0 0 14px;
+  color: #202d40;
+  font-family: var(--hand);
+  font-size: 31px;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -1px;
+}
+
+.founderCopy p {
+  margin: 0 0 18px;
+  color: #3e4650;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.signoff {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.signoff span {
+  display: block;
+  margin-top: 5px;
+  color: #79808a;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  font-style: italic;
+}
+
+.signature {
+  margin: 0 0 7px;
+  color: #243b5b;
+  font-family: var(--hand);
+  font-size: 34px;
+  font-style: italic;
+  transform: rotate(-3deg);
+}
+
+.portrait {
+  display: block;
+  width: 82px;
+  height: 82px;
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
+  object-position: 50% 28%;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px #0002;
+}
+
+.mobileScrapbook {
+  display: none;
+}
+
+.cover {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 10;
+  width: 50%;
+  height: 100%;
+  transform: translateZ(3px) rotateY(var(--book-angle, 0deg));
+  transform-origin: 0% 50%;
+  transform-style: preserve-3d;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 4px;
+  height: 100%;
+  background: #164f9e;
+  transform: rotateY(90deg);
+  transform-origin: left;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.coverFace,
+.coverBack {
+  position: absolute;
+  inset: 0;
+  border: 10px solid var(--blue);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.coverFace {
+  padding: 36px 42px;
+  color: #fff;
+  background-color: var(--blue);
+  background-image:
+    linear-gradient(90deg, #133f8122, transparent 3%, #ffffff14 4%, transparent 7%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, #ffffff03 3px);
+  border-radius: 3px 13px 13px 3px;
+  box-shadow: 7px 14px 28px #17345b2b;
+  transform: translateZ(2px);
+}
+
+.coverBack {
+  overflow: hidden;
+  background: #fff;
+  border-right-width: 0;
+  border-radius: 13px 0 0 13px;
+  box-shadow: -5px 12px 18px #17345b25;
+  transform: rotateY(180deg) translateZ(2px);
+}
+
+.coverBack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 70%, #10294729);
+  opacity: 0.6;
+}
+
+.coverBack > .collage {
+  height: 100%;
+  border-radius: 3px 0 0 3px;
+}
+
+.coverEdition {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #ffffff50;
+  font-size: 10px;
+  letter-spacing: 1.4px;
+}
+
+.coverEdition span {
+  font-size: 9px;
+  opacity: 0.75;
+}
+
+.coverTitle {
+  position: relative;
+  z-index: 2;
+  margin-top: 45px;
+}
+
+.coverMark {
+  display: block;
+  width: 82px;
+  height: 82px;
+  margin-bottom: 32px;
+  filter: drop-shadow(0 6px 12px #123a751c);
+}
+
+.coverHeading {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(48px, 5.7vw, 76px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -3px;
+}
+
+.coverSkyline {
+  position: absolute;
+  bottom: 44px;
+  left: 0;
+  width: 100%;
+  height: 32%;
+  object-fit: cover;
+  object-position: center 60%;
+  opacity: 0.47;
+  filter: grayscale(1) invert(1) contrast(1.65);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 25%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 25%, #000 78%, transparent 100%);
+}
+
+.coverScroll {
+  position: absolute;
+  right: 42px;
+  bottom: 24px;
+  left: 42px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  color: #d8e7ff;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.coverScroll span {
+  font-size: 18px;
+}
+
+.tinyNote {
+  position: absolute;
+  top: 37px;
+  right: 27px;
+  color: #9c9a92;
+  font-family: var(--hand);
+  font-size: 12px;
+  transform: rotate(8deg);
+}
+
+.scraps {
+  position: relative;
+  height: 100%;
+}
+
+.scrap {
+  position: absolute;
+  margin: 0;
+  padding: 5px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 7px #12294336;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: box-shadow 0.18s ease;
+}
+
+.scrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.scrap:hover {
+  box-shadow: 0 7px 15px #17345b3b;
+}
+
+.scrap:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 5px;
+}
+
+.scrap[data-dragging] {
+  cursor: grabbing;
+  box-shadow: 0 12px 22px #17345b40;
+  transition: none;
+}
+
+.ai {
+  top: 3%;
+  left: 3%;
+  z-index: 2;
+  width: 68%;
+  transform: rotate(-4deg);
+}
+
+.bugs {
+  top: 37%;
+  right: auto;
+  left: 9%;
+  z-index: 3;
+  width: 50%;
+  transform: rotate(3deg);
+}
+
+.fry {
+  top: auto;
+  right: 3%;
+  bottom: 3%;
+  left: auto;
+  z-index: 4;
+  width: 43%;
+  transform: rotate(-6deg);
+}
+
+.eggsPhoto {
+  top: auto;
+  bottom: 3%;
+  left: 4%;
+  z-index: 6;
+  width: 23%;
+  transform: rotate(5deg);
+}
+
+.stamp {
+  position: absolute;
+  top: 33%;
+  right: 0;
+  bottom: auto;
+  z-index: 5;
+  width: 30%;
+  transform: rotate(13deg);
+  filter: drop-shadow(0 3px 3px #17345b28);
+}
+
+.annotation {
+  position: absolute;
+  top: 67%;
+  left: 3%;
+  width: 35%;
+  color: var(--blue);
+}
+
+/* Preflight makes svg a block; the original is an inline replaced element. */
+.annotation svg {
+  display: inline;
+  width: 100%;
+  height: 45px;
+  vertical-align: baseline;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.annotation span {
+  display: block;
+  margin: 9px 4px;
+  font-family: var(--hand);
+  font-size: 18px;
+  font-style: italic;
+  transform: rotate(-4deg);
+}
+
+.easterEgg {
+  position: absolute;
+  z-index: 1;
+  max-width: 160px;
+  padding: 8px 10px;
+  color: #17467e;
+  background: #e6efff;
+  border: 1px dashed #2068cc55;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px #17345b12;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.easterEgg > span {
+  display: block;
+  color: #2068cc;
+  font:
+    8px/1.3 Arial,
+    sans-serif;
+  letter-spacing: 1px;
+}
+
+.easterEgg p {
+  margin: 5px 0 0;
+  font-family: var(--font-caveat), "Segoe Print", cursive;
+  font-size: 19px;
+  line-height: 1.05;
+}
+
+.eggAi {
+  top: 7%;
+  left: 12%;
+  width: 46%;
+  transform: rotate(-3deg);
+}
+
+.eggBugs {
+  top: 41%;
+  left: 16%;
+  width: 35%;
+  transform: rotate(2deg);
+}
+
+.eggFry {
+  right: 8%;
+  bottom: 7%;
+  width: 31%;
+  transform: rotate(-4deg);
+}
+
+.easterEgg:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+
+.easterEgg[data-dragging] {
+  cursor: grabbing;
+  box-shadow: 0 8px 15px #17345b30;
+}
+
+@media (min-width: 768px) {
+  .root {
+    --header-offset: 105px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .coverFace {
+    padding: 32px;
+  }
+
+  .coverEdition span {
+    display: none;
+  }
+
+  .easterEgg {
+    padding: 6px 8px;
+  }
+
+  .easterEgg > span {
+    font-size: 7px;
+  }
+
+  .easterEgg p {
+    font-size: 16px;
+  }
+
+  .eggAi {
+    top: 7%;
+    left: 8%;
+  }
+
+  .eggBugs {
+    top: 41%;
+    left: 10%;
+  }
+
+  .eggFry {
+    right: 6%;
+    bottom: 7%;
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 701px) {
+  .page {
+    padding: 23px 21px;
+  }
+
+  .signature {
+    font-size: 27px;
+  }
+
+  .portrait {
+    width: 65px;
+    height: 65px;
+  }
+
+  .ai {
+    left: 0;
+    width: 78%;
+  }
+
+  .bugs {
+    left: 3%;
+    width: 58%;
+  }
+
+  .fry {
+    right: 0;
+    width: 53%;
+  }
+
+  .stamp {
+    right: -7px;
+    width: 32%;
+  }
+}
+
+@media (min-width: 701px) {
+  .spread > .letter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .heading,
+  .founderCopy {
+    flex-shrink: 0;
+  }
+
+  .signoff {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 24px;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 701px) {
+  .coverFace {
+    padding-top: 24px;
+  }
+
+  .coverTitle {
+    margin-top: 26px;
+  }
+
+  .coverMark {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+  }
+
+  .coverHeading {
+    font-size: 58px;
+  }
+
+  .heading {
+    font-size: 28px;
+  }
+
+  .founderCopy p {
+    margin-bottom: 12px;
+    line-height: 1.45;
+  }
+
+  .signoff {
+    padding-top: 16px;
+  }
+
+  .portrait {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-width: 700px) {
+  .root {
+    --gap: 20px;
+  }
+
+  .book {
+    transform: none;
+  }
+
+  .spread {
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    border-width: 8px;
+    border-radius: 10px;
+  }
+
+  .page {
+    padding: 22px;
+  }
+
+  .collage {
+    height: 600px;
+    box-shadow: inset 0 -9px 15px -14px #0009;
+  }
+
+  .letter {
+    padding: 27px 23px 30px;
+    box-shadow: none;
+  }
+
+  .letter::before {
+    right: 0;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+  }
+
+  .spread > .letter {
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+
+  .heading {
+    font-size: 32px;
+  }
+
+  .signature {
+    font-size: 30px;
+  }
+
+  .portrait {
+    width: 75px;
+    height: 75px;
+  }
+
+  .book[data-revealed] .mobileScrapbook {
+    display: block;
+  }
+
+  .mobileScrapbook .collage {
+    height: 560px;
+    border-top: 1px solid #a4b9d5;
+  }
+
+  .cover {
+    left: 0;
+    width: 100%;
+  }
+
+  .book[data-revealed] .cover {
+    visibility: hidden;
+  }
+
+  .coverFace {
+    padding: 30px;
+  }
+
+  .coverFace,
+  .coverBack {
+    border-width: 8px;
+  }
+
+  .coverTitle {
+    margin-top: 35px;
+  }
+
+  .coverMark {
+    width: 68px;
+    height: 68px;
+    margin-bottom: 27px;
+  }
+
+  .coverHeading {
+    font-size: 65px;
+  }
+
+  .coverSkyline {
+    bottom: 42px;
+    height: 31%;
+  }
+
+  .coverScroll {
+    right: 30px;
+    left: 30px;
+  }
+
+  .ai {
+    top: 4%;
+    left: 1%;
+    width: 70%;
+  }
+
+  .bugs {
+    top: 37%;
+    left: 6%;
+    width: 50%;
+  }
+
+  .fry {
+    right: 0;
+    bottom: 3%;
+    width: 43%;
+  }
+
+  .eggsPhoto {
+    bottom: 3%;
+    left: 3%;
+    width: 24%;
+  }
+
+  .stamp {
+    top: 33%;
+    right: 0;
+    width: 29%;
+  }
+
+  .annotation {
+    top: 66%;
+  }
+
+  .annotation span {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root *,
+  .root *::before,
+  .root *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

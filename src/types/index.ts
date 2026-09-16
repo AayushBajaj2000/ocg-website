@@ -6,3 +6,4 @@ export * from "@/types/company";
 export * from "@/types/trustedBy";
 export * from "@/types/wordSection";
 export * from "@/types/team";
+export * from "@/types/founderBook";

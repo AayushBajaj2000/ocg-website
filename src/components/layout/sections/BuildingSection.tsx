@@ -66,9 +66,9 @@ const BuildingSection: React.FC = () => {
 
   return (
     <Section container containerClassName="h-162.5 bg-brand-blue relative isolate overflow-hidden">
+      {/* Sits outside the padded host so the dot field runs edge-to-edge. */}
+      <BuildingShader shapeLayout={layout} onShapeChange={setIndex} />
       <div ref={hostRef} className="relative h-full">
-        <BuildingShader shapeLayout={layout} onShapeChange={setIndex} />
-
         <div
           ref={copyRef}
           className="relative mx-auto flex max-w-97 flex-col items-center gap-2 pt-8 text-center md:pt-16"

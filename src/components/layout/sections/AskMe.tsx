@@ -16,7 +16,7 @@ const AskMe: React.FC<Props> = ({ delay = 0, step = 0.06 }) => {
           <Image src="/logo-filled.svg" alt="logo filled" width={64} height={64} />
         </Reveal>
         <div className="flex flex-col gap-1">
-          <Reveal as="p" className="text-base text-black" byLine delay={delay + step}>
+          <Reveal as="p" className="text-base font-medium text-black" byLine delay={delay + step}>
             Didn&apos;t find the answer?
           </Reveal>
           <Reveal as="span" className="text-black-3 text-base" byLine delay={delay * 1.5}>

@@ -31,7 +31,7 @@ export const SEQUENTIAL_DRAW_MS = PATH_DURATION + SPREAD;
 export const SEQUENTIAL_ERASE_MS = Math.ceil(SEQUENTIAL_DRAW_MS / ERASE_RATE);
 
 /**
- * Unlike DrawnLogo, which traces every shape at once, this draws them in
+ * Rather than tracing every shape at once, this draws them in
  * document order, each starting as the previous one is underway.
  *
  * Every shape gets one animation that shares the same total length: its own

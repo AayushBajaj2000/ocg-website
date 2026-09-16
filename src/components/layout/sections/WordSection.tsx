@@ -29,19 +29,15 @@ type WordProps = {
 
 const SPRING = { stiffness: 140, damping: 30, restDelta: 0.001 };
 
+const FILL = ["#d0d5dd", "#131313"];
+
 const toWords = (text: string): string[] => text.split(/\s+/).filter(Boolean);
 
+// One colour-animated copy per word; a stacked overlay drifts off the base glyphs on mobile.
 const Word: React.FC<WordProps> = ({ word, range, progress }) => {
-  const opacity = useTransform(progress, range, [0, 1]);
+  const color = useTransform(progress, range, FILL);
 
-  return (
-    <span className="relative">
-      {word}
-      <m.span style={{ opacity }} className="text-black-1 absolute inset-0">
-        {word}
-      </m.span>
-    </span>
-  );
+  return <m.span style={{ color }}>{word}</m.span>;
 };
 
 const FillText: React.FC<FillTextProps> = ({ words, offset, total, progress }) => {
@@ -77,11 +73,11 @@ const WordSection: React.FC = () => {
           ref={targetRef}
           className="relative mx-auto flex max-w-257 flex-col gap-6 text-neutral-300 md:gap-10"
         >
-          <h2 className="md:text-hero-mobile font-switzer text-xl">
+          <h2 className="md:text-hero-mobile font-switzer text-xl tracking-[-2%]">
             <span className="sr-only">{WORD_SECTION.heading}</span>
             <FillText words={headingWords} offset={0} total={total} progress={progress} />
           </h2>
-          <p className="font-switzer text-sm md:text-2xl">
+          <p className="font-switzer text-sm tracking-[-1%] md:text-2xl">
             <span className="sr-only">{WORD_SECTION.description}</span>
             <FillText
               words={descriptionWords}

@@ -4,6 +4,7 @@ import WordSection from "@/components/layout/sections/WordSection";
 import Banner from "@/components/layout/sections/Banner";
 import PageDivider from "@/components/ui/dividers/PageDivider";
 import { COMPANY_SECTION } from "@/lib/constants";
+import FounderSection from "@/components/layout/sections/FounderSection";
 
 const Company: React.FC = () => {
   return (
@@ -14,6 +15,9 @@ const Company: React.FC = () => {
       <WordSection />
       <PageDivider />
       <Team />
+      <PageDivider />
+      <FounderSection />
+      <PageDivider />
     </>
   );
 };

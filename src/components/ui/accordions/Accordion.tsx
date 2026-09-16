@@ -55,7 +55,7 @@ const Accordion: React.FC<Props> = ({
           className="flex w-full cursor-pointer items-start justify-between gap-2 text-left"
         >
           <span className="flex min-w-0 overflow-hidden">
-            <span className="group-hover:text-brand-blue flex min-w-0 -translate-x-3.5 items-start gap-2 text-base text-black transition-[translate,color] duration-300 ease-in-out group-hover:translate-x-0 motion-reduce:transition-none md:-translate-x-5 md:gap-3 md:text-2xl">
+            <span className="group-hover:text-brand-blue flex min-w-0 -translate-x-3.5 items-start gap-2 text-base text-black transition-[translate,color] duration-300 ease-in-out group-hover:translate-x-0 motion-reduce:transition-none md:-translate-x-5 md:gap-3">
               <span className="flex h-lh shrink-0 items-center">
                 <BulletIcon className="size-1.5 md:size-2" />
               </span>
@@ -65,7 +65,7 @@ const Accordion: React.FC<Props> = ({
           <PlusToggleIcon
             isOpen={open}
             className={cn(
-              "group-hover:text-brand-blue mt-1 size-5 shrink-0 transition-colors duration-300 md:size-6",
+              "group-hover:text-brand-blue mt-1 size-5 shrink-0 transition-colors duration-300 md:mt-0 md:size-6",
               open ? "text-black" : "text-neutral-500",
             )}
           />
@@ -92,7 +92,7 @@ const Accordion: React.FC<Props> = ({
                 animate={{ y: 0 }}
                 exit={{ y: prefersReducedMotion ? 0 : -6 }}
                 transition={{ duration, ease: EASE }}
-                className="pt-2 text-xs text-black/60 md:text-base"
+                className="pt-2 text-sm text-black/60"
               >
                 {answer}
               </m.p>

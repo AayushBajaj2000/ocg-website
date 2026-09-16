@@ -8,7 +8,7 @@ import { TEAM_SECTION } from "@/lib/constants";
 
 const Team: React.FC = () => {
   return (
-    <Section container containerClassName="md:py-20 py-10 border-x">
+    <Section container containerClassName="md:py-20 py-10 border-x xl:px-0! 2xl:px-16!">
       <div className="flex flex-col gap-8 md:gap-16">
         <div className="flex flex-col gap-4 text-center">
           <StripeReveal
@@ -25,8 +25,8 @@ const Team: React.FC = () => {
             {TEAM_SECTION.description}
           </Reveal>
         </div>
-        <div className="flex md:gap-8">
-          <TeamCardWrapper className="hidden p-4 md:p-5 lg:flex lg:w-[40%]">
+        <div className="flex gap-4">
+          <TeamCardWrapper className="hidden w-[40%] p-10 lg:flex xl:border-l-0 2xl:border-l">
             <Reveal>
               <Image
                 src={TEAM_SECTION.badge?.url!}
@@ -41,15 +41,23 @@ const Team: React.FC = () => {
               />
             </Reveal>
             <div className="flex flex-col gap-4">
-              <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>
+              <Reveal
+                as="span"
+                className="font-switzer text-xl tracking-[-2%] text-black/70"
+                byLine
+              >
                 {TEAM_SECTION.lineOne}
               </Reveal>
-              <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>
+              <Reveal
+                as="span"
+                className="font-switzer text-xl tracking-[-2%] text-black/70"
+                byLine
+              >
                 {TEAM_SECTION.lineTwo}
               </Reveal>
             </div>
           </TeamCardWrapper>
-          <TeamCardWrapper className="flex-1">
+          <TeamCardWrapper className="flex-1 xl:border-r-0 2xl:border-r">
             <TeamCarousel team={TEAM_SECTION.team ?? []} className="flex-1" />
             <div className="flex flex-col gap-8 px-4 pb-10 lg:hidden">
               <div className="flex flex-col gap-4">

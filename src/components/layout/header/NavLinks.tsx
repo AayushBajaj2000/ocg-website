@@ -53,7 +53,7 @@ export const NavLink: React.FC<Props> = ({
       aria-current={isActive ? "page" : undefined}
       data-active={isActive || undefined}
       className={joinClassNames(
-        "group flex items-center gap-2 overflow-hidden",
+        "group hover:text-brand-blue flex items-center gap-2 overflow-hidden",
         resolve(className, state),
         isActive ? "text-brand-blue" : "text-black-3",
         isActive ? activeClassName : inactiveClassName,

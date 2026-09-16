@@ -35,7 +35,7 @@ const HeaderLinkCard: React.FC<Props> = ({ href, img, category, headline, title,
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   return (
-    <Link href={href} className="flex w-full flex-col gap-2 p-5">
+    <Link href={href} className="group flex w-full flex-col gap-2 p-5">
       <span className="relative block aspect-320/198 w-full overflow-hidden bg-neutral-100">
         {!isImageLoaded && (
           <span
@@ -50,7 +50,7 @@ const HeaderLinkCard: React.FC<Props> = ({ href, img, category, headline, title,
           loading="eager"
           onLoad={() => setIsImageLoaded(true)}
           className={cn(
-            "absolute inset-0 size-full object-cover transition-opacity duration-300 ease-out motion-reduce:transition-none",
+            "absolute inset-0 size-full object-cover transition-[opacity,scale] duration-500 ease-out group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transition-none",
             isImageLoaded ? "opacity-100" : "opacity-0",
           )}
         />
@@ -72,7 +72,9 @@ const HeaderLinkCard: React.FC<Props> = ({ href, img, category, headline, title,
         )}
         {caption?.readTime && caption.readTime}
         {caption?.text && (
-          <span className="text-black-1 underline underline-offset-2">{caption.text}</span>
+          <span className="text-black-1 group-hover:text-brand-blue group-focus-visible:text-brand-blue underline underline-offset-2 transition-colors duration-300">
+            {caption.text}
+          </span>
         )}
       </span>
     </Link>

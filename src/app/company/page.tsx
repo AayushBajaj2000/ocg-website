@@ -3,7 +3,7 @@ import Company from "@/app/company/_components/Company";
 import { COMPANY_SECTION } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Services | OpenCore Group",
+  title: "Company | OpenCore Group",
   description: COMPANY_SECTION.description,
 };
 

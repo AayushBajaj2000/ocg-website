@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type PointerEvent } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import {
   LazyMotion,
@@ -11,9 +11,9 @@ import {
   type Transition,
   type Variants,
 } from "motion/react";
+import { BulletIcon } from "@/components/icons/BulletIcon";
 import Reveal from "@/components/ui/animations/Reveal";
 import StripeReveal from "@/components/ui/animations/StripeReveal";
-import { cn } from "@/lib/utils";
 import type { IStatHighlight, IStatMetric, StatItem } from "@/types";
 
 type Props = {
@@ -110,22 +110,8 @@ const Odometer: React.FC<PlayProps & { value: number; suffix?: string }> = ({
 };
 
 const MetricContent: React.FC<PlayProps & { stat: IStatMetric }> = ({ stat, ...play }) => {
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    const { left, top } = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty("--spot-x", `${event.clientX - left}px`);
-    event.currentTarget.style.setProperty("--spot-y", `${event.clientY - top}px`);
-  };
-
   return (
-    <div
-      onPointerMove={onPointerMove}
-      className="border-hairline relative flex size-full flex-col justify-between border p-6"
-    >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(20rem_circle_at_var(--spot-x,50%)_var(--spot-y,50%),color-mix(in_oklab,var(--color-brand-blue)_9%,transparent),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
-
+    <div className="border-hairline relative flex size-full flex-col justify-between border p-5">
       <p className="font-switzer text-black-1 relative text-[4rem] leading-none font-light tracking-[-5%] md:text-[6.25rem]">
         <span className="sr-only">
           {stat.value}
@@ -134,27 +120,19 @@ const MetricContent: React.FC<PlayProps & { stat: IStatMetric }> = ({ stat, ...p
         <Odometer value={stat.value} suffix={stat.suffix} {...play} />
       </p>
 
-      <div
-        className={cn(
-          "font-switzer relative flex items-center gap-2 text-sm tracking-[-2%] uppercase",
-          stat.accent ? "text-brand-blue" : "text-black-2",
-        )}
-      >
-        {stat.accent && (
-          <span aria-hidden className="relative flex size-1.5 shrink-0">
-            <span className="bg-brand-blue absolute inset-0 rounded-full opacity-60 motion-safe:animate-ping" />
-            <span className="bg-brand-blue relative size-full rounded-full" />
-          </span>
-        )}
-        <StripeReveal
-          as="span"
-          delay={play.delay + 0.45}
-          baseColor="var(--color-black-2)"
-          accentColor={stat.accent ? "var(--color-brand-blue)" : "var(--color-hairline)"}
-          className="text-xs"
-        >
-          {stat.label}
-        </StripeReveal>
+      <div className="font-switzer text-black-2 group-hover:text-brand-blue relative flex overflow-hidden text-sm tracking-[-2%] uppercase transition-colors duration-300">
+        <span className="flex min-w-0 -translate-x-3.5 items-center gap-2 transition-transform duration-300 ease-in-out group-hover:translate-x-0 motion-reduce:transition-none">
+          <BulletIcon className="size-1.5 shrink-0" />
+          <StripeReveal
+            as="span"
+            delay={play.delay + 0.45}
+            baseColor="var(--color-black-2)"
+            accentColor={stat.accent ? "var(--color-brand-blue)" : "var(--color-hairline)"}
+            className="text-xs"
+          >
+            {stat.label}
+          </StripeReveal>
+        </span>
       </div>
     </div>
   );

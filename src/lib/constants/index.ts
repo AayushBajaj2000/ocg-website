@@ -5,3 +5,4 @@ export * from "@/lib/constants/company";
 export * from "@/lib/constants/trustedBy";
 export * from "@/lib/constants/wordSection";
 export * from "@/lib/constants/team";
+export * from "@/lib/constants/founderBook";

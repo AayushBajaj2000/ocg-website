@@ -12,7 +12,7 @@ const Banner: React.FC<Props> = ({ title, description }) => {
   return (
     <Section
       container
-      containerClassName="bg-center bg-cover bg-no-repeat flex h-90.5 items-end pb-16 md:h-94 md:pb-12 border-x"
+      containerClassName="isolate bg-center bg-cover bg-no-repeat flex h-90.5 items-end pb-16 md:h-94 md:pb-12 border-x"
     >
       <BannerShader />
       <div className="z-50 flex w-full flex-wrap items-end justify-between gap-5 lg:flex-nowrap">
