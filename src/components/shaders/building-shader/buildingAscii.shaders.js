@@ -23,7 +23,14 @@
 
 export const VERTEX = `attribute vec2 position;void main(){gl_Position=vec4(position,0.,1.);}`;
 
-export const FRAGMENT = `precision mediump float;
+// highp matters: iOS GPUs implement mediump as 16-bit floats, where the hash
+// (dot(grid, ...) * 43758) and the offscreen-mouse distance overflow to inf/NaN,
+// and a NaN alpha paints the whole canvas as an opaque white sheet.
+export const FRAGMENT = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+ precision highp float;
+ #else
+ precision mediump float;
+ #endif
  uniform vec2 resolution;uniform vec2 mouse;uniform vec3 shapeLayout;uniform float cell;uniform float clock;
  uniform float reveal;uniform float blend;uniform float previous;uniform float current;
  uniform vec3 ink;uniform float glyphScale;uniform sampler2D masks;uniform sampler2D glyphs;
