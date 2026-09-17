@@ -1,12 +1,15 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { SweepText } from "@/components/ui/animations/SweepText";
 
 type AnimatedIconButtonProps = {
-  href: string;
+  href?: LinkProps["href"];
+  type?: "submit" | "button" | "reset";
+  disabled?: boolean;
   icon: ReactNode;
   label: string;
   className?: string;
+  containerClassName?: string;
 };
 
 const EASE = "ease-[cubic-bezier(.83,0,.17,1)]";
@@ -36,29 +39,60 @@ const DURATION = "transition-transform duration-700";
  */
 export function AnimatedIconButton({
   href,
+  type,
+  disabled,
   icon,
   label,
   className = "bg-brand-blue text-white",
+  containerClassName,
 }: AnimatedIconButtonProps) {
-  return (
-    <Link href={href} aria-label={label} className="group flex items-center gap-1">
-      <span
-        className={`flex size-10 scale-0 rotate-90 items-center justify-center group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE} ${className}`}
-      >
-        {icon}
-      </span>
+  if (href)
+    return (
+      <Link href={href} aria-label={label} className="group flex items-center gap-1">
+        <span
+          className={`flex size-10 scale-0 rotate-90 items-center justify-center group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE} ${className}`}
+        >
+          {icon}
+        </span>
 
-      <span
-        className={`text-button inline-flex h-10 items-center justify-center px-4 font-normal tracking-[-0.0175rem] transition-[margin] duration-700 group-hover:ml-0 group-focus-visible:ml-0 ${EASE} -ml-11 group-hover:-mr-11 group-hover:ml-0 ${className}`}
-      >
-        <SweepText>{label}</SweepText>
-      </span>
+        <span
+          className={`text-button inline-flex h-10 items-center justify-center px-4 font-normal tracking-[-0.0175rem] transition-[margin] duration-700 group-hover:ml-0 group-focus-visible:ml-0 ${EASE} -ml-11 group-hover:-mr-11 group-hover:ml-0 ${className} ${containerClassName}`}
+        >
+          <SweepText>{label}</SweepText>
+        </span>
 
-      <span
-        className={`flex size-10 scale-100 items-center justify-center ${DURATION} ${EASE} group-hover:scale-0 group-hover:-rotate-90 ${className}`}
+        <span
+          className={`flex size-10 scale-100 items-center justify-center ${DURATION} ${EASE} group-hover:scale-0 group-hover:-rotate-90 ${className}`}
+        >
+          {icon}
+        </span>
+      </Link>
+    );
+  else
+    return (
+      <button
+        type={type}
+        disabled={disabled}
+        aria-label={label}
+        className="group flex cursor-pointer items-center gap-1 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {icon}
-      </span>
-    </Link>
-  );
+        <span
+          className={`flex size-10 scale-0 rotate-90 items-center justify-center group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE} ${className}`}
+        >
+          {icon}
+        </span>
+
+        <span
+          className={`text-button inline-flex h-10 items-center justify-center px-4 font-normal tracking-[-0.0175rem] transition-[margin] duration-700 group-hover:ml-0 group-focus-visible:ml-0 ${EASE} -ml-11 group-hover:-mr-11 group-hover:ml-0 ${className} ${containerClassName}`}
+        >
+          <SweepText>{label}</SweepText>
+        </span>
+
+        <span
+          className={`flex size-10 scale-100 items-center justify-center ${DURATION} ${EASE} group-hover:scale-0 group-hover:-rotate-90 ${className}`}
+        >
+          {icon}
+        </span>
+      </button>
+    );
 }

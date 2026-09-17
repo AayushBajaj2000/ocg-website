@@ -87,3 +87,17 @@ export type IFooter = {
   socialLinks?: IFooterLink[];
   footerImages?: string[] | ImageProps["src"][];
 };
+
+export interface IDiscoveryCall {
+  heading: string;
+  subheading: string;
+  host: {
+    name: string;
+    role: string;
+    avatar: ImageProps["src"];
+  };
+  cta: {
+    label: string;
+    href: LinkProps["href"];
+  };
+}

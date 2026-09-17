@@ -42,6 +42,7 @@
   --color-hairline: #e3e3e3;
   --color-hairline-dark: #232323;
   --color-numeral: #d5d5d5;
+  --color-field-border: #c8c8c8;
 
   --text-hero-desktop: 3.75rem;
   --text-hero-desktop--line-height: 4.5rem;
@@ -87,6 +88,9 @@
 
   --text-footer-mobile: 1.75rem;
   --text-footer-mobile--line-height: 2.625rem;
+
+  --text-contact-desktop: 5rem;
+  --text-contact-desktop--line-height: 5.5rem;
 
   --shadow-header-dropdown: 0 1rem 2.5rem 0 #13131314;
   --shadow-team-card: 0 0.275rem 0.5975rem 0 #00000014;

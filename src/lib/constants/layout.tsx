@@ -83,7 +83,7 @@ export const FOOTER: IFooter = {
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
     { label: "Resources", href: "/resources" },
-    { label: "About", href: "/about" },
+    { label: "Company", href: "/company" },
     { label: "Contact", href: "/contact" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Work", href: "/work" },
