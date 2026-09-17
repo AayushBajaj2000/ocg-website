@@ -7,3 +7,5 @@ export * from "@/types/trustedBy";
 export * from "@/types/wordSection";
 export * from "@/types/team";
 export * from "@/types/founderBook";
+export * from "@/types/contact";
+export * from "@/types/api";

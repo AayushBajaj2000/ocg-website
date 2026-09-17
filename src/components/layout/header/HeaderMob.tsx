@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import {
   AnimatePresence,
   LazyMotion,
@@ -16,15 +14,10 @@ import { NavLink } from "@/components/layout/header/NavLinks";
 import MobileNavDropdown from "@/components/layout/header/MobileNavDropdown";
 import { NAV_LINKS } from "@/lib/constants";
 import { useMobileMenu } from "@/components/layout/hooks/useMobileMenu";
+import DiscoveryCall from "@/components/ui/misc/DiscoveryCall";
+import { DISCOVERY } from "@/lib/constants";
 
 const PANEL_ID = "mobile-menu";
-
-const DISCOVERY = {
-  heading: "Prefer to discuss your project on live call?",
-  subheading: "Start with a 25-minute discovery session instead",
-  host: { name: "Austin Page", role: "Co-founder and Dev Lead", avatar: "/avatars/austin.webp" },
-  cta: { label: "Book a Discovery call", href: "#" },
-} as const;
 
 const EASE = [0.83, 0, 0.17, 1] as const;
 
@@ -116,35 +109,14 @@ const HeaderMob: React.FC = () => {
                     </ul>
                   </nav>
 
-                  <m.div variants={row} className="mb-6">
-                    <h2 className="text-black-1 text-base font-medium">{DISCOVERY.heading}</h2>
-                    <p className="text-black-3 mt-2 text-sm">{DISCOVERY.subheading}</p>
-                  </m.div>
-
-                  <m.div variants={row} className="border-hairline border p-4">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={DISCOVERY.host.avatar}
-                        alt=""
-                        aria-hidden="true"
-                        width={45}
-                        height={45}
-                        className="size-11.25 object-cover"
-                      />
-                      <div>
-                        <p className="text-black-1 text-base font-medium">{DISCOVERY.host.name}</p>
-                        <p className="text-black-3 text-sm">{DISCOVERY.host.role}</p>
-                      </div>
-                    </div>
-
-                    <Link
-                      href={DISCOVERY.cta.href}
-                      onClick={close}
-                      className="bg-brand-blue mt-6 flex h-10 items-center justify-center font-medium text-neutral-50"
-                    >
-                      {DISCOVERY.cta.label}
-                    </Link>
-                  </m.div>
+                  <DiscoveryCall
+                    heading={DISCOVERY.heading}
+                    subheading={DISCOVERY.subheading}
+                    host={DISCOVERY.host}
+                    cta={DISCOVERY.cta}
+                    variants={row}
+                    onNavigate={close}
+                  />
                 </div>
               </m.div>
             </>
