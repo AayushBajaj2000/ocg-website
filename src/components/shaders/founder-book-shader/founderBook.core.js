@@ -17,7 +17,9 @@ export function createFounderBook(host, options = {}) {
   const face = host.querySelector("[data-book-face]");
   const back = host.querySelector("[data-book-back]");
   const status = host.querySelector("[data-book-status]");
+  const scrollTargets = [...host.querySelectorAll("[data-book-scroll]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const narrow = window.matchMedia("(max-width: 700px)");
   const controller = new AbortController();
   const { signal } = controller;
   const resyncByPaper = new Map();
@@ -25,6 +27,9 @@ export function createFounderBook(host, options = {}) {
   // Read from the DOM so a StrictMode remount picks up where the last instance left off.
   let isOpen = book.hasAttribute("data-open");
   let lastVisual = -1;
+  let lastRead = -1;
+  let overflows = scrollTargets.map(() => 0);
+  let readDistance = 0;
   let frame = 0;
   let inView = false;
   let topLayer = 10;
@@ -41,6 +46,30 @@ export function createFounderBook(host, options = {}) {
     schedule();
   }
 
+  // Page content never scrolls on its own; its overflow is added to the section's scroll length.
+  function measureRead() {
+    overflows = scrollTargets.map((target) => {
+      const clip = target.parentElement;
+      const { paddingTop, paddingBottom } = getComputedStyle(clip);
+      const viewport = clip.clientHeight - parseFloat(paddingTop) - parseFloat(paddingBottom);
+      return Math.max(0, Math.ceil(target.offsetHeight - viewport));
+    });
+    const next = Math.max(0, ...overflows);
+    if (next !== readDistance) {
+      readDistance = next;
+      host.style.setProperty("--read-distance", `${next}px`);
+    }
+    lastRead = -1;
+    schedule();
+  }
+
+  // On narrow screens the inside cover sits off-screen; its scraps live in the spread instead.
+  function syncBack() {
+    const active = isOpen && !narrow.matches;
+    back.inert = !active;
+    back.setAttribute("aria-hidden", String(!active));
+  }
+
   function setOpen(next) {
     isOpen = next;
     book.toggleAttribute("data-open", next);
@@ -48,8 +77,7 @@ export function createFounderBook(host, options = {}) {
     spread.inert = !next;
     spread.setAttribute("aria-hidden", String(!next));
     face.setAttribute("aria-hidden", String(next));
-    back.setAttribute("aria-hidden", String(!next));
-    back.inert = !next;
+    syncBack();
     status.textContent = next ? STATUS_OPEN : STATUS_CLOSED;
     opts.onOpenChange?.(next);
   }
@@ -60,15 +88,25 @@ export function createFounderBook(host, options = {}) {
     const scrolled = headerOffset - host.getBoundingClientRect().top;
     const progress = clamp(scrolled, 0, distance) / distance;
     const visual = reducedMotion.matches ? (progress > 0.45 ? 1 : 0) : progress;
-    if (visual === lastVisual) return;
-    lastVisual = visual;
+    const read = Math.round(clamp(scrolled - distance, 0, readDistance));
 
-    book.style.setProperty("--book-angle", `${-180 * visual}deg`);
-    book.style.setProperty("--book-shift", `${-25 * (1 - visual)}%`);
-    book.style.setProperty("--page-shadow", String(0.75 * (1 - visual)));
+    if (visual !== lastVisual) {
+      lastVisual = visual;
+      book.style.setProperty("--book-angle", `${-180 * visual}deg`);
+      book.style.setProperty("--book-shift", `${-25 * (1 - visual)}%`);
+      book.style.setProperty("--page-shadow", String(0.75 * (1 - visual)));
 
-    const next = visual >= 0.995;
-    if (next !== isOpen) setOpen(next);
+      const next = visual >= 0.995;
+      if (next !== isOpen) setOpen(next);
+    }
+
+    if (read !== lastRead) {
+      lastRead = read;
+      scrollTargets.forEach((target, index) => {
+        const offset = Math.min(read, overflows[index]);
+        target.style.transform = offset ? `translateY(${-offset}px)` : "";
+      });
+    }
   }
 
   function schedule() {
@@ -175,6 +213,12 @@ export function createFounderBook(host, options = {}) {
   });
   resyncByPaper.forEach((_, paper) => resizeObserver.observe(paper));
 
+  const readObserver = new ResizeObserver(measureRead);
+  scrollTargets.forEach((target) => {
+    readObserver.observe(target);
+    readObserver.observe(target.parentElement);
+  });
+
   const intersectionObserver = new IntersectionObserver((entries) => {
     inView = entries[entries.length - 1].isIntersecting;
     schedule();
@@ -185,9 +229,11 @@ export function createFounderBook(host, options = {}) {
   window.addEventListener("resize", measure, { signal });
   window.addEventListener("pageshow", schedule, { signal });
   reducedMotion.addEventListener("change", schedule, { signal });
+  narrow.addEventListener("change", syncBack, { signal });
 
-  back.inert = !isOpen;
+  syncBack();
   readHeaderOffset();
+  measureRead();
   update();
 
   return {
@@ -205,6 +251,7 @@ export function createFounderBook(host, options = {}) {
       controller.abort();
       intersectionObserver.disconnect();
       resizeObserver.disconnect();
+      readObserver.disconnect();
       resyncByPaper.clear();
     },
   };

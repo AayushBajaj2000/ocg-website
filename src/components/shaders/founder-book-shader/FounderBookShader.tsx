@@ -121,24 +121,29 @@ export default function FounderBookShader({
             inert
             data-book-spread
           >
-            <article className={cn(styles.page, styles.letter)}>
-              <h3 className={styles.heading}>{content.heading}</h3>
-              <div className={styles.founderCopy}>
-                {content.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-              <div className={styles.signoff}>
-                <div>
-                  <div className={styles.signature}>{content.author.name}</div>
-                  <span>{content.author.role}</span>
+            <div className={styles.spreadBody} data-book-scroll>
+              <article className={cn(styles.page, styles.letter)}>
+                <div className={styles.letterBody} data-book-scroll>
+                  <h3 className={styles.heading}>{content.heading}</h3>
+                  <div className={styles.founderCopy}>
+                    {content.paragraphs.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                  <div className={styles.signoff}>
+                    <div>
+                      <div className={styles.signature}>{content.author.name}</div>
+                      <span>{content.author.role}</span>
+                    </div>
+                    <BookImage img={content.author.portrait} className={styles.portrait} />
+                  </div>
                 </div>
-                <BookImage img={content.author.portrait} className={styles.portrait} />
+              </article>
+              <div className={styles.mobileScrapbook}>
+                <Collage collage={content.collage} />
               </div>
-            </article>
-            <div className={styles.mobileScrapbook}>
-              <Collage collage={content.collage} />
             </div>
+            <span className={styles.spine} aria-hidden="true" />
           </section>
 
           <div className={styles.cover}>

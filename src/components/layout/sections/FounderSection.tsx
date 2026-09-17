@@ -9,7 +9,7 @@ const FounderSection: React.FC = () => {
       aria-label={FOUNDER_BOOK.label}
       className={caveat.variable}
       container
-      containerClassName="border-x overflow-clip! px-4! min-[701px]:px-10!"
+      containerClassName="border-x overflow-clip! px-4! min-[701px]:px-10! pb-10"
     >
       <FounderBookShader content={FOUNDER_BOOK} />
     </Section>

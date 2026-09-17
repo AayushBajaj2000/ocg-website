@@ -7,22 +7,45 @@ type Props = {
 export const MenuIcon: React.FC<Props> = ({ className }) => {
   return (
     <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <rect width="4.70588" height="4.70588" rx="2.35294" />
-      <rect x="5.64697" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect x="11.2944" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect y="5.64713" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect x="5.64697" y="5.64697" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect x="11.2944" y="5.64713" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect y="11.2943" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect x="5.64697" y="11.2943" width="4.70588" height="4.70588" rx="2.35294" />
-      <rect x="11.2944" y="11.2943" width="4.70588" height="4.70588" rx="2.35294" />
+      <path d="M4 20H0V16H4V20Z" fill="#98A2B3" />
+      <path d="M12 20H8V16H12V20Z" fill="#98A2B3" />
+      <path d="M20 20H16V16H20V20Z" fill="#98A2B3" />
+      <path d="M4 12H0V8H4V12Z" fill="#98A2B3" />
+      <path d="M12 12H8V8H12V12Z" fill="#98A2B3" />
+      <path d="M20 12H16V8H20V12Z" fill="#98A2B3" />
+      <path d="M4 4H0V0H4V4Z" fill="#98A2B3" />
+      <path d="M12 4H8V0H12V4Z" fill="#98A2B3" />
+      <path d="M20 4H16V0H20V4Z" fill="#98A2B3" />
+    </svg>
+  );
+};
+
+export const MenuOpenIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M4 4H0V0H4V4Z" fill="#2068CC" />
+      <path d="M12 12H8V8H12V12Z" fill="#2068CC" />
+      <path d="M20 20H16V16H20V20Z" fill="#2068CC" />
+      <path d="M4 20H0V16H4V20Z" fill="#2068CC" />
+      <path d="M20 4H16V0H20V4Z" fill="#2068CC" />
+      <path d="M4 12H0V8H4V12Z" fill="#EAECF0" />
+      <path d="M12 4H8V0H12V4Z" fill="#EAECF0" />
+      <path d="M20 12H16V8H20V12Z" fill="#EAECF0" />
+      <path d="M12 20H8V16H12V20Z" fill="#EAECF0" />
     </svg>
   );
 };

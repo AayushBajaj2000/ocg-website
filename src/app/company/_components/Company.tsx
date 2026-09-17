@@ -17,7 +17,6 @@ const Company: React.FC = () => {
       <Team />
       <PageDivider />
       <FounderSection />
-      <PageDivider />
     </>
   );
 };

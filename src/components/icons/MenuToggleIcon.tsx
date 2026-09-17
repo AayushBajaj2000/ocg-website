@@ -1,93 +1,100 @@
 "use client";
 
-import { LazyMotion, domAnimation, m, useReducedMotion, type Transition } from "motion/react";
+import { useEffect, useRef } from "react";
+import { useAnimate, useReducedMotion, type Easing } from "motion/react";
+
+/** Fills from MenuIcon (closed) and MenuOpenIcon (open). */
+const IDLE = "#98A2B3";
+const ACCENT = "#2068CC";
+const MUTED = "#EAECF0";
 
 /**
- * Mark shape at each end of the morph, in a 32x32 box. Closed marks are dots —
- * a full-radius rx on a square, MenuIcon's 4.706 doubled. Open marks are the
- * cross's sharp segments, widened from PlusIcon's 4.675 to the most five marks
- * can carry across the box (4 gaps of 6.6 plus one mark fills 31.9 of 32).
+ * MenuIcon and MenuOpenIcon are the same 3x3 grid of 4x4 squares in a 20x20
+ * box — only the fills differ. The toggle squeezes every square into the
+ * centre one, swaps the colours while they're stacked, then slings them back
+ * out to the other icon. Both patterns look the same after a quarter turn, so the
+ * rotation always lands exactly on the design.
  */
-const CLOSED_MARK = { size: 9.412, rx: 4.706 };
-const OPEN_MARK = { size: 5, rx: 0 };
-
-/** Centre-to-centre distance out to the grid's corner dots, and to the cross's arm tips. */
-const GRID_CORNER = 11.294 * Math.SQRT2;
-const CROSS_TIP = 13.2;
-
-/**
- * Turning the cross 45° puts its arm tips on the diagonal, where the box is
- * only 1/√2 as wide as it is edge to edge — which is why an unscaled X reads
- * visibly smaller than the grid. This lands the tips on the same radius as the
- * grid's corner dots, so both states fill the same square, then adds 8% on top:
- * the cross spreads its weight over five slim marks per axis against the grid's
- * three fat ones, so matching footprints exactly still reads lighter.
- */
-const OPEN_SCALE = (GRID_CORNER / CROSS_TIP) * 1.08;
-
-/**
- * MenuIcon and PlusIcon are both nine marks, so the toggle is a morph rather
- * than a swap: every dot in the grid owns one segment of the cross and travels
- * to it. Positions are centres — the mark grows around its own centre, so the
- * two shapes stay aligned at any size. The pairing is 90°-rotationally
- * symmetric (each corner takes the inner segment of the arm it turns into), so
- * the grid reads as twisting into the cross instead of scattering.
- */
-const MARKS = [
-  { closed: [16, 16], open: [16, 16] }, // centre — holds still
-  { closed: [16, 4.706], open: [16, 2.8] }, // top
-  { closed: [4.706, 16], open: [2.8, 16] }, // left
-  { closed: [27.294, 16], open: [29.2, 16] }, // right
-  { closed: [16, 27.294], open: [16, 29.2] }, // bottom
-  { closed: [4.706, 4.706], open: [16, 9.4] }, // corners spiral into the arms
-  { closed: [27.294, 4.706], open: [22.6, 16] },
-  { closed: [27.294, 27.294], open: [16, 22.6] },
-  { closed: [4.706, 27.294], open: [9.4, 16] },
+const CENTRE = 8;
+const SQUARES = [
+  { x: 8, y: 8, open: ACCENT }, // centre
+  { x: 0, y: 0, open: ACCENT }, // corners
+  { x: 16, y: 0, open: ACCENT },
+  { x: 16, y: 16, open: ACCENT },
+  { x: 0, y: 16, open: ACCENT },
+  { x: 8, y: 0, open: MUTED }, // edges
+  { x: 16, y: 8, open: MUTED },
+  { x: 8, y: 16, open: MUTED },
+  { x: 0, y: 8, open: MUTED },
 ] as const;
 
-const SPRING: Transition = { type: "spring", stiffness: 420, damping: 34, mass: 0.8 };
+const DURATION = 0.75;
+/** Share of the animation spent squeezing in; the rest is the sling out. */
+const SQUEEZE_AT = 0.4;
+const ROTATE_EASE: Easing = [0.65, 0, 0.35, 1];
+const SQUEEZE_EASE: Easing = [0.5, 0, 0.9, 0.5];
+/** Overshoots past the resting spot and settles back — the slingshot. */
+const SLING_EASE: Easing = [0.3, 1.8, 0.55, 1];
 
 type Props = {
   isOpen: boolean;
   className?: string;
 };
 
-/**
- * The open state is the cross turned 45°, which is how the close affordance is
- * drawn in the design — the same nine marks, read as an X.
- */
 export const MenuToggleIcon: React.FC<Props> = ({ isOpen, className }) => {
+  const [scope, animate] = useAnimate<SVGSVGElement>();
   const prefersReducedMotion = useReducedMotion();
-  const transition = prefersReducedMotion ? { duration: 0 } : SPRING;
-  const { size, rx } = isOpen ? OPEN_MARK : CLOSED_MARK;
+  const wasOpen = useRef(isOpen);
+
+  useEffect(() => {
+    // Only animate real toggles — the first render (and Strict Mode's re-run)
+    // already paints the right state from the attributes.
+    if (wasOpen.current === isOpen) return;
+    wasOpen.current = isOpen;
+
+    const rects = scope.current.querySelectorAll("rect");
+
+    if (prefersReducedMotion) {
+      animate(scope.current, { rotate: 0 }, { duration: 0 });
+      rects.forEach((rect, index) => {
+        const fill = isOpen ? SQUARES[index].open : IDLE;
+        animate(rect, { x: 0, y: 0, scale: 1, fill }, { duration: 0 });
+      });
+      return;
+    }
+
+    animate(scope.current, { rotate: isOpen ? 90 : 0 }, { duration: DURATION, ease: ROTATE_EASE });
+
+    rects.forEach((rect, index) => {
+      const { x, y, open } = SQUARES[index];
+      const fill = isOpen ? open : IDLE;
+
+      // `null` starts from wherever the square is, so a toggle mid-animation
+      // squeezes from there instead of jumping.
+      animate(
+        rect,
+        {
+          x: [null, CENTRE - x, 0],
+          y: [null, CENTRE - y, 0],
+          scale: [null, 0.7, 1],
+          fill: [null, fill, fill],
+        },
+        { duration: DURATION, times: [0, SQUEEZE_AT, 1], ease: [SQUEEZE_EASE, SLING_EASE] },
+      );
+    });
+  }, [isOpen, prefersReducedMotion, animate, scope]);
 
   return (
-    <LazyMotion features={domAnimation}>
-      <m.svg
-        viewBox="0 0 32 32"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-        aria-hidden="true"
-        animate={{ rotate: isOpen ? 45 : 0, scale: isOpen ? OPEN_SCALE : 1 }}
-        transition={transition}
-      >
-        {MARKS.map(({ closed, open }, index) => {
-          const [x, y] = isOpen ? open : closed;
-
-          return (
-            <m.rect
-              key={index}
-              initial={false}
-              // Centre-anchored: the attribute is the top-left corner, so half
-              // the mark is taken back off each axis.
-              animate={{ attrX: x - size / 2, attrY: y - size / 2, width: size, height: size, rx }}
-              // Ripples outwards from the centre mark, which never moves.
-              transition={{ ...transition, delay: prefersReducedMotion ? 0 : index * 0.02 }}
-            />
-          );
-        })}
-      </m.svg>
-    </LazyMotion>
+    <svg
+      ref={scope}
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {SQUARES.map(({ x, y, open }, index) => (
+        <rect key={index} x={x} y={y} width={4} height={4} fill={isOpen ? open : IDLE} />
+      ))}
+    </svg>
   );
 };

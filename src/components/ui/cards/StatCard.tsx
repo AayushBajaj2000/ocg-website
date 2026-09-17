@@ -15,6 +15,7 @@ import { BulletIcon } from "@/components/icons/BulletIcon";
 import Reveal from "@/components/ui/animations/Reveal";
 import StripeReveal from "@/components/ui/animations/StripeReveal";
 import type { IStatHighlight, IStatMetric, StatItem } from "@/types";
+import { cn } from "@/lib/utils";
 
 type Props = {
   stat: StatItem;
@@ -111,7 +112,7 @@ const Odometer: React.FC<PlayProps & { value: number; suffix?: string }> = ({
 
 const MetricContent: React.FC<PlayProps & { stat: IStatMetric }> = ({ stat, ...play }) => {
   return (
-    <div className="border-hairline relative flex size-full flex-col justify-between border p-5">
+    <div className="border-hairline relative flex size-full flex-col justify-between gap-10 border border-x-0 p-5 md:gap-0 md:border-x">
       <p className="font-switzer text-black-1 relative text-[4rem] leading-none font-light tracking-[-5%] md:text-[6.25rem]">
         <span className="sr-only">
           {stat.value}
@@ -183,7 +184,13 @@ const StatCard: React.FC<Props> = ({ stat, index = 0 }) => {
 
   return (
     <LazyMotion features={domAnimation}>
-      <li ref={cardRef} className="group relative h-107.5">
+      <li
+        ref={cardRef}
+        className={cn("group relative", {
+          "md:h-107.5": stat._type === "metric",
+          "h-107.5": stat._type !== "metric",
+        })}
+      >
         <m.div
           custom={delay}
           variants={reduced ? cardReducedVariants : cardVariants}

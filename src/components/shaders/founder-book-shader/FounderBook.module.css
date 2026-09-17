@@ -4,8 +4,11 @@
   --hand: var(--font-caveat), "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
   --header-offset: 83px;
   --gap: 32px;
+  --book-h: calc(100svh - var(--header-offset) - 2 * var(--gap) - 15px);
+  --spread-edge: 12px;
+  --cover-edge: 10px;
   position: relative;
-  height: calc(100svh - var(--header-offset) + 580px);
+  height: calc(100svh - var(--header-offset) + 580px + var(--read-distance, 0px));
   padding-top: var(--gap);
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
@@ -17,7 +20,7 @@
 .stage {
   position: sticky;
   top: calc(var(--header-offset) + var(--gap));
-  height: calc(100svh - var(--header-offset) - 2 * var(--gap));
+  height: calc(var(--book-h) + 15px);
   padding-bottom: 15px;
   perspective: 2200px;
   perspective-origin: 50% 45%;
@@ -34,6 +37,30 @@
   transform-style: preserve-3d;
 }
 
+/* Right half of the fold: the straight edge curves down to a V at the spine; notch and band share one curve. */
+.book::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 1px);
+  width: 29px;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 29 6' preserveAspectRatio='none'%3E%3Cpath fill='%23fdfdfd' d='M0 0V5.58L1 6Q15 0 29 0Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 29 6' preserveAspectRatio='none'%3E%3Cpath fill='%232068cc' d='M0 0V5.58L1 6Q15 0 29 0Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 29 6' preserveAspectRatio='none'%3E%3Cpath fill='%23fdfdfd' d='M0 6V0.42L1 0Q15 6 29 6Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 29 6' preserveAspectRatio='none'%3E%3Cpath fill='%232068cc' d='M0 6V0.42L1 0Q15 6 29 6Z'/%3E%3C/svg%3E");
+  background-position:
+    0 0,
+    0 var(--spread-edge),
+    0 100%,
+    0 calc(100% - var(--spread-edge));
+  background-size: 29px 6px;
+  background-repeat: no-repeat;
+  transform: translateZ(1px);
+}
+
 .spread {
   position: absolute;
   top: 0;
@@ -44,7 +71,7 @@
   width: 50%;
   overflow: visible;
   background: #fff;
-  border: 12px solid var(--blue);
+  border: var(--spread-edge) solid var(--blue);
   border-left-width: 0;
   border-radius: 0 13px 13px 0;
   box-shadow:
@@ -82,10 +109,37 @@
 
 .letter {
   color: #2f333a;
-  box-shadow: inset 14px 0 17px -14px #0009;
 }
 
-.letter::before {
+.spreadBody {
+  height: 100%;
+}
+
+.spreadBody > .letter {
+  height: 100%;
+  padding-bottom: 32px;
+  overflow: hidden;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Curved gutter on the right page, pinned while the page content moves. */
+.spine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #10294724 0,
+    #10294710 6px,
+    #ffffff59 16px,
+    #ffffff00 28px,
+    #10294706 40px,
+    transparent 56px
+  );
+  box-shadow: inset 14px 0 17px -14px #0006;
+}
+
+.spine::before {
   content: "";
   position: absolute;
   top: 0;
@@ -93,24 +147,6 @@
   left: 0;
   width: 2px;
   background: #babec666;
-}
-
-.spread > .letter {
-  height: 100%;
-  padding-bottom: 32px;
-  overflow: auto;
-  overscroll-behavior: auto;
-  border-radius: 0 3px 3px 0;
-}
-
-.spread,
-.spread > .letter {
-  scrollbar-width: none;
-}
-
-.spread::-webkit-scrollbar,
-.spread > .letter::-webkit-scrollbar {
-  display: none;
 }
 
 .book:not([data-open]) .letter,
@@ -189,9 +225,36 @@
   z-index: 10;
   width: 50%;
   height: 100%;
-  transform: translateZ(3px) rotateY(var(--book-angle, 0deg));
+  transform: translateZ(calc(var(--page-shadow, 0.75) / 0.75 * 5px - 2px))
+    rotateY(var(--book-angle, 0deg));
   transform-origin: 0% 50%;
   transform-style: preserve-3d;
+}
+
+/* Left half of the fold; faces the inside of the cover, so it only shows once the cover lifts. */
+.cover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 28px;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 6' preserveAspectRatio='none'%3E%3Cpath fill='%23fdfdfd' d='M28 0V6Q14 0 0 0Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 6' preserveAspectRatio='none'%3E%3Cpath fill='%232068cc' d='M28 0V6Q14 0 0 0Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 6' preserveAspectRatio='none'%3E%3Cpath fill='%23fdfdfd' d='M28 6V0Q14 6 0 6Z'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 6' preserveAspectRatio='none'%3E%3Cpath fill='%232068cc' d='M28 6V0Q14 6 0 6Z'/%3E%3C/svg%3E");
+  background-position:
+    0 0,
+    0 var(--cover-edge),
+    0 100%,
+    0 calc(100% - var(--cover-edge));
+  background-size: 28px 6px;
+  background-repeat: no-repeat;
+  transform: rotateY(180deg) translateZ(3px);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .cover::after {
@@ -212,7 +275,7 @@
 .coverBack {
   position: absolute;
   inset: 0;
-  border: 10px solid var(--blue);
+  border: var(--cover-edge) solid var(--blue);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -243,13 +306,20 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, transparent 70%, #10294729);
-  opacity: 0.6;
+  background: linear-gradient(
+    90deg,
+    transparent calc(100% - 48px),
+    #ffffff40 calc(100% - 32px),
+    #1029470d calc(100% - 16px),
+    #10294733 calc(100% - 5px),
+    #10294745 100%
+  );
 }
 
 .coverBack > .collage {
   height: 100%;
   border-radius: 3px 0 0 3px;
+  box-shadow: inset -14px 0 17px -14px #0006;
 }
 
 .coverEdition {
@@ -601,9 +671,10 @@
 }
 
 @media (min-width: 701px) {
-  .spread > .letter {
+  .letterBody {
     display: flex;
     flex-direction: column;
+    min-height: 100%;
   }
 
   .heading,
@@ -659,19 +730,28 @@
 @media (max-width: 700px) {
   .root {
     --gap: 20px;
+    --spread-edge: 8px;
+    --cover-edge: 8px;
   }
 
   .book {
     transform: none;
   }
 
+  .book::before {
+    left: -1px;
+  }
+
   .spread {
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    border-width: 8px;
-    border-radius: 10px;
+    overflow: hidden;
+    border-radius: 0 10px 10px 0;
+  }
+
+  .spreadBody {
+    height: auto;
   }
 
   .page {
@@ -685,19 +765,21 @@
 
   .letter {
     padding: 27px 23px 30px;
-    box-shadow: none;
   }
 
   .letter::before {
+    content: "";
+    position: absolute;
+    top: 0;
     right: 0;
-    bottom: auto;
-    width: auto;
+    left: 0;
     height: 2px;
+    background: #babec666;
   }
 
-  .spread > .letter {
+  .spreadBody > .letter {
     height: auto;
-    min-height: 100%;
+    min-height: calc(var(--book-h) - 16px);
     overflow: visible;
   }
 
@@ -728,17 +810,8 @@
     width: 100%;
   }
 
-  .book[data-revealed] .cover {
-    visibility: hidden;
-  }
-
   .coverFace {
     padding: 30px;
-  }
-
-  .coverFace,
-  .coverBack {
-    border-width: 8px;
   }
 
   .coverTitle {

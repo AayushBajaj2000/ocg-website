@@ -135,7 +135,11 @@ const AccordionLg: React.FC<Props> = ({ index, service, isOpen, onToggle }) => {
             >
               <div className="grid grid-cols-1 gap-8 pb-8 lg:grid-cols-2 lg:gap-11">
                 <m.div variants={item}>
-                  <AutoplayVideo {...service.video} label={service.title} />
+                  <AutoplayVideo
+                    {...service.video}
+                    label={service.title}
+                    controlsClassName="max-md:hidden"
+                  />
                 </m.div>
                 <div className="font-switzer flex flex-col justify-between gap-8 text-base tracking-[-2%] md:text-xl md:leading-7.5">
                   <div className="flex flex-col gap-8">

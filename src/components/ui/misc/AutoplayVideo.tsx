@@ -10,13 +10,22 @@ import type { IVideo } from "@/types";
 type Props = IVideo & {
   label: string;
   className?: string;
+  controlsClassName?: string;
 };
 
 type PlaybackChoice = "play" | "pause" | null;
 
 const VISIBILITY_THRESHOLD = 0.25;
 
-const AutoplayVideo: React.FC<Props> = ({ sources, width, height, poster, label, className }) => {
+const AutoplayVideo: React.FC<Props> = ({
+  sources,
+  width,
+  height,
+  poster,
+  label,
+  className,
+  controlsClassName,
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -104,6 +113,7 @@ const AutoplayVideo: React.FC<Props> = ({ sources, width, height, poster, label,
         className={cn(
           "border-hairline focus-visible:outline-brand-blue absolute right-3 bottom-3 grid size-10 cursor-pointer place-items-center border bg-white text-neutral-900 transition-opacity duration-300 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none [@media(hover:none)]:opacity-100",
           isPlaying ? "opacity-0" : "opacity-100",
+          controlsClassName,
         )}
       >
         {shouldPlay ? <PauseIcon className="size-4" /> : <PlayIcon className="size-4" />}
