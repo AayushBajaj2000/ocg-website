@@ -12,3 +12,4 @@ export * from "@/types/api";
 export * from "@/types/testimonials";
 export * from "@/types/home";
 export * from "@/types/booking";
+export * from "@/types/blog";

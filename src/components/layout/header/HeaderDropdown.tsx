@@ -78,7 +78,7 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
   const preloadImages = useCallback(() => {
     if (hasPreloadedImages.current) return;
     hasPreloadedImages.current = true;
-    LATEST_CARDS.forEach((card) => preloadBlogCardImage(card.img));
+    LATEST_CARDS.forEach((card) => card.img && preloadBlogCardImage(card.img));
   }, []);
 
   const panel = prefersReducedMotion ? panelReducedVariants : panelVariants;

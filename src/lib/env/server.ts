@@ -27,3 +27,24 @@ export const getServerEnv = (): ServerEnv => {
 };
 
 export const getSiteUrl = (): string => getServerEnv().SITE_URL.replace(/\/+$/, "");
+
+const sanityEnvSchema = z.object({
+  SANITY_PROJECT_ID: z.string().min(1, "SANITY_PROJECT_ID is missing"),
+  SANITY_DATASET: z.string().min(1).default("production"),
+  SANITY_API_VERSION: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "SANITY_API_VERSION must be a YYYY-MM-DD date")
+    .default("2025-02-19"),
+});
+
+export type SanityEnv = z.infer<typeof sanityEnvSchema>;
+
+// Separate from `getServerEnv` so statically generated content pages only need the Sanity vars,
+// not the contact form's email and Turnstile secrets.
+export const getSanityEnv = (): SanityEnv => {
+  const parsed = sanityEnvSchema.safeParse(process.env);
+  if (!parsed.success)
+    throw new Error(`Invalid Sanity environment:\n${z.prettifyError(parsed.error)}`);
+
+  return parsed.data;
+};

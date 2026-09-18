@@ -6,6 +6,7 @@ import FaqSection from "@/components/layout/sections/FaqSection";
 import PageDivider from "@/components/ui/dividers/PageDivider";
 import BuildingSection from "@/components/layout/sections/BuildingSection";
 import HideOnRoutes from "@/components/layout/HideOnRoutes";
+import QueryProvider from "@/components/providers/QueryProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,16 +22,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${switzer.variable} ${inter.variable} ${dancingScript.variable} ${allura.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="bg-page-alt font-switzer flex min-h-full flex-col">
-        <Header />
-        <main className="mt-19.25 md:mt-24.75">{children}</main>
-        <PageDivider />
-        <FaqSection />
-        <PageDivider />
-        <HideOnRoutes routes={["/contact"]}>
-          <BuildingSection />
+        <QueryProvider>
+          <Header />
+          <main className="mt-19.25 md:mt-24.75">{children}</main>
           <PageDivider />
-        </HideOnRoutes>
-        <Footer />
+          <FaqSection />
+          <PageDivider />
+          <HideOnRoutes routes={["/contact"]}>
+            <BuildingSection />
+            <PageDivider />
+          </HideOnRoutes>
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   );

@@ -24,13 +24,20 @@ export interface INavLink {
 
 export type INavLinkCardIcon = "file";
 
+export interface INavLinkCardImage extends IImage {
+  /** Tiny base64 preview (e.g. Sanity LQIP); when present the card blurs up instead of fading in. */
+  blurDataURL?: string;
+}
+
 export interface INavLinkCard {
   href: LinkProps["href"];
-  img: IImage;
+  img?: INavLinkCardImage;
   category?: string;
   headline?: {
     icon?: INavLinkCardIcon;
     text?: string;
+    /** Machine-readable date; renders the headline as a `<time>` element. */
+    dateTime?: string;
   };
   title?: string;
   caption?: {

@@ -6,7 +6,8 @@ Corporate/marketing site for OpenCore Group, built from the `OCG v2` Figma file.
 
 - [Next.js](https://nextjs.org) 16 (App Router), TypeScript
 - Tailwind CSS v4 (design tokens live in `src/app/globals.css`)
-- No backend/CMS yet — content is hardcoded in components
+- Blog posts are read from the official OpenCore Group Sanity project (read-only, no embedded
+  Studio) via `@sanity/client` + TanStack Query; other content is hardcoded in constants
 - Deploy target: Vercel
 
 ## Getting started
@@ -36,9 +37,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Environment variables
 
-None required yet. When a data source (CMS, forms endpoint, analytics, etc.)
-is introduced, add its variables to `.env.local` and mirror the keys (with
-placeholder values) in a new `.env.example` file — never commit real values.
+Copy `.env.example` to `.env` and fill in the values. Client-side variables are validated in
+`src/lib/env/client.ts`, server-only secrets in `src/lib/env/server.ts`. The Sanity variables
+(`SANITY_*`) point at the read-only production dataset and are only used on the server.
 
 ## Fonts
 

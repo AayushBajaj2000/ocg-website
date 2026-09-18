@@ -1,52 +1,66 @@
 "use client";
-import { useState } from "react";
-import Section from "@/components/layout/sections/Section";
-import { cn } from "@/lib/utils";
-import BlogCard from "@/components/ui/cards/BlogCard";
-import { LATEST_CARDS } from "@/components/layout/header/HeaderDropdown";
 
-const CATEGORIES: { name: string; value: string }[] = [
-  { name: "All Insights", value: "all" },
-  { name: "Design", value: "design" },
-  { name: "Development", value: "development" },
-  { name: "Technology", value: "technology" },
-  { name: "Marketing", value: "marketing" },
-  { name: "News", value: "news" },
-];
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import BlogCard from "@/components/ui/cards/BlogCard";
+import BlogsGridLayout from "@/app/blog/_components/BlogsGridLayout";
+import BlogCategoryFilter from "@/app/blog/_components/BlogCategoryFilter";
+import { BlogCardSkeletons, BlogsLoadingStatus } from "@/app/blog/_components/BlogsGridSkeleton";
+import { blogPostsQueryOptions } from "@/lib/blog/queries";
+import { filterBlogPosts, toBlogCard } from "@/lib/blog/utils";
+import { sanityImageLoader } from "@/lib/sanity/image";
+import { BLOG_CARD_IMAGE_SIZES, BLOG_EAGER_IMAGE_COUNT } from "@/lib/constants/blog";
+import type { BlogCategoryFilterValue } from "@/types";
 
 const BlogsGrid: React.FC = () => {
-  const [activeCat, setActiveCat] = useState<string>("all");
+  const { data: posts, isPending, isError } = useQuery(blogPostsQueryOptions);
+  const [selected, setSelected] = useState<BlogCategoryFilterValue>("all");
+
+  const cards = useMemo(
+    () => (posts ? filterBlogPosts(posts, selected).map((post) => toBlogCard(post, selected)) : []),
+    [posts, selected],
+  );
+
+  const filter = <BlogCategoryFilter selected={selected} onSelect={setSelected} />;
+
+  if (isPending)
+    return (
+      <BlogsGridLayout filter={filter} status={<BlogsLoadingStatus />} busy>
+        <BlogCardSkeletons />
+      </BlogsGridLayout>
+    );
+
+  const message = isError
+    ? "We couldn't load insights right now. Please try again later."
+    : cards.length === 0
+      ? "Nothing here yet. Try another category."
+      : null;
 
   return (
-    <Section
-      as="section"
-      container
-      containerClassName="flex flex-col md:gap-12 gap-8 md:pb-16 pb-10 border-x"
+    <BlogsGridLayout
+      filter={filter}
+      status={
+        <p role="status" className={message ? "text-black-2 text-center text-sm" : "sr-only"}>
+          {message ?? `Showing ${cards.length} ${cards.length === 1 ? "insight" : "insights"}`}
+        </p>
+      }
     >
-      <div className="mx-auto flex max-w-152 flex-wrap justify-center gap-2 md:flex-nowrap md:justify-start">
-        {CATEGORIES.map((c, i) => (
-          <button
-            key={`${c.name}-${c.value}-${i}`}
-            type="button"
-            className={cn(
-              "font-switzer grid h-8.5 cursor-pointer place-content-center border px-3 text-xs font-medium tracking-[-2%] outline-none focus:outline-none sm:text-sm md:h-10 md:px-4",
-              {
-                "bg-brand-blue border-brand-blue text-neutral-50": c.value === activeCat,
-                "text-black-1 border-hairline bg-white": c.value !== activeCat,
-              },
-            )}
-            onClick={() => setActiveCat(c.value)}
-          >
-            {c.name}
-          </button>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-        {LATEST_CARDS.map((card, i) => (
-          <BlogCard key={`${card.title}-${i}`} {...card} className="p-0!" />
-        ))}
-      </div>
-    </Section>
+      {cards.map((card, i) => (
+        <li key={String(card.href)}>
+          <BlogCard
+            {...card}
+            className="p-0!"
+            titleAs="h2"
+            // `/blog/[slug]` isn't built yet; viewport prefetches would 404 for every card.
+            prefetch={false}
+            imageLoader={sanityImageLoader}
+            imageSizes={BLOG_CARD_IMAGE_SIZES}
+            imageLoading={i < BLOG_EAGER_IMAGE_COUNT ? "eager" : "lazy"}
+            imageFetchPriority={i === 0 ? "high" : undefined}
+          />
+        </li>
+      ))}
+    </BlogsGridLayout>
   );
 };
 
