@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Section from "@/components/layout/sections/Section";
+import SectionHeading from "@/components/ui/headings/SectionHeading";
 import { Reveal } from "@/components/ui/animations/Reveal";
-import { StripeReveal } from "@/components/ui/animations/StripeReveal";
 import TeamCarousel from "@/components/ui/carousels/TeamCarousel";
 import { TeamCardWrapper } from "@/components/ui/cards/TeamCard";
 import { TEAM_SECTION } from "@/lib/constants";
@@ -10,36 +10,24 @@ const Team: React.FC = () => {
   return (
     <Section container containerClassName="md:py-20 py-10 border-x xl:px-0! 2xl:px-16!">
       <div className="flex flex-col gap-8 md:gap-16">
-        <div className="flex flex-col gap-4 text-center">
-          <StripeReveal
-            as="h2"
-            className="text-black-1 font-switzer md:text-hero-desktop text-hero-mobile font-medium"
-          >
-            {TEAM_SECTION.title}
-          </StripeReveal>
-          <Reveal
-            as="p"
-            byLine
-            className="font-switzer text-black-2 mx-auto max-w-lg text-sm tracking-[-2%] md:text-base"
-          >
-            {TEAM_SECTION.description}
-          </Reveal>
-        </div>
+        <SectionHeading title={TEAM_SECTION.title} description={TEAM_SECTION.description} />
         <div className="flex gap-4">
           <TeamCardWrapper className="hidden w-[40%] p-10 lg:flex xl:border-l-0 2xl:border-l">
-            <Reveal>
-              <Image
-                src={TEAM_SECTION.badge?.url!}
-                alt={TEAM_SECTION.badge?.alt!}
-                width={187}
-                height={129}
-                className="object-cover"
-                style={{
-                  height: "auto",
-                  width: "auto",
-                }}
-              />
-            </Reveal>
+            {TEAM_SECTION.badge && (
+              <Reveal>
+                <Image
+                  src={TEAM_SECTION.badge.url}
+                  alt={TEAM_SECTION.badge.alt}
+                  width={187}
+                  height={129}
+                  className="object-cover"
+                  style={{
+                    height: "auto",
+                    width: "auto",
+                  }}
+                />
+              </Reveal>
+            )}
             <div className="flex flex-col gap-4">
               <Reveal
                 as="span"
@@ -68,19 +56,21 @@ const Team: React.FC = () => {
                   {TEAM_SECTION.lineTwo}
                 </Reveal>
               </div>
-              <Reveal>
-                <Image
-                  src={TEAM_SECTION.badge?.url!}
-                  alt={TEAM_SECTION.badge?.alt!}
-                  width={120}
-                  height={80}
-                  className="object-cover"
-                  style={{
-                    height: "auto",
-                    width: "auto",
-                  }}
-                />
-              </Reveal>
+              {TEAM_SECTION.badge && (
+                <Reveal>
+                  <Image
+                    src={TEAM_SECTION.badge.url}
+                    alt={TEAM_SECTION.badge.alt}
+                    width={120}
+                    height={80}
+                    className="object-cover"
+                    style={{
+                      height: "auto",
+                      width: "auto",
+                    }}
+                  />
+                </Reveal>
+              )}
             </div>
           </TeamCardWrapper>
         </div>

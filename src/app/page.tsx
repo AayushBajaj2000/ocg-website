@@ -1,7 +1,5 @@
-export default function Home() {
-  return (
-    <div className="relative">
-      <h1>hello</h1>
-    </div>
-  );
-}
+import Home from "@/app/_components/Home";
+
+const HomePage = () => <Home />;
+
+export default HomePage;

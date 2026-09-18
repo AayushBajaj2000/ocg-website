@@ -7,3 +7,5 @@ export * from "@/lib/constants/wordSection";
 export * from "@/lib/constants/team";
 export * from "@/lib/constants/founderBook";
 export * from "@/lib/constants/contact";
+export * from "@/lib/constants/testimonials";
+export * from "@/lib/constants/home";

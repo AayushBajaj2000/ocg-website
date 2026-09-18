@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useMemo } from "react";
 import Link from "next/link";
 import {
   AnimatePresence,
@@ -24,6 +24,7 @@ type Props = {
   service: IService;
   isOpen: boolean;
   onToggle: () => void;
+  isDark?: boolean;
 };
 
 const EASE = [0.32, 0.72, 0, 1] as const;
@@ -55,16 +56,20 @@ const regionReducedVariants: Variants = {
   open: { height: "auto", opacity: 1, transition: { duration: 0, delayChildren: stagger(0.03) } },
 };
 
-const createContentComponents = (item: Variants): PortableTextComponents => ({
+const createContentComponents = (item: Variants, isDark?: boolean): PortableTextComponents => ({
   block: {
     normal: ({ children }) => (
-      <m.p variants={item} className="text-neutral-900">
+      <m.p variants={item} className={isDark ? "text-white" : "text-neutral-900"}>
         {children}
       </m.p>
     ),
   },
   list: {
-    bullet: ({ children }) => <ul className="list-disc pl-4.5 text-neutral-600">{children}</ul>,
+    bullet: ({ children }) => (
+      <ul className={cn("list-disc pl-4.5", isDark ? "text-neutral-300" : "text-neutral-600")}>
+        {children}
+      </ul>
+    ),
   },
   listItem: {
     bullet: ({ children }) => <m.li variants={item}>{children}</m.li>,
@@ -78,11 +83,7 @@ const createContentComponents = (item: Variants): PortableTextComponents => ({
   },
 });
 
-const contentComponents = createContentComponents(dropdownItemVariants);
-
-const contentReducedComponents = createContentComponents(dropdownItemReducedVariants);
-
-const AccordionLg: React.FC<Props> = ({ index, service, isOpen, onToggle }) => {
+const AccordionLg: React.FC<Props> = ({ index, service, isOpen, onToggle, isDark }) => {
   const prefersReducedMotion = useReducedMotion();
   const id = useId();
   const triggerId = `${id}-trigger`;
@@ -90,11 +91,16 @@ const AccordionLg: React.FC<Props> = ({ index, service, isOpen, onToggle }) => {
 
   const region = prefersReducedMotion ? regionReducedVariants : regionVariants;
   const item = prefersReducedMotion ? dropdownItemReducedVariants : dropdownItemVariants;
-  const components = prefersReducedMotion ? contentReducedComponents : contentComponents;
+  const components = useMemo(() => createContentComponents(item, isDark), [item, isDark]);
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="border-b-hairline border-b">
+      <div
+        className={cn("border-b", {
+          "border-b-hairline": !isDark,
+          "border-b-hairline-dark": isDark,
+        })}
+      >
         <h2>
           <button
             type="button"
@@ -105,16 +111,31 @@ const AccordionLg: React.FC<Props> = ({ index, service, isOpen, onToggle }) => {
             className="font-switzer flex w-full cursor-pointer items-center justify-between gap-4 py-6 text-left text-2xl font-medium tracking-[-4%] md:py-10 md:text-5xl"
           >
             <span className="flex min-w-0 items-center gap-6 md:gap-10 lg:gap-25">
-              <span aria-hidden="true" className="shrink-0 text-neutral-500">
+              <span
+                aria-hidden="true"
+                className={cn("shrink-0", {
+                  "text-neutral-500": !isDark,
+                  "text-numeral": isDark,
+                })}
+              >
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="text-neutral-900">{service.title}</span>
+              <span
+                className={cn({
+                  "text-neutral-900": !isDark,
+                  "text-white": isDark,
+                })}
+              >
+                {service.title}
+              </span>
             </span>
             <PlusToggleIcon
               isOpen={isOpen}
               className={cn(
                 "size-4 shrink-0 transition-colors duration-300 md:size-8",
-                isOpen ? "text-neutral-900" : "text-neutral-500",
+                isOpen
+                  ? `${isDark ? "text-white" : "text-neutral-900"}`
+                  : `${isDark ? "text-numeral" : "text-neutral-500"}`,
               )}
             />
           </button>
@@ -148,7 +169,10 @@ const AccordionLg: React.FC<Props> = ({ index, service, isOpen, onToggle }) => {
                   <m.div variants={item}>
                     <Link
                       href={service.cta.href}
-                      className="text-neutral-600 underline underline-offset-4"
+                      className={cn("underline underline-offset-4", {
+                        "text-neutral-600": !isDark,
+                        "text-neutral-200": isDark,
+                      })}
                     >
                       {service.cta.label}
                     </Link>
