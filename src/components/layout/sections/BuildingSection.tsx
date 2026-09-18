@@ -80,7 +80,7 @@ const BuildingSection: React.FC = () => {
             We&apos;ll help you map the right scope, team, timeline, and next steps
           </p>
           <AnimatedIconButton
-            href="#"
+            href="/contact"
             label="Start your new project"
             icon={<PlusIcon className="size-4" />}
             className="text-brand-blue bg-white"
@@ -97,7 +97,7 @@ const BuildingSection: React.FC = () => {
             <span className="opacity-65">/</span>
             <span className="opacity-65">{String(SHAPE_CAPTIONS.length).padStart(2, "0")}</span>
           </span>
-          <span className="max-w-47.5 text-right text-[10px] leading-[1.5] tracking-[0.055em] text-white/88 md:max-w-none md:text-xs md:tracking-[0.13em]">
+          <span className="max-w-47.5 text-right text-[10px] leading-normal tracking-[0.055em] text-white/88 md:max-w-none md:text-xs md:tracking-[0.13em]">
             {SHAPE_CAPTIONS[index]}
           </span>
         </div>

@@ -28,6 +28,7 @@ import {
 import { FOOTER } from "@/lib/constants";
 import { CoreSvg, OpenSvg } from "@/components/icons/FooterLogo";
 import Image from "next/image";
+import HideOnRoutes from "@/components/layout/HideOnRoutes";
 
 /** Seconds each footer image stays on screen. */
 const FOOTER_IMAGE_INTERVAL = 1;
@@ -109,11 +110,19 @@ export const FooterAILinks: React.FC<IFooterAiFooterLink> = ({ title, links }) =
 export const FooterLinks: React.FC<{ links: IFooterLink[] }> = ({ links }) => {
   return (
     <div className="mx-auto grid max-w-108.5 grid-cols-3 gap-x-2 gap-y-4 md:gap-x-8 lg:mx-0">
-      {links.map((l, i) => (
-        <NavLink key={`${l.label}-${i}`} href={l.href!} className="truncate">
-          {l.label}
-        </NavLink>
-      ))}
+      {links.map((l, i) => {
+        const isPdf = l.href?.endsWith(".pdf");
+        return (
+          <NavLink
+            key={`${l.label}-${i}`}
+            href={l.href!}
+            className="truncate"
+            {...(isPdf && { target: "_blank", rel: "noopener noreferrer", prefetch: false })}
+          >
+            {l.label}
+          </NavLink>
+        );
+      })}
     </div>
   );
 };
@@ -141,11 +150,13 @@ const Footer: React.FC = () => {
               ))}
           </div>
         </div>
-        <AnimatedIconButton
-          label="Start your new project"
-          href="#"
-          icon={<PlusIcon className="size-4" />}
-        />
+        <HideOnRoutes routes={["/contact"]}>
+          <AnimatedIconButton
+            label="Start your new project"
+            href="/contact"
+            icon={<PlusIcon className="size-4" />}
+          />
+        </HideOnRoutes>
       </div>
       <div className="border-b-hairline flex flex-wrap items-center justify-between gap-6 border-b py-8 md:py-12">
         {FOOTER.aiFooterLinks && (

@@ -1,5 +1,6 @@
 import { BlogIcon, OpenSourceIcon } from "@/components/icons";
 import { IFaq, IFooter, INavLink } from "@/types";
+import { bookingHref } from "@/lib/constants/booking";
 
 export const DESKTOP_MEDIA_QUERY = "(min-width: 64rem)";
 
@@ -21,7 +22,7 @@ export const NAV_LINKS: INavLink[] = [
         icon: <OpenSourceIcon />,
         title: "Open Source",
         description: "Free skills, components and Figma files",
-        href: "/opensource",
+        href: "/resources",
       },
     ],
     dropdownViewAll: {
@@ -62,7 +63,7 @@ const AI_PROMPT = encodeURIComponent(
 
 export const FOOTER: IFooter = {
   headingLinks: [
-    { label: "Let's talk", link: { label: "Book a strategy call", href: "/book-a-call" } },
+    { label: "Let's talk", link: { label: "Book a strategy call", href: bookingHref("footer") } },
     {
       label: "Send mail",
       link: { label: "info@opencoregroup.com", href: "mailto:info@opencoregroup.com" },
@@ -85,20 +86,20 @@ export const FOOTER: IFooter = {
     { label: "Resources", href: "/resources" },
     { label: "Company", href: "/company" },
     { label: "Contact", href: "/contact" },
-    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Privacy Policy", href: "/pdfs/ocg-website-privacy-policy.pdf" },
     { label: "Work", href: "/work" },
-    { label: "Insights", href: "/insights" },
-    { label: "Terms of Use", href: "/terms" },
+    { label: "blog", href: "/blog" },
+    { label: "Terms of Use", href: "/pdfs/ocg-website-terms-of-use.pdf" },
   ],
   footerText: [
     { text: "Toronto, ON, Canada" },
     { isLink: true, text: "Hey AI, learn more about us!", href: "#" },
   ],
   socialLinks: [
-    { name: "linkedin", href: "#" },
-    { name: "facebook", href: "#" },
-    { name: "instagram", href: "#" },
-    { name: "x", href: "#" },
+    { name: "linkedin", href: "https://www.linkedin.com/company/opencore-group" },
+    { name: "facebook", href: "https://www.facebook.com/opencoregroup" },
+    { name: "instagram", href: "https://www.instagram.com/opencoregroup/" },
+    { name: "x", href: "https://twitter.com/OpenCoreGroup" },
   ],
   footerImages: [
     "/footer/img-1.webp",

@@ -8,6 +8,7 @@ import { AnimatedIconButton } from "@/components/ui/buttons/AnimatedIconButton";
 import { useHideOnScroll } from "@/components/layout/hooks/useHideOnScroll";
 import HeaderMob from "@/components/layout/header/HeaderMob";
 import DividerLines from "@/components/ui/dividers/DividerLines";
+import { bookingHref } from "@/lib/constants/booking";
 
 const Header: React.FC = () => {
   const hidden = useHideOnScroll();
@@ -42,7 +43,11 @@ const Header: React.FC = () => {
         <NavLinks />
 
         <div className="hidden lg:block">
-          <AnimatedIconButton href="#" label="Book a call" icon={<PlusIcon className="size-4" />} />
+          <AnimatedIconButton
+            href={bookingHref("header")}
+            label="Book a call"
+            icon={<PlusIcon className="size-4" />}
+          />
         </div>
 
         <HeaderMob />

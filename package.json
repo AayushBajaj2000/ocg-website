@@ -20,8 +20,12 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@calcom/embed-react": "^1.5.3",
     "@react-email/components": "1.0.12",
     "@react-email/render": "2.1.0",
+    "@sanity/client": "^8.6.2",
+    "@tanstack/react-query": "^5.103.1",
+    "groq": "^6.15.0",
     "motion": "^13.2.0",
     "next": "16.3.4",
     "react": "19.2.8",

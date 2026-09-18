@@ -38,6 +38,7 @@ export interface INavLinkCard {
     readTime?: string;
     text?: string;
   };
+  className?: string;
 }
 
 export type ClassValue =

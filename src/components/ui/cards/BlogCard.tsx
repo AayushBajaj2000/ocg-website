@@ -21,7 +21,7 @@ const icons: Record<INavLinkCardIcon, React.ReactNode> = {
   file: <FileIcon />,
 };
 
-export const preloadHeaderLinkCardImage = ({ url, alt }: INavLinkCard["img"]): void => {
+export const preloadBlogCardImage = ({ url, alt }: INavLinkCard["img"]): void => {
   const { props } = getImageProps({ src: url, alt, ...imageOptions });
   const image = new window.Image();
 
@@ -31,11 +31,19 @@ export const preloadHeaderLinkCardImage = ({ url, alt }: INavLinkCard["img"]): v
   image.src = props.src;
 };
 
-const HeaderLinkCard: React.FC<Props> = ({ href, img, category, headline, title, caption }) => {
+const BlogCard: React.FC<Props> = ({
+  href,
+  img,
+  category,
+  headline,
+  title,
+  caption,
+  className,
+}) => {
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   return (
-    <Link href={href} className="group flex w-full flex-col gap-2 p-5">
+    <Link href={href} className={cn("group flex w-full flex-col gap-2 p-5", className)}>
       <span className="relative block aspect-320/198 w-full overflow-hidden bg-neutral-100">
         {!isImageLoaded && (
           <span
@@ -81,4 +89,4 @@ const HeaderLinkCard: React.FC<Props> = ({ href, img, category, headline, title,
   );
 };
 
-export default HeaderLinkCard;
+export default BlogCard;

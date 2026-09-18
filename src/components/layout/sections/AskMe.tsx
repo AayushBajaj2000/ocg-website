@@ -2,6 +2,7 @@ import { CalIcon, WhatsAppIcon } from "@/components/icons";
 import { Button } from "@/components/ui/buttons/Button";
 import { Reveal } from "@/components/ui/animations/Reveal";
 import Image from "next/image";
+import { bookingHref } from "@/lib/constants";
 
 type Props = {
   delay?: number;
@@ -26,7 +27,7 @@ const AskMe: React.FC<Props> = ({ delay = 0, step = 0.06 }) => {
       </div>
       <div className="flex w-full flex-col gap-2">
         <Reveal delay={delay + step * 2}>
-          <Button href="/" variant="book-call">
+          <Button href={bookingHref("footer")} variant="book-call">
             <CalIcon className="size-5" />
             Book a call
           </Button>

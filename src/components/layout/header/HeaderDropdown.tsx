@@ -11,7 +11,7 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import HeaderLinkCard, { preloadHeaderLinkCardImage } from "@/components/ui/cards/HeaderLinkCard";
+import BlogCard, { preloadBlogCardImage } from "@/components/ui/cards/BlogCard";
 import NavDropdownTriggerContent from "@/components/layout/header/NavDropdownTriggerContent";
 import { useHeaderDropdown } from "@/components/layout/hooks/useHeaderDropdown";
 import { useIsNavGroupActive } from "@/components/layout/hooks/useIsNavGroupActive";
@@ -27,7 +27,7 @@ type Props = {
   link: INavLink;
 };
 
-const LATEST_CARDS: INavLinkCard[] = [
+export const LATEST_CARDS: INavLinkCard[] = [
   {
     img: { url: "/placeholders/work-main.webp", alt: "alt" },
     category: "Blog",
@@ -78,7 +78,7 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
   const preloadImages = useCallback(() => {
     if (hasPreloadedImages.current) return;
     hasPreloadedImages.current = true;
-    LATEST_CARDS.forEach((card) => preloadHeaderLinkCardImage(card.img));
+    LATEST_CARDS.forEach((card) => preloadBlogCardImage(card.img));
   }, []);
 
   const panel = prefersReducedMotion ? panelReducedVariants : panelVariants;
@@ -151,16 +151,6 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
                     )}
                   </ul>
                 </div>
-                {link.dropdownViewAll?.href && (
-                  <m.div variants={item} className="px-5">
-                    <Link
-                      href={link.dropdownViewAll.href}
-                      className="font-switzer text-black-1 text-sm tracking-[-2%] underline underline-offset-2"
-                    >
-                      {link.dropdownViewAll.title}
-                    </Link>
-                  </m.div>
-                )}
               </div>
               <div className="w-175">
                 <m.p
@@ -172,7 +162,7 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
                 <div className="divide-hairline grid grid-cols-2 divide-x">
                   {LATEST_CARDS.map((card) => (
                     <m.div key={card.title} variants={item}>
-                      <HeaderLinkCard {...card} />
+                      <BlogCard {...card} />
                     </m.div>
                   ))}
                 </div>
