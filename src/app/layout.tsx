@@ -5,6 +5,7 @@ import Footer from "@/components/layout/footer/Footer";
 import FaqSection from "@/components/layout/sections/FaqSection";
 import PageDivider from "@/components/ui/dividers/PageDivider";
 import BuildingSection from "@/components/layout/sections/BuildingSection";
+import HideOnRoutes from "@/components/layout/HideOnRoutes";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,8 +26,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <PageDivider />
         <FaqSection />
         <PageDivider />
-        <BuildingSection />
-        <PageDivider />
+        <HideOnRoutes routes={["/contact"]}>
+          <BuildingSection />
+          <PageDivider />
+        </HideOnRoutes>
         <Footer />
       </body>
     </html>
