@@ -10,6 +10,8 @@ type AnimatedIconButtonProps = {
   label: string;
   className?: string;
   containerClassName?: string;
+  /** Opens `href` in a new tab (and says so to screen readers). */
+  external?: boolean;
 };
 
 const EASE = "ease-[cubic-bezier(.83,0,.17,1)]";
@@ -45,10 +47,16 @@ export function AnimatedIconButton({
   label,
   className = "bg-brand-blue text-white",
   containerClassName,
+  external,
 }: AnimatedIconButtonProps) {
   if (href)
     return (
-      <Link href={href} aria-label={label} className="group flex items-center gap-1">
+      <Link
+        href={href}
+        aria-label={external ? `${label} (opens in a new tab)` : label}
+        className="group flex items-center gap-1"
+        {...(external && { target: "_blank", rel: "noopener noreferrer", prefetch: false })}
+      >
         <span
           className={`flex size-10 scale-0 rotate-90 items-center justify-center group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE} ${className}`}
         >

@@ -1,4 +1,4 @@
-import type { INavLinkCardImage } from "@/types/components";
+import type { ISanityImage, SanityImageAsset } from "@/types/sanity";
 
 export type BlogCategory = "design" | "development" | "technology" | "marketing" | "news";
 
@@ -9,10 +9,6 @@ export interface IBlogCategoryFilter {
   value: BlogCategoryFilterValue;
 }
 
-export interface IBlogPostImage extends INavLinkCardImage {
-  url: string;
-}
-
 export interface IBlogPost {
   id: string;
   slug: string;
@@ -21,7 +17,7 @@ export interface IBlogPost {
   author?: string;
   readingTime: number;
   categories: BlogCategory[];
-  image?: IBlogPostImage;
+  image?: ISanityImage;
 }
 
 /** Raw shape returned by `BLOG_POSTS_QUERY`, before normalization. */
@@ -33,5 +29,5 @@ export interface SanityBlogPost {
   tags: string[];
   author: string | null;
   readingTime: number;
-  image: { url: string; altText: string | null; lqip: string | null } | null;
+  image: SanityImageAsset | null;
 }

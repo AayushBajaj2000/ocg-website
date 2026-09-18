@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 // ISR: statically generated, refreshed at most hourly. Must be a literal for Next's static
-// analysis — keep in sync with BLOG_REVALIDATE_SECONDS.
+// analysis — keep in sync with SANITY_REVALIDATE_SECONDS.
 export const revalidate = 3600;
 
 const BlogPage = () => <Blogs />;

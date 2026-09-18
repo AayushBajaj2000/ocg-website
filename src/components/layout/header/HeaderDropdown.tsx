@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useId, useRef, type MouseEvent } from "react";
+import { useId, type MouseEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   AnimatePresence,
   LazyMotion,
@@ -11,40 +12,23 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import BlogCard, { preloadBlogCardImage } from "@/components/ui/cards/BlogCard";
 import NavDropdownTriggerContent from "@/components/layout/header/NavDropdownTriggerContent";
 import { useHeaderDropdown } from "@/components/layout/hooks/useHeaderDropdown";
 import { useIsNavGroupActive } from "@/components/layout/hooks/useIsNavGroupActive";
+import { usePrefetchLatestContent } from "@/components/layout/hooks/useLatestContentCards";
+import HeaderLatestCards from "@/components/layout/header/HeaderLatestCards";
 import {
   DROPDOWN_EASE,
   dropdownItemReducedVariants,
   dropdownItemVariants,
 } from "@/components/layout/header/headerDropdownMotion";
+import { isHrefActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-import type { INavLink, INavLinkCard } from "@/types";
+import type { INavLink } from "@/types";
 
 type Props = {
   link: INavLink;
 };
-
-export const LATEST_CARDS: INavLinkCard[] = [
-  {
-    img: { url: "/placeholders/work-main.webp", alt: "alt" },
-    category: "Blog",
-    headline: { text: "May 12, 2026" },
-    title: "Most People Are Using Claude Wrong – Here's the Workflow That Changed Everything",
-    href: "#",
-    caption: { authorName: "Sameer Siddiqui", readTime: "2 min read" },
-  },
-  {
-    img: { url: "/placeholders/work-main.webp", alt: "alt" },
-    category: "Figma",
-    headline: { icon: "file", text: ".fig" },
-    title: "25+ Social Media Posts for Real Estate & Construction",
-    href: "#",
-    caption: { text: "Get it  →" },
-  },
-];
 
 const CLIP_ORIGIN = "58% 0%";
 
@@ -71,15 +55,12 @@ const panelReducedVariants: Variants = {
 const HeaderDropdown: React.FC<Props> = ({ link }) => {
   const { isOpen, close, toggle, containerRef, triggerRef } = useHeaderDropdown();
   const isActive = useIsNavGroupActive(link);
+  const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const panelId = useId();
-  const hasPreloadedImages = useRef<boolean>(false);
-
-  const preloadImages = useCallback(() => {
-    if (hasPreloadedImages.current) return;
-    hasPreloadedImages.current = true;
-    LATEST_CARDS.forEach((card) => card.img && preloadBlogCardImage(card.img));
-  }, []);
+  // First hover/focus signals intent: fetch the latest cards (and warm their images) before the
+  // panel opens, instead of on every page load.
+  const prefetchLatestContent = usePrefetchLatestContent();
 
   const panel = prefersReducedMotion ? panelReducedVariants : panelVariants;
   const item = prefersReducedMotion ? dropdownItemReducedVariants : dropdownItemVariants;
@@ -95,8 +76,8 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
           ref={triggerRef}
           type="button"
           onClick={toggle}
-          onPointerEnter={preloadImages}
-          onFocus={preloadImages}
+          onPointerEnter={prefetchLatestContent}
+          onFocus={prefetchLatestContent}
           aria-expanded={isOpen}
           aria-controls={panelId}
           className={cn(
@@ -128,27 +109,33 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
                     {link.label}
                   </m.p>
                   <ul>
-                    {link.dropdownLinks?.map(
-                      (dropdownLink) =>
-                        dropdownLink.href && (
-                          <m.li key={dropdownLink.title} variants={item}>
-                            <Link
-                              href={dropdownLink.href}
-                              className="text-black-1 hover:bg-sunken border-b-hairline flex items-start gap-3 border-b px-5 py-5.5 transition-colors duration-300 ease-in-out"
-                            >
-                              {dropdownLink.icon}
-                              <span className="flex flex-col gap-0.5">
-                                <span className="font-switzer text-base tracking-[-2%]">
-                                  {dropdownLink.title}
-                                </span>
-                                <span className="font-switzer text-black-3 text-sm tracking-[-2%]">
-                                  {dropdownLink.description}
-                                </span>
+                    {link.dropdownLinks?.map((dropdownLink) => {
+                      if (!dropdownLink.href) return null;
+                      const isCurrent = isHrefActive(pathname, dropdownLink.href);
+
+                      return (
+                        <m.li key={dropdownLink.title} variants={item}>
+                          <Link
+                            href={dropdownLink.href}
+                            aria-current={isCurrent ? "page" : undefined}
+                            className={cn(
+                              "hover:bg-sunken border-b-hairline flex items-start gap-3 border-b px-5 py-5.5 transition-colors duration-300 ease-in-out",
+                              isCurrent ? "text-brand-blue bg-sunken" : "text-black-1",
+                            )}
+                          >
+                            {dropdownLink.icon}
+                            <span className="flex flex-col gap-0.5">
+                              <span className="font-switzer text-base tracking-[-2%]">
+                                {dropdownLink.title}
                               </span>
-                            </Link>
-                          </m.li>
-                        ),
-                    )}
+                              <span className="font-switzer text-black-3 text-sm tracking-[-2%]">
+                                {dropdownLink.description}
+                              </span>
+                            </span>
+                          </Link>
+                        </m.li>
+                      );
+                    })}
                   </ul>
                 </div>
               </div>
@@ -159,13 +146,7 @@ const HeaderDropdown: React.FC<Props> = ({ link }) => {
                 >
                   Latest from Opencore
                 </m.p>
-                <div className="divide-hairline grid grid-cols-2 divide-x">
-                  {LATEST_CARDS.map((card) => (
-                    <m.div key={card.title} variants={item}>
-                      <BlogCard {...card} />
-                    </m.div>
-                  ))}
-                </div>
+                <HeaderLatestCards itemVariants={item} />
               </div>
             </m.div>
           )}

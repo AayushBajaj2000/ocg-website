@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEventHandler } from "react";
 import Image, { getImageProps, type ImageProps } from "next/image";
 import Link, { type LinkProps } from "next/link";
 import { INavLinkCard, INavLinkCardIcon, INavLinkCardImage } from "@/types";
@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 type Props = INavLinkCard & {
   titleAs?: "span" | "h2" | "h3";
   prefetch?: LinkProps["prefetch"];
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
   imageSizes?: string;
   imageLoading?: ImageProps["loading"];
   imageFetchPriority?: ImageProps["fetchPriority"];
@@ -30,8 +31,11 @@ const icons: Record<INavLinkCardIcon, React.ReactNode> = {
   file: <FileIcon />,
 };
 
-export const preloadBlogCardImage = ({ url, alt }: INavLinkCardImage): void => {
-  const { props } = getImageProps({ src: url, alt, ...imageOptions });
+export const preloadBlogCardImage = (
+  { url, alt }: INavLinkCardImage,
+  loader?: ImageProps["loader"],
+): void => {
+  const { props } = getImageProps({ src: url, alt, loader, ...imageOptions });
   const image = new window.Image();
 
   image.decoding = "async";
@@ -50,6 +54,7 @@ const BlogCard: React.FC<Props> = ({
   className,
   titleAs: Title = "span",
   prefetch,
+  onClick,
   imageSizes = imageOptions.sizes,
   imageLoading = "eager",
   imageFetchPriority,
@@ -64,6 +69,7 @@ const BlogCard: React.FC<Props> = ({
     <Link
       href={href}
       prefetch={prefetch}
+      onClick={onClick}
       className={cn("group flex w-full flex-col gap-2 p-5", className)}
     >
       <span className="relative block aspect-320/198 w-full overflow-hidden bg-neutral-100">

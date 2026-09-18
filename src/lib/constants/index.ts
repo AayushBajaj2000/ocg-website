@@ -10,4 +10,7 @@ export * from "@/lib/constants/contact";
 export * from "@/lib/constants/testimonials";
 export * from "@/lib/constants/home";
 export * from "@/lib/constants/booking";
+export * from "@/lib/constants/sanity";
 export * from "@/lib/constants/blog";
+export * from "@/lib/constants/resources";
+export * from "@/lib/constants/cards";

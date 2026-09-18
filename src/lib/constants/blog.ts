@@ -6,20 +6,6 @@ export const blogPostHref = (slug: string) => `${BLOG_PATH}/${slug}`;
 
 export const BLOG_POSTS_API_PATH = "/api/blog/posts";
 
-// ISR window for blog data. `src/app/blog/page.tsx` and `src/app/api/blog/posts/route.ts` mirror it
-// as a literal `revalidate` (Next requires a statically analyzable value there).
-export const BLOG_REVALIDATE_SECONDS = 3600;
-
-/** Cache tag for on-demand revalidation (e.g. a future Sanity webhook). */
-export const BLOG_CACHE_TAG = "blogPost";
-
-export const BLOG_SKELETON_COUNT = 6;
-
-/** Cards in the first desktop row load eagerly; the first one is the LCP candidate. */
-export const BLOG_EAGER_IMAGE_COUNT = 3;
-
-export const BLOG_CARD_IMAGE_SIZES = "(min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw";
-
 export const BLOG_CATEGORY_LABELS: Record<BlogCategory, string> = {
   design: "Design",
   development: "Development",

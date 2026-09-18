@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, m, stagger, useReducedMotion, type Variants } from "motion/react";
 import NavDropdownTriggerContent from "@/components/layout/header/NavDropdownTriggerContent";
 import { useIsNavGroupActive } from "@/components/layout/hooks/useIsNavGroupActive";
@@ -8,6 +9,7 @@ import {
   dropdownItemReducedVariants,
   dropdownItemVariants,
 } from "@/components/layout/header/headerDropdownMotion";
+import { isHrefActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import type { INavLink } from "@/types";
 
@@ -36,6 +38,7 @@ const regionReducedVariants: Variants = {
 const MobileNavDropdown: React.FC<Props> = ({ link, onNavigate }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const isActive = useIsNavGroupActive(link);
+  const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const id = useId();
   const triggerId = `${id}-trigger`;
@@ -74,33 +77,39 @@ const MobileNavDropdown: React.FC<Props> = ({ link, onNavigate }) => {
             className="overflow-hidden"
           >
             <ul className="border-t-hairline mx-4 border-t">
-              {link.dropdownLinks?.map(
-                (dropdownLink) =>
-                  dropdownLink.href && (
-                    <m.li
-                      key={dropdownLink.title}
-                      variants={item}
-                      className="border-b-hairline border-b last:border-b-0"
+              {link.dropdownLinks?.map((dropdownLink) => {
+                if (!dropdownLink.href) return null;
+                const isCurrent = isHrefActive(pathname, dropdownLink.href);
+
+                return (
+                  <m.li
+                    key={dropdownLink.title}
+                    variants={item}
+                    className="border-b-hairline border-b last:border-b-0"
+                  >
+                    <Link
+                      href={dropdownLink.href}
+                      prefetch={false}
+                      onClick={onNavigate}
+                      aria-current={isCurrent ? "page" : undefined}
+                      className={cn(
+                        "flex items-start gap-3 py-4",
+                        isCurrent ? "text-brand-blue" : "text-black-1",
+                      )}
                     >
-                      <Link
-                        href={dropdownLink.href}
-                        prefetch={false}
-                        onClick={onNavigate}
-                        className="text-black-1 flex items-start gap-3 py-4"
-                      >
-                        <span aria-hidden="true" className="shrink-0">
-                          {dropdownLink.icon}
+                      <span aria-hidden="true" className="shrink-0">
+                        {dropdownLink.icon}
+                      </span>
+                      <span className="flex flex-col gap-1">
+                        <span className="text-base tracking-[-2%]">{dropdownLink.title}</span>
+                        <span className="text-black-3 text-sm tracking-[-2%]">
+                          {dropdownLink.description}
                         </span>
-                        <span className="flex flex-col gap-1">
-                          <span className="text-base tracking-[-2%]">{dropdownLink.title}</span>
-                          <span className="text-black-3 text-sm tracking-[-2%]">
-                            {dropdownLink.description}
-                          </span>
-                        </span>
-                      </Link>
-                    </m.li>
-                  ),
-              )}
+                      </span>
+                    </Link>
+                  </m.li>
+                );
+              })}
             </ul>
           </m.div>
         )}
