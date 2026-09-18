@@ -19,18 +19,18 @@ const ROW = [
   [27.3247, 13.7291],
 ] as const;
 
-const CENTER_INDEX = 2;
+const ROTATION = 90;
 
-const ROTATE_DURATION = 0.5;
+const ROTATE_DURATION = 0.8;
 
-const FADE_DURATION = ROTATE_DURATION * 0.4;
+const FADE_DURATION = ROTATE_DURATION * 0.5;
 
-const ROTATE: Transition = { duration: ROTATE_DURATION, ease: [0.65, 0, 0.35, 1] };
+const ROTATE: Transition = { duration: ROTATE_DURATION, ease: [0.22, 1, 0.36, 1] };
 
 const FADE_OUT: Transition = {
   duration: FADE_DURATION,
-  delay: ROTATE_DURATION - FADE_DURATION,
-  ease: "easeIn",
+  delay: ROTATE_DURATION * 0.1,
+  ease: "easeInOut",
 };
 
 const FADE_IN: Transition = { duration: FADE_DURATION, ease: "easeOut" };
@@ -57,28 +57,24 @@ export const PlusToggleIcon: React.FC<Props> = ({ isOpen, className }) => {
         className={className}
         aria-hidden="true"
         initial={false}
-        animate={{ rotate: isOpen ? 180 : 0 }}
+        animate={{ rotate: isOpen ? ROTATION : 0 }}
         transition={rotateTransition}
       >
-        {ROW.map(([x, y], index) => (
-          <rect key={`row-${index}`} x={x} y={y} {...MARK} />
+        {COLUMN.map(([x, y], index) => (
+          <rect key={`column-${index}`} x={x} y={y} {...MARK} />
         ))}
 
-        {COLUMN.map(([x, y], index) =>
-          index === CENTER_INDEX ? (
-            <rect key={`column-${index}`} x={x} y={y} {...MARK} />
-          ) : (
-            <m.rect
-              key={`column-${index}`}
-              x={x}
-              y={y}
-              {...MARK}
-              initial={false}
-              animate={{ opacity: isOpen ? 0 : 1 }}
-              transition={fadeTransition}
-            />
-          ),
-        )}
+        {ROW.map(([x, y], index) => (
+          <m.rect
+            key={`row-${index}`}
+            x={x}
+            y={y}
+            {...MARK}
+            initial={false}
+            animate={{ opacity: isOpen ? 0 : 1 }}
+            transition={fadeTransition}
+          />
+        ))}
       </m.svg>
     </LazyMotion>
   );

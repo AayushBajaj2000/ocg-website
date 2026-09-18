@@ -2,13 +2,15 @@ import Section from "@/components/layout/sections/Section";
 import BannerShader from "@/components/shaders/banner-shader/BannerShader";
 import { Reveal } from "@/components/ui/animations/Reveal";
 import { StripeReveal } from "@/components/ui/animations/StripeReveal";
+import { cn } from "@/lib/utils";
 
 type Props = {
   title: string;
   description: string;
+  children?: React.ReactNode;
 };
 
-const Banner: React.FC<Props> = ({ title, description }) => {
+const Banner: React.FC<Props> = ({ title, description, children }) => {
   return (
     <Section
       container
@@ -22,15 +24,22 @@ const Banner: React.FC<Props> = ({ title, description }) => {
         >
           {title}
         </StripeReveal>
-        <Reveal
-          as="p"
-          className="text-black-3 max-w-77.25 text-sm tracking-[-2%] md:text-base lg:max-w-103.25"
-          delay={0.15}
-          distance="1.5rem"
-          byLine
+        <div
+          className={cn({
+            "flex flex-col gap-4 md:gap-6": children,
+          })}
         >
-          {description}
-        </Reveal>
+          <Reveal
+            as="p"
+            className="text-black-3 max-w-77.25 text-sm tracking-[-2%] md:text-base lg:max-w-103.25"
+            delay={0.15}
+            distance="1.5rem"
+            byLine
+          >
+            {description}
+          </Reveal>
+          {children}
+        </div>
       </div>
     </Section>
   );
