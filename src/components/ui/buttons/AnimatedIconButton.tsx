@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link, { LinkProps } from "next/link";
 import { SweepText } from "@/components/ui/animations/SweepText";
+import { cn } from "@/lib/utils";
 
 type AnimatedIconButtonProps = {
   href?: LinkProps["href"];
@@ -10,6 +11,8 @@ type AnimatedIconButtonProps = {
   label: string;
   className?: string;
   containerClassName?: string;
+  /** Classes for the outer link/button, e.g. to stretch it full width. */
+  wrapperClassName?: string;
   /** Opens `href` in a new tab (and says so to screen readers). */
   external?: boolean;
 };
@@ -47,6 +50,7 @@ export function AnimatedIconButton({
   label,
   className = "bg-brand-blue text-white",
   containerClassName,
+  wrapperClassName,
   external,
 }: AnimatedIconButtonProps) {
   if (href)
@@ -54,7 +58,7 @@ export function AnimatedIconButton({
       <Link
         href={href}
         aria-label={external ? `${label} (opens in a new tab)` : label}
-        className="group flex items-center gap-1"
+        className={cn("group flex items-center gap-1", wrapperClassName)}
         {...(external && { target: "_blank", rel: "noopener noreferrer", prefetch: false })}
       >
         <span
@@ -82,7 +86,10 @@ export function AnimatedIconButton({
         type={type}
         disabled={disabled}
         aria-label={label}
-        className="group flex cursor-pointer items-center gap-1 disabled:cursor-not-allowed disabled:opacity-60"
+        className={cn(
+          "group flex cursor-pointer items-center gap-1 disabled:cursor-not-allowed disabled:opacity-60",
+          wrapperClassName,
+        )}
       >
         <span
           className={`flex size-10 scale-0 rotate-90 items-center justify-center group-hover:scale-100 group-hover:rotate-180 ${DURATION} ${EASE} ${className}`}

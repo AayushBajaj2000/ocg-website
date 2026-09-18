@@ -171,4 +171,14 @@ body {
   .app-container {
     @apply mx-auto max-w-95 overflow-hidden sm:max-w-152 md:max-w-182 lg:max-w-246 xl:max-w-300 xl:px-16 2xl:max-w-359.25;
   }
+
+  /* Faint squared "blueprint" backdrop (404 page). */
+  .bg-blueprint-grid {
+    --blueprint-line: color-mix(in srgb, var(--color-hairline) 35%, transparent);
+    background-image:
+      linear-gradient(to right, var(--blueprint-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--blueprint-line) 1px, transparent 1px);
+    background-size: 3.25rem 3.25rem;
+    background-position: center top;
+  }
 }
