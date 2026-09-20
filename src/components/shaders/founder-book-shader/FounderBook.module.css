@@ -7,6 +7,10 @@
   --book-h: calc(100svh - var(--header-offset) - 2 * var(--gap) - 15px);
   --spread-edge: 12px;
   --cover-edge: 10px;
+  --book-depth: 12px;
+  --board: 4px;
+  --corner: 13px;
+  --step: calc(var(--book-depth) / 12);
   position: relative;
   height: calc(100svh - var(--header-offset) + 580px + var(--read-distance, 0px));
   padding-top: var(--gap);
@@ -61,6 +65,11 @@
   transform: translateZ(1px);
 }
 
+/* The fold overlaps the seam by 1px; until the book is open that sliver would poke out past the spine. */
+.book:not([data-open])::before {
+  clip-path: inset(0 0 0 1px);
+}
+
 .spread {
   position: absolute;
   top: 0;
@@ -74,11 +83,47 @@
   border: var(--spread-edge) solid var(--blue);
   border-left-width: 0;
   border-radius: 0 13px 13px 0;
+  /* Page block and back cover, one 1px step per layer so both ends finish on a clean diagonal. */
   box-shadow:
-    9px 12px 20px #17345b26,
-    3px 3px 0 #d1d8df,
-    6px 6px 0 #fbfcff,
-    8px 8px 0 #b7c3d3;
+    calc(var(--step) * 1) calc(var(--step) * 1) 0 #8fa3bb,
+    calc(var(--step) * 2) calc(var(--step) * 2) 0 #fdfeff,
+    calc(var(--step) * 3) calc(var(--step) * 3) 0 #dbe2ea,
+    calc(var(--step) * 4) calc(var(--step) * 4) 0 #fdfeff,
+    calc(var(--step) * 5) calc(var(--step) * 5) 0 #dbe2ea,
+    calc(var(--step) * 6) calc(var(--step) * 6) 0 #fdfeff,
+    calc(var(--step) * 7) calc(var(--step) * 7) 0 #dbe2ea,
+    calc(var(--step) * 8) calc(var(--step) * 8) 0 #fdfeff,
+    calc(var(--step) * 9) calc(var(--step) * 9) 0 #a9b8ca,
+    calc(var(--step) * 10) calc(var(--step) * 10) 0 #1d5fbc,
+    calc(var(--step) * 11) calc(var(--step) * 11) 0 #1d5fbc,
+    calc(var(--step) * 12) calc(var(--step) * 12) 0 #164f9e;
+}
+
+/* The underside of the block sits in shade; skewed to follow the 45° extrusion. */
+.spread::before {
+  content: "";
+  position: absolute;
+  right: calc(13px - var(--spread-edge));
+  bottom: calc(-1 * (var(--spread-edge) + var(--book-depth)));
+  left: 0;
+  height: var(--book-depth);
+  pointer-events: none;
+  background: linear-gradient(90deg, #0c264633 calc(100% - 28px), transparent);
+  transform: skewX(45deg);
+  transform-origin: 0 0;
+}
+
+/* Ground shadow, cast from behind the spread so it never paints over the page block. */
+.book::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 50%;
+  pointer-events: none;
+  border-radius: 0 13px 13px 0;
+  box-shadow:
+    13px 15px 4px #17345b40,
+    18px 26px 32px #17345b2e;
+  transform: translateZ(-1px);
 }
 
 .spread::after {
@@ -156,10 +201,10 @@
 }
 
 .heading {
-  margin: 0 0 14px;
+  margin: 0 0 calc(14px * var(--fit, 1));
   color: #202d40;
   font-family: var(--hand);
-  font-size: 31px;
+  font-size: calc(31px * var(--fit, 1));
   font-style: italic;
   font-weight: 600;
   line-height: 1.3;
@@ -167,10 +212,10 @@
 }
 
 .founderCopy p {
-  margin: 0 0 18px;
+  margin: 0 0 calc(18px * var(--fit, 1));
   color: #3e4650;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: calc(16px * var(--fit, 1));
   line-height: 1.65;
 }
 
@@ -179,13 +224,13 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 20px;
-  margin-top: 28px;
+  gap: calc(20px * var(--fit, 1));
+  margin-top: calc(28px * var(--fit, 1));
 }
 
 .signoff span {
   display: block;
-  margin-top: 5px;
+  margin-top: calc(5px * var(--fit, 1));
   color: #79808a;
   font-family: Georgia, serif;
   font-size: 11px;
@@ -193,18 +238,18 @@
 }
 
 .signature {
-  margin: 0 0 7px;
+  margin: 0 0 calc(7px * var(--fit, 1));
   color: #243b5b;
   font-family: var(--hand);
-  font-size: 34px;
+  font-size: calc(34px * var(--fit, 1));
   font-style: italic;
   transform: rotate(-3deg);
 }
 
 .portrait {
   display: block;
-  width: 82px;
-  height: 82px;
+  width: calc(82px * var(--fit, 1));
+  height: calc(82px * var(--fit, 1));
   margin: 0;
   padding: 0;
   object-fit: cover;
@@ -247,9 +292,9 @@
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 6' preserveAspectRatio='none'%3E%3Cpath fill='%232068cc' d='M28 6V0Q14 6 0 6Z'/%3E%3C/svg%3E");
   background-position:
     0 0,
-    0 var(--cover-edge),
+    0 var(--spread-edge),
     0 100%,
-    0 calc(100% - var(--cover-edge));
+    0 calc(100% - var(--spread-edge));
   background-size: 28px 6px;
   background-repeat: no-repeat;
   transform: rotateY(180deg) translateZ(3px);
@@ -257,18 +302,41 @@
   -webkit-backface-visibility: hidden;
 }
 
-.cover::after {
+/* Fore edge of the board: spans the full thickness between face and inside cover, flush with both. */
+.cover::after,
+.coverArc {
   content: "";
   position: absolute;
-  top: 0;
-  right: -1px;
-  width: 4px;
-  height: 100%;
-  background: #164f9e;
-  transform: rotateY(90deg);
-  transform-origin: left;
+  width: var(--board);
+  pointer-events: none;
+  background: linear-gradient(90deg, #12438a, #1f62c0 45%, #164f9e);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+}
+
+.cover::after {
+  top: var(--corner);
+  bottom: var(--corner);
+  left: 100%;
+  margin-left: calc(var(--board) / -2);
+  transform: rotateY(90deg);
+}
+
+/* The edge carried round each outer corner: short facets swung about the corner's centre. */
+.coverArc {
+  --facet: calc(var(--corner) * 0.29);
+  left: calc(100% - var(--corner) - var(--board) / 2);
+  height: var(--facet);
+}
+
+.coverArcTop {
+  top: calc(var(--corner) - var(--facet) / 2);
+  transform: rotateZ(calc(-1 * var(--a))) translateX(var(--corner)) rotateY(90deg);
+}
+
+.coverArcBottom {
+  bottom: calc(var(--corner) - var(--facet) / 2);
+  transform: rotateZ(var(--a)) translateX(var(--corner)) rotateY(90deg);
 }
 
 .coverFace,
@@ -287,7 +355,7 @@
   background-image:
     linear-gradient(90deg, #133f8122, transparent 3%, #ffffff14 4%, transparent 7%),
     repeating-linear-gradient(0deg, transparent, transparent 2px, #ffffff03 3px);
-  border-radius: 3px 13px 13px 3px;
+  border-radius: 3px var(--corner) var(--corner) 3px;
   box-shadow: 7px 14px 28px #17345b2b;
   transform: translateZ(2px);
 }
@@ -295,9 +363,28 @@
 .coverBack {
   overflow: hidden;
   background: #fff;
+  /* Same frame as the facing page, so the two halves line up across the fold. */
+  border-width: var(--spread-edge);
   border-right-width: 0;
-  border-radius: 13px 0 0 13px;
-  box-shadow: -5px 12px 18px #17345b25;
+  border-radius: var(--corner) 0 0 var(--corner);
+  /* Open, the cover lies flat as a thin board beside the page block, extruded the same way.
+     The extrusion only grows in over the last fifth of the swing; mid-air the real edge does the work. */
+  --flat: max(0, (1 - var(--page-shadow, 0.75) / 0.75) * 5 - 4);
+  box-shadow:
+    calc(var(--flat) * 1px) calc(var(--flat) * 1px) 0 #1d5fbc,
+    calc(var(--flat) * 2px) calc(var(--flat) * 2px) 0 #1d5fbc,
+    calc(var(--flat) * 3px) calc(var(--flat) * 3px) 0 #164f9e,
+    calc(var(--flat) * 4px) calc(var(--flat) * 6px) 4px #17345b33,
+    -5px 12px 18px #17345b25;
+  /* Keep the board out of the gutter, but let it and its shadow run on beneath the book. */
+  clip-path: polygon(
+    -40px -40px,
+    100% -40px,
+    100% 100%,
+    calc(100% + 60px) 100%,
+    calc(100% + 60px) calc(100% + 60px),
+    -40px calc(100% + 60px)
+  );
   transform: rotateY(180deg) translateZ(2px);
 }
 
@@ -641,12 +728,12 @@
   }
 
   .signature {
-    font-size: 27px;
+    font-size: calc(27px * var(--fit, 1));
   }
 
   .portrait {
-    width: 65px;
-    height: 65px;
+    width: calc(65px * var(--fit, 1));
+    height: calc(65px * var(--fit, 1));
   }
 
   .ai {
@@ -685,7 +772,7 @@
   .signoff {
     flex-shrink: 0;
     margin-top: auto;
-    padding-top: 24px;
+    padding-top: calc(24px * var(--fit, 1));
   }
 }
 
@@ -709,21 +796,21 @@
   }
 
   .heading {
-    font-size: 28px;
+    font-size: calc(28px * var(--fit, 1));
   }
 
   .founderCopy p {
-    margin-bottom: 12px;
+    margin-bottom: calc(12px * var(--fit, 1));
     line-height: 1.45;
   }
 
   .signoff {
-    padding-top: 16px;
+    padding-top: calc(16px * var(--fit, 1));
   }
 
   .portrait {
-    width: 64px;
-    height: 64px;
+    width: calc(64px * var(--fit, 1));
+    height: calc(64px * var(--fit, 1));
   }
 }
 
@@ -732,6 +819,7 @@
     --gap: 20px;
     --spread-edge: 8px;
     --cover-edge: 8px;
+    --book-depth: 8px;
   }
 
   .book {
@@ -740,6 +828,11 @@
 
   .book::before {
     left: -1px;
+  }
+
+  .book::after {
+    left: 0;
+    border-radius: 0 10px 10px 0;
   }
 
   .spread {
