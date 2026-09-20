@@ -5,6 +5,7 @@ export const FOUNDER_BOOK_DEFAULTS = Object.freeze({
 
 const STATUS_OPEN = "Founders Talk. Book open. Drag a joke to move it.";
 const STATUS_CLOSED = "Scroll down to open the book.";
+const MIN_FIT = 0.7;
 const MOVES = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -18,6 +19,7 @@ export function createFounderBook(host, options = {}) {
   const back = host.querySelector("[data-book-back]");
   const status = host.querySelector("[data-book-status]");
   const scrollTargets = [...host.querySelectorAll("[data-book-scroll]")];
+  const fitTargets = [...host.querySelectorAll("[data-book-fit]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const narrow = window.matchMedia("(max-width: 700px)");
   const controller = new AbortController();
@@ -46,14 +48,33 @@ export function createFounderBook(host, options = {}) {
     schedule();
   }
 
-  // Page content never scrolls on its own; its overflow is added to the section's scroll length.
+  function overflowOf(target) {
+    const clip = target.parentElement;
+    const { paddingTop, paddingBottom } = getComputedStyle(clip);
+    const viewport = clip.clientHeight - parseFloat(paddingTop) - parseFloat(paddingBottom);
+    return Math.max(0, Math.ceil(target.offsetHeight - viewport));
+  }
+
+  // On wide screens the letter shrinks to fit its page, so an open book has nothing left to scroll.
+  function fit(target) {
+    target.style.removeProperty("--fit");
+    if (narrow.matches || !overflowOf(target)) return;
+    let low = MIN_FIT;
+    let high = 1;
+    for (let step = 0; step < 6; step++) {
+      const mid = (low + high) / 2;
+      target.style.setProperty("--fit", String(mid));
+      if (overflowOf(target)) high = mid;
+      else low = mid;
+    }
+    target.style.setProperty("--fit", low.toFixed(3));
+  }
+
+  // Page content never scrolls on its own; any overflow left after fitting is added to the
+  // section's scroll length.
   function measureRead() {
-    overflows = scrollTargets.map((target) => {
-      const clip = target.parentElement;
-      const { paddingTop, paddingBottom } = getComputedStyle(clip);
-      const viewport = clip.clientHeight - parseFloat(paddingTop) - parseFloat(paddingBottom);
-      return Math.max(0, Math.ceil(target.offsetHeight - viewport));
-    });
+    fitTargets.forEach(fit);
+    overflows = scrollTargets.map(overflowOf);
     const next = Math.max(0, ...overflows);
     if (next !== readDistance) {
       readDistance = next;
@@ -229,7 +250,14 @@ export function createFounderBook(host, options = {}) {
   window.addEventListener("resize", measure, { signal });
   window.addEventListener("pageshow", schedule, { signal });
   reducedMotion.addEventListener("change", schedule, { signal });
-  narrow.addEventListener("change", syncBack, { signal });
+  narrow.addEventListener(
+    "change",
+    () => {
+      syncBack();
+      measureRead();
+    },
+    { signal },
+  );
 
   syncBack();
   readHeaderOffset();

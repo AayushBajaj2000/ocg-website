@@ -23,9 +23,9 @@ export const FOUNDER_BOOK: IFounderBook = {
   spreadLabel: "Inside the founder book",
   heading: "Founder Talk",
   paragraphs: [
-    "A lot has changed over the past few years. Today, anyone can use AI to create a website, an app, or even a brand identity in a matter of hours. We use these tools every day, but we’ve learned that the real challenge was never writing code it was knowing what to build.",
+    "A lot has changed over the past few years. Today, anyone can use AI to create a website, an app, or even a brand identity in a matter of hours. We use these tools every day, but we’ve learned that the real challenge was never writing code — it was knowing what to build.",
     "The best products come from understanding customers, operations, bottlenecks, and the details that make a business work. A company doesn’t always need another website, more features, or more software. It needs the right systems, experiences, and ideas to remove friction and support meaningful growth.",
-    "That’s why OpenCore is a small team by design. No layers of account managers, endless meetings, or disconnected departments. We work as part of your team asking questions, challenging assumptions, and taking ownership of the outcome. Our job isn’t simply to deliver a website or product. It’s to help you build the company you’re trying to become.",
+    "That’s why OpenCore is a small team by design. No layers of account managers, endless meetings, or disconnected departments. We work as part of your team, asking questions, challenging assumptions, and taking ownership of the outcome. Our job isn’t simply to deliver a website or product. It’s to help you build the company you’re trying to become.",
   ],
   author: {
     name: "Austin Page",

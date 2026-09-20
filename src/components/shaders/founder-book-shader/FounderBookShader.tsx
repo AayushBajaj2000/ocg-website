@@ -19,6 +19,9 @@ export type FounderBookShaderProps = Partial<FounderBookOptions> & {
   style?: React.CSSProperties;
 };
 
+// Facet angles that carry the cover's fore edge round each rounded outer corner (15° apiece).
+const EDGE_ARC = [7.5, 22.5, 37.5, 52.5, 67.5, 82.5];
+
 const BookImage: React.FC<{ img: IFounderBookImage; className?: string }> = ({
   img,
   className,
@@ -123,7 +126,7 @@ export default function FounderBookShader({
           >
             <div className={styles.spreadBody} data-book-scroll>
               <article className={cn(styles.page, styles.letter)}>
-                <div className={styles.letterBody} data-book-scroll>
+                <div className={styles.letterBody} data-book-scroll data-book-fit>
                   <h3 className={styles.heading}>{content.heading}</h3>
                   <div className={styles.founderCopy}>
                     {content.paragraphs.map((paragraph) => (
@@ -147,6 +150,20 @@ export default function FounderBookShader({
           </section>
 
           <div className={styles.cover}>
+            {EDGE_ARC.map((angle) => (
+              <Fragment key={angle}>
+                <span
+                  className={cn(styles.coverArc, styles.coverArcTop)}
+                  style={{ "--a": `${angle}deg` } as React.CSSProperties}
+                  aria-hidden="true"
+                />
+                <span
+                  className={cn(styles.coverArc, styles.coverArcBottom)}
+                  style={{ "--a": `${angle}deg` } as React.CSSProperties}
+                  aria-hidden="true"
+                />
+              </Fragment>
+            ))}
             <div className={styles.coverFace} data-book-face>
               <span className={styles.coverEdition}>
                 {content.edition}
