@@ -12,8 +12,13 @@ const nextConfig: NextConfig = {
   }),
   allowedDevOrigins: ["172.20.10.3"],
   // URLs from the previous opencoregroup.com site, so indexed pages and old links keep working.
-  // Post and case-study slugs are unchanged; case studies without a new page land on /work.
+  //
+  // Permanent (308) only where the destination is the page's real successor: search engines then
+  // move the old URL's ranking to it. Temporary (307) where the destination is a stand-in for a
+  // page that doesn't exist yet: that keeps the old URL indexed, so building the real page later
+  // doesn't start from zero.
   redirects: async () => [
+    // The blog, renamed. Post slugs are unchanged.
     { source: "/insights", destination: "/blog", permanent: true },
     { source: "/insights/:slug", destination: "/blog/:slug", permanent: true },
     { source: "/about", destination: "/company", permanent: true },
@@ -23,13 +28,23 @@ const nextConfig: NextConfig = {
       destination: "/work/:slug",
       permanent: true,
     },
-    { source: "/projects/:slug", destination: "/work", permanent: true },
-    { source: "/resources/:slug", destination: "/resources?resource=:slug", permanent: true },
+    // Case studies without a page here yet (DentiMatch, Eclectic Events, eFundrs, Taurus,
+    // ThreadBreak, OpenCore). Make each one permanent, to its own page, when that page is built.
+    { source: "/projects/:slug", destination: "/work", permanent: false },
+    // Resources open in a popup for now rather than on a page of their own.
+    { source: "/resources/:slug", destination: "/resources?resource=:slug", permanent: false },
     // The legal documents used to be PDFs; they are pages now.
     { source: "/pdfs/ocg-website-privacy-policy.pdf", destination: "/privacy", permanent: true },
     { source: "/pdfs/ocg-website-terms-of-use.pdf", destination: "/terms", permanent: true },
     // Share images the old site's pages pointed at; links already posted on social still load them.
-    { source: "/openGraph/:file", destination: "/og/home", permanent: true },
+    { source: "/openGraph/:file", destination: "/og/home", permanent: false },
+    // Shortcut editors have bookmarked. The Studio is hosted by Sanity.
+    { source: "/studio", destination: "https://opencoregroup.sanity.studio", permanent: false },
+    {
+      source: "/studio/:path*",
+      destination: "https://opencoregroup.sanity.studio/:path*",
+      permanent: false,
+    },
   ],
 };
 
