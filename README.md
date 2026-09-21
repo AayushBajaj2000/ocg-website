@@ -6,8 +6,11 @@ Corporate/marketing site for OpenCore Group, built from the `OCG v2` Figma file.
 
 - [Next.js](https://nextjs.org) 16 (App Router), TypeScript
 - Tailwind CSS v4 (design tokens live in `src/app/globals.css`)
-- Blog posts are read from the official OpenCore Group Sanity project (read-only, no embedded
-  Studio) via `@sanity/client` + TanStack Query; other content is hardcoded in constants
+- Content (blog, resources, team, FAQs, client logos and testimonials) is read from the OpenCore
+  Group Sanity project, server-side and tokenless, via `@sanity/client`; the rest is hardcoded
+  in constants
+- The Sanity Studio lives in [`studio/`](studio) as its own npm package. It is not part of the
+  Next.js build and is hosted by Sanity at https://opencoregroup.sanity.studio
 - Deploy target: Vercel
 
 ## Getting started
@@ -81,9 +84,26 @@ the real assets/decisions from Figma or the client:
 
 ## Deploy
 
-Push to a GitHub repo connected to Vercel, or run `vercel` from this
-directory. No environment variables are required for the current build.
+Vercel's Git integration builds and deploys the site on every push to `main`; there is no deploy
+job in this repo. Set the variables from `.env.example` in the Vercel project (with real Resend and
+Turnstile keys).
 
 Vercel auto-detects pnpm from `pnpm-lock.yaml` and honours the `packageManager`
-pin, so no dashboard change is needed — just make sure `package-lock.json` never
-comes back, or lockfile detection becomes ambiguous.
+pin, so no dashboard change is needed — just make sure a root `package-lock.json` never
+comes back, or lockfile detection becomes ambiguous. (`studio/package-lock.json` is fine: the
+Studio is excluded from Vercel by `.vercelignore`.)
+
+## Sanity Studio
+
+The Studio in [`studio/`](studio) is a separate npm package (Sanity v3, React 18) that the site's
+TypeScript, ESLint and Prettier configs ignore.
+
+```bash
+cd studio
+npm ci
+npm run dev      # http://localhost:3333
+```
+
+Pushing a change under `studio/` to `main` runs `.github/workflows/deploy-studio.yml`, which
+deploys the Studio and its schema to https://opencoregroup.sanity.studio. It needs a
+`SANITY_AUTH_TOKEN` repository secret holding a Sanity token with the "Deploy Studio" role.

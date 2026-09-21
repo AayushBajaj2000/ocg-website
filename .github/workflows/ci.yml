@@ -25,6 +25,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # The build validates its env and prerenders Sanity content. `.env.example` holds safe
+      # values for both: Cloudflare's always-pass Turnstile pair and the public, read-only dataset.
+      - run: cp .env.example .env.local
+
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm exec oxlint

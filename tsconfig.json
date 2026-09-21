@@ -33,5 +33,5 @@
     ".next-lighthouse/types/**/*.ts",
     ".next-lighthouse/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "studio"]
 }
