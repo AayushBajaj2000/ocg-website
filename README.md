@@ -1,6 +1,11 @@
-# OpenCore Group — Marketing Website
+# OpenCore Group — Website
 
-Corporate/marketing site for OpenCore Group, built from the `OCG v2` Figma file.
+The website for OpenCore Group, live at **https://www.opencoregroup.com**, and the Sanity Studio that
+manages its content. Built from the `OCG v2` Figma file.
+
+This is the second version of the site. It took over the domain on September 21, 2026; v1 is
+archived, read-only, at
+[`OpenCoreGroup/archived-opencore-website-v1`](https://github.com/OpenCoreGroup/archived-opencore-website-v1).
 
 ## Stack
 
@@ -35,52 +40,62 @@ Open [http://localhost:3000](http://localhost:3000).
 | `pnpm start`        | Serve the production build        |
 | `pnpm lint`         | Run ESLint                        |
 | `pnpm exec oxlint`  | Run oxlint (Tailwind token rules) |
+| `pnpm typecheck`    | Generate route types, then `tsc`  |
 | `pnpm format`       | Format the codebase with Prettier |
 | `pnpm format:check` | Check formatting without writing  |
+| `pnpm lighthouse`   | Build and run Lighthouse locally  |
+
+CI (`.github/workflows/ci.yml`) runs lint, format check, oxlint, typecheck and a production build
+on every push and pull request.
 
 ## Environment variables
 
-Copy `.env.example` to `.env` and fill in the values. Client-side variables are validated in
+Copy `.env.example` to `.env.local` and fill in the values (or `vercel env pull .env.local` once
+the repo is linked to the Vercel project). Client-side variables are validated in
 `src/lib/env/client.ts`, server-only secrets in `src/lib/env/server.ts`. The Sanity variables
 (`SANITY_*`) point at the read-only production dataset and are only used on the server.
 
 ## Fonts
 
-- **Switzer** (Medium/Regular) — self-hosted via `next/font/local`, files in
-  `src/fonts/`. Licensed for free commercial use via [Fontshare](https://www.fontshare.com/fonts/switzer).
-- **Inter** (Medium) — loaded via `next/font/google`, used only for the
-  desktop "Book a call" nav pill per the Figma spec.
+- **Switzer** (Light/Regular/Medium) — self-hosted via `next/font/local`, files in `src/fonts/`.
+  Licensed for free commercial use via [Fontshare](https://www.fontshare.com/fonts/switzer). The
+  two `.ttf` copies exist only for the generated share images, which cannot read woff2.
+- **Google fonts** via `next/font/google` (`src/lib/fonts.ts`): Inter (the "Book a call" nav pill),
+  JetBrains Mono (eyebrows, dates, code), and Dancing Script, Allura and Caveat (the founder book).
 
 ## Project structure
 
 ```
 src/
-  app/            # App Router pages, layout, global styles/tokens
+  app/            # App Router pages, plus sitemap, robots, manifest, icons, /og and /llms.txt
   components/
-    icons/        # Inline SVG icons (see note below)
-    layout/       # Nav, (future) Footer
-    sections/     # Page sections, grouped by page (Hero, ...)
-    ui/           # Generic building blocks (Button, DottedRule, GridGuides)
-  fonts/          # Self-hosted Switzer woff2 files
-  lib/            # Shared utilities (font setup)
+    analytics/    # Consent banner and the consent-gated Google Analytics loader
+    layout/       # Header, footer and the sections shared between pages
+    legal/        # Layout for the privacy policy and terms of use
+    seo/          # JSON-LD
+    shaders/      # WebGL pieces (banner, building, founder book)
+    ui/           # Building blocks: buttons, cards, carousels, forms, animations
+  fonts/          # Self-hosted Switzer files
+  lib/
+    constants/    # Hardcoded copy and config
+    sanity/       # Client, GROQ queries and image loaders
+    blog/ faq/ team/ testimonials/ trustedBy/ resources/   # One server fetcher per Sanity type
+    seo/          # Per-page titles, descriptions and share images; structured data
+    legal/        # Text of the privacy policy and terms of use
+    analytics/    # Consent store and gtag helpers
+studio/           # Sanity Studio (separate npm package)
 ```
 
-## Known placeholders / open items
+## SEO, analytics and legal
 
-The Home page hero was built from a written design spec while Figma edit
-access was blocked (view-only seat). A few things are placeholders pending
-the real assets/decisions from Figma or the client:
-
-- **Logo assets** (`OpenCoreWordmark`, `OpenCoreMark` in `src/components/icons/`)
-  are stand-ins — swap for the real exported SVGs once available.
-- **Link destinations** — all CTAs/nav links currently point to `#`.
-- **Mobile menu** — the drawer content (nav links + Book a call) was built
-  from a reasonable default; the Figma file only shows the closed state, so
-  confirm the intended pattern (drawer vs. sheet vs. full-screen) with design.
-- **Showcase reel** — built as an empty placeholder panel sized for a future
-  video/animation embed; confirm what that embed actually is.
-- **Button corner radius** — not specified in the design-token handoff, used
-  a reasonable default (`rounded-lg`).
+- Every static page's title, description, canonical and share image comes from one registry,
+  `src/lib/seo/pages.ts`. Add a page there and it also appears in `/sitemap.xml`.
+- URLs from v1 of the site are redirected in `next.config.ts`: permanently where the destination is
+  the real successor, temporarily where it is a stand-in for a page that isn't built yet.
+- Google Analytics (GA4) loads only after the visitor accepts the cookie banner, and only on the
+  production domain. Vercel Speed Insights is cookieless and always on.
+- The privacy policy and terms of use are hardcoded in `src/lib/legal/`. Keep the privacy policy in
+  step with what the site actually collects and which services it uses.
 
 ## Deploy
 

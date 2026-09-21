@@ -1,5 +1,5 @@
 {
-  "name": "opencore-website",
+  "name": "ocg-website",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.32.1",
