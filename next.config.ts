@@ -11,6 +11,21 @@ const nextConfig: NextConfig = {
     productionBrowserSourceMaps: true,
   }),
   allowedDevOrigins: ["172.20.10.3"],
+  // URLs from the previous opencoregroup.com site, so indexed pages and old links keep working.
+  // Post and case-study slugs are unchanged; case studies without a new page land on /work.
+  redirects: async () => [
+    { source: "/insights", destination: "/blog", permanent: true },
+    { source: "/insights/:slug", destination: "/blog/:slug", permanent: true },
+    { source: "/about", destination: "/company", permanent: true },
+    { source: "/projects", destination: "/work", permanent: true },
+    {
+      source: "/projects/:slug(anesthesia-one|fraiche-table|page-flooring)",
+      destination: "/work/:slug",
+      permanent: true,
+    },
+    { source: "/projects/:slug", destination: "/work", permanent: true },
+    { source: "/resources/:slug", destination: "/resources?resource=:slug", permanent: true },
+  ],
 };
 
 export default nextConfig;

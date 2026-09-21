@@ -1,3 +1,4 @@
+import { getSiteUrl } from "@/lib/env/server";
 import type { Metadata } from "next";
 import { switzer, inter, dancingScript, allura, jetbrainsMono } from "@/lib/fonts";
 import Header from "@/components/layout/header/Header";
@@ -10,6 +11,8 @@ import QueryProvider from "@/components/providers/QueryProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  // Resolves relative canonical and share-image URLs against the production host.
+  metadataBase: new URL(getSiteUrl()),
   title: "OpenCore Group",
   description:
     "OpenCore Group partners with growing businesses and startups to create stronger brands, better customer experiences, and products that drive growth.",

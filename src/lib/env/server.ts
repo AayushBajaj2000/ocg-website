@@ -26,7 +26,14 @@ export const getServerEnv = (): ServerEnv => {
   return cached;
 };
 
-export const getSiteUrl = (): string => getServerEnv().SITE_URL.replace(/\/+$/, "");
+const PRODUCTION_SITE_URL = "https://www.opencoregroup.com";
+
+// Read on its own, not through `getServerEnv`: page metadata needs the origin on every route, and
+// a missing mail or Turnstile secret shouldn't take the whole site's build down with it.
+export const getSiteUrl = (): string => {
+  const parsed = z.url().safeParse(process.env.SITE_URL);
+  return (parsed.success ? parsed.data : PRODUCTION_SITE_URL).replace(/\/+$/, "");
+};
 
 const sanityEnvSchema = z.object({
   SANITY_PROJECT_ID: z.string().min(1, "SANITY_PROJECT_ID is missing"),
