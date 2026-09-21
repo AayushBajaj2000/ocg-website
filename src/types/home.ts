@@ -20,7 +20,7 @@ export interface IHome {
   desktop: {
     /** Poster for the wallpaper video: the loop's first frame, so playback starts without a jump. */
     wallpaper: string;
-    video: { sources: IHomeDesktopVideoSource[]; stillAt: number };
+    video: { sources: IHomeDesktopVideoSource[]; stillAt: number; playbackRate: number };
     /** Extra shortcut pinned top-right, only in full screen. */
     contact: IHomeDesktopIcon;
     icons: IHomeDesktopIcon[];

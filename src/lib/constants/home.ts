@@ -46,6 +46,9 @@ export const HOME_SECTION: IHome = {
         { src: "/hero-os/wallpaper.mp4", type: "video/mp4" },
       ],
       stillAt: 2.5,
+      // 1 is the clip's own pace. Slowed a touch so the sky drifts rather than rushes; much
+      // below 0.7 the 24fps source starts to look steppy.
+      playbackRate: 0.8,
     },
     contact: {
       label: "Contact Us",

@@ -58,8 +58,11 @@ const DesktopHero: React.FC = () => {
 
         {/* Docked on a phone: two rows across the top. Otherwise (see `.desktop-icons`): a
             column that wraps into a new one when the desktop is too short to hold it. */}
-        <nav aria-label="Desktop shortcuts" className="absolute top-14 bottom-4 left-2 md:left-6">
-          <ul className="desktop-icons grid grid-flow-col grid-rows-[auto_auto] content-start gap-x-2 gap-y-5 md:gap-x-8">
+        <nav
+          aria-label="Desktop shortcuts"
+          className="absolute top-12 bottom-4 left-2 md:top-14 md:left-6"
+        >
+          <ul className="desktop-icons grid grid-flow-col grid-rows-[auto_auto] content-start gap-x-1 gap-y-3 [--icon-scale:0.7] md:gap-x-8 md:gap-y-5 md:[--icon-scale:1]">
             {desktop.icons.map((icon) => (
               <li key={icon.label}>
                 <DesktopIcon {...icon} />
@@ -71,7 +74,7 @@ const DesktopHero: React.FC = () => {
           </ul>
         </nav>
 
-        <div className="absolute top-14 right-2 hidden group-data-[full=true]/desktop:block md:right-6">
+        <div className="absolute top-14 right-2 hidden [--icon-scale:0.7] group-data-[full=true]/desktop:block md:right-6 md:[--icon-scale:1]">
           <DesktopIcon {...desktop.contact} />
         </div>
         <DesktopFinder

@@ -4,19 +4,22 @@ import {
   DesktopModeButton,
   DesktopModeLabel,
 } from "@/app/_components/desktop-hero/DesktopMode";
-import { ICON_LABEL, ICON_WRAPPER } from "@/app/_components/desktop-hero/desktopStyles";
+import { ICON_ART, ICON_LABEL, ICON_WRAPPER } from "@/app/_components/desktop-hero/desktopStyles";
 import type { IHomeDesktopIcon } from "@/types";
 
 const DesktopIcon: React.FC<IHomeDesktopIcon> = ({ label, fullLabel, href, img }) => {
   const content = (
     <>
-      <span className="flex h-15 items-center justify-center">
+      <span className={ICON_ART}>
         <Image
           src={img.url}
           alt={img.alt}
           width={img.width}
           height={img.height}
-          style={{ width: img.width, height: img.height }}
+          style={{
+            width: `calc(var(--icon-scale, 1) * ${img.width}px)`,
+            height: `calc(var(--icon-scale, 1) * ${img.height}px)`,
+          }}
           className="object-cover transition-transform duration-200 group-hover:scale-105 group-active:scale-95"
         />
       </span>

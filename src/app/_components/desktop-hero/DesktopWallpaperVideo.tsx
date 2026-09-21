@@ -10,6 +10,8 @@ type Props = {
   sources: IHomeDesktopVideoSource[];
   /** Where to rest (in seconds) when motion is reduced: the frame with the sky fully formed. */
   stillAt: number;
+  /** Playback speed, where 1 is the clip's own pace. */
+  playbackRate: number;
 };
 
 /**
@@ -17,7 +19,7 @@ type Props = {
  * the fallback — and fades in once frames are actually flowing, so there is never a blank
  * or frozen first frame. Playback stops while the hero is offscreen or the tab is hidden.
  */
-const DesktopWallpaperVideo: React.FC<Props> = ({ sources, stillAt }) => {
+const DesktopWallpaperVideo: React.FC<Props> = ({ sources, stillAt, playbackRate }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const prefersReducedMotion = useReducedMotion();
@@ -33,6 +35,10 @@ const DesktopWallpaperVideo: React.FC<Props> = ({ sources, stillAt }) => {
       else video.addEventListener("loadedmetadata", seek, { once: true });
       return () => video.removeEventListener("loadedmetadata", seek);
     }
+
+    // Set both: browsers reset `playbackRate` to the default whenever the source (re)loads.
+    video.defaultPlaybackRate = playbackRate;
+    video.playbackRate = playbackRate;
 
     let isInView = false;
     const syncPlayback = () => {
@@ -54,7 +60,7 @@ const DesktopWallpaperVideo: React.FC<Props> = ({ sources, stillAt }) => {
       document.removeEventListener("visibilitychange", syncPlayback);
       video.pause();
     };
-  }, [prefersReducedMotion, stillAt]);
+  }, [prefersReducedMotion, stillAt, playbackRate]);
 
   return (
     <video

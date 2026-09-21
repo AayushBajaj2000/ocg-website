@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
 import { useDesktopMode } from "@/app/_components/desktop-hero/DesktopMode";
-import { ICON_LABEL, ICON_WRAPPER } from "@/app/_components/desktop-hero/desktopStyles";
+import { ICON_ART, ICON_LABEL, ICON_WRAPPER } from "@/app/_components/desktop-hero/desktopStyles";
 import type { IHomeDesktopFile } from "@/types";
 
 type Props = {
@@ -34,8 +34,8 @@ const DesktopFolder: React.FC<Props> = ({ label, href, files }) => {
 
   return (
     <Link href={href} onClick={onClick} className={ICON_WRAPPER}>
-      <span className="flex h-15 items-center justify-center">
-        <span className="relative h-13 w-16 transition-transform duration-200 group-hover:scale-105 group-active:scale-95">
+      <span className={ICON_ART}>
+        <span className="relative h-13 w-16 shrink-0 scale-[var(--icon-scale,1)] transition-transform duration-200 md:group-hover:scale-105 md:group-active:scale-95">
           <svg viewBox="0 0 64 52" aria-hidden className="absolute inset-0 size-full">
             <path
               d="M2 8a4 4 0 0 1 4-4h16l6 6h30a4 4 0 0 1 4 4v32a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"
@@ -45,7 +45,7 @@ const DesktopFolder: React.FC<Props> = ({ label, href, files }) => {
           {files.slice(0, PEEK.length).map((file, index) => (
             <span
               key={file.href}
-              className={`absolute top-2.5 left-1/2 -ml-3.5 h-5 w-7 overflow-hidden rounded-[2px] bg-white shadow-sm ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-y-1.5 ${PEEK[index]}`}
+              className={`absolute top-2.5 left-1/2 -ml-3.5 h-5 w-7 overflow-hidden rounded-xs bg-white shadow-sm ring-1 ring-black/10 transition-transform duration-200 group-hover:-translate-y-1.5 ${PEEK[index]}`}
             >
               <Image src={file.img.url} alt="" fill sizes="28px" className="object-cover" />
             </span>
