@@ -86,7 +86,7 @@ export const PAGE_SEO = {
     title: "Resources",
     description:
       "Free skills, components, Figma files and starters from OpenCore Group – the same resources we use on real client work.",
-    eyebrow: "Open source",
+    eyebrow: "Open Source",
     headline: "Free components, Figma files and starters.",
   },
   contact: {

@@ -10,7 +10,7 @@ const ResourcesHero: React.FC = () => {
           as="h1"
           className="md:text-hero-desktop text-black-1 text-4xl font-medium tracking-[-2%]"
         >
-          Opensource
+          Open Source
         </StripeReveal>
         <Reveal
           as="p"
