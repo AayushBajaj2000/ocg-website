@@ -13,17 +13,21 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Reads the pnpm version from package.json#packageManager — nothing to drift here.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      # The build validates its env and prerenders Sanity content. `.env.example` holds safe
+      # values for both: Cloudflare's always-pass Turnstile pair and the public, read-only dataset.
+      - run: cp .env.example .env.local
 
       - run: pnpm lint
       - run: pnpm format:check

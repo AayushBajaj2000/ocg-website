@@ -1,5 +1,7 @@
 {
   "jsPlugins": ["oxlint-tailwindcss"],
+  // The Sanity Studio is its own npm package with its own toolchain.
+  "ignorePatterns": ["studio/**"],
   "rules": {
     "tailwindcss/prefer-scale-token": [
       "warn",

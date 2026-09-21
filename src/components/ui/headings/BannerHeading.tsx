@@ -6,9 +6,10 @@ import { cn } from "@/lib/utils";
 type Props = {
   as?: ElementType;
   title?: string;
-  description?: string;
   /** Extra classes for the title, e.g. to widen it past the default measure. */
   titleClassName?: string;
+  description?: string;
+  descriptionClassName?: string;
   children?: ReactNode;
 };
 
@@ -17,6 +18,7 @@ const BannerHeading: React.FC<Props> = ({
   title,
   description,
   titleClassName,
+  descriptionClassName,
   children,
 }) => {
   return (
@@ -37,7 +39,10 @@ const BannerHeading: React.FC<Props> = ({
       >
         <Reveal
           as="p"
-          className="text-black-3 max-w-77.25 text-sm tracking-[-2%] md:text-base lg:max-w-103.25"
+          className={cn(
+            "text-black-3 max-w-77.25 text-sm tracking-[-2%] md:text-base lg:max-w-103.25",
+            descriptionClassName,
+          )}
           delay={0.15}
           distance="1.5rem"
           byLine

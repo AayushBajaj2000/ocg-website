@@ -77,3 +77,54 @@ export const CUSTOMER_TESTIMONIALS_QUERY = defineQuery(`
     "photo": customerPhoto.asset->${SANITY_IMAGE_PROJECTION}
   }
 `);
+
+// Every slug, for `generateStaticParams`.
+export const BLOG_POST_SLUGS_QUERY = defineQuery(`
+  *[_type == "blogPost" && defined(slug.current)].slug.current
+`);
+
+// One post with its body. Inline images are dereferenced in the same round trip; `excerpt` is the
+// opening of the body as plain text, for the meta description.
+export const BLOG_POST_QUERY = defineQuery(`
+  *[_type == "blogPost" && slug.current == $slug][0] {
+    "id": _id,
+    "slug": slug.current,
+    title,
+    "publishedAt": coalesce(createdAt, _createdAt),
+    "updatedAt": _updatedAt,
+    "tags": coalesce(tags, []),
+    "author": author->{
+      name,
+      role,
+      "image": image.asset->${SANITY_IMAGE_PROJECTION}
+    },
+    "readingTime": math::max([1, round(length(pt::text(pageContent)) / 5 / 180)]),
+    "excerpt": pt::text(pageContent[_type == "block"][0...3]),
+    "image": image.asset->${SANITY_IMAGE_PROJECTION},
+    "imageFocus": image.hotspot{x, y},
+    "body": coalesce(pageContent[]{
+      ...,
+      _type == "image" => { "asset": asset->${SANITY_IMAGE_PROJECTION} }
+    }, [])
+  }
+`);
+
+// Homepage testimonials: every customer with a complete quote, each with the first two results of
+// the linked project's case study (the real numbers, e.g. "-15%" / "Churn").
+export const TESTIMONIALS_QUERY = defineQuery(`
+  *[_type == "customerTestimonial" && defined(customerName) && defined(testimonial)]
+    | order(order asc, _createdAt asc) {
+    "id": _id,
+    company,
+    customerName,
+    customerPosition,
+    testimonial,
+    "photo": customerPhoto.asset->${SANITY_IMAGE_PROJECTION},
+    "logo": logo.asset->${SANITY_IMAGE_PROJECTION},
+    "metrics": coalesce(
+      *[_type == "caseStudy" && project._ref == ^.project._ref][0]
+        .pageBuilder[_type == "summary"][0].results[0...2]{ "value": metric, "label": description },
+      []
+    )
+  }
+`);

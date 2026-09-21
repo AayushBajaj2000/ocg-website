@@ -688,3 +688,83 @@ export const TasksIcon: React.FC<Props> = ({ className }) => {
     </svg>
   );
 };
+
+export const MultiplePlatformIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="104"
+      height="104"
+      viewBox="0 0 104 104"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M10 51L52 72L94 51M10 71L52 92L94 71M31 20L73 41M31 41L73 20M52 10L94 31L52 52L10 31L52 10Z"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+};
+
+export const ReconcileIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="104"
+      height="104"
+      viewBox="0 0 104 104"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M41.9999 62.0004L32.9999 71.0004C29.7592 73.8805 25.5405 75.4135 21.2068 75.2859C16.8731 75.1584 12.7519 73.3798 9.68622 70.3141C6.62051 67.2484 4.84197 63.1272 4.7144 58.7935C4.58683 54.4598 6.11987 50.2411 8.99993 47.0004L28.9999 27.0004C32.1863 23.825 36.5014 22.042 40.9999 22.042C45.4984 22.042 49.8135 23.825 52.9999 27.0004M61.9999 42.0004L70.9999 33.0004C74.2407 30.1203 78.4593 28.5873 82.793 28.7149C87.1267 28.8424 91.2479 30.621 94.3136 33.6867C97.3793 36.7524 99.1579 40.8736 99.2855 45.2073C99.413 49.541 97.88 53.7597 94.9999 57.0004L74.9999 77.0004C71.8135 80.1758 67.4984 81.9588 62.9999 81.9588C58.5014 81.9588 54.1863 80.1758 50.9999 77.0004M33.9999 70.0004L69.9999 34.0004"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+};
+
+export const FeatureIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="104"
+      height="104"
+      viewBox="0 0 104 104"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M12 38V14H92V38M12 38H92M12 38V90H92V38M24 26H25M37 26H38M39 51L26 64L39 77M65 51L78 64L65 77M57 49L47 79"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+};
+
+export const KeyIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="63"
+      height="63"
+      viewBox="0 0 63 63"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M37.2001 30.5996V14.3996L23.4001 6.59961L9.6001 14.3996V30.5996L23.4001 38.3996L37.2001 30.5996ZM37.2001 30.5996L55.2001 48.5996V55.7996H46.8001V47.9996H39.6001V40.7996M23.4001 17.9996V26.3996"
+        stroke="currentColor"
+        strokeWidth="3.6"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+};

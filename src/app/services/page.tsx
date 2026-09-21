@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
 import Services from "@/app/services/_components/Services";
-import { SERVICES_SECTION } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Services | OpenCore Group",
-  description: SERVICES_SECTION.description,
-};
+export const metadata = pageMetadata("services");
 
 const ServicesPage = () => <Services />;
 

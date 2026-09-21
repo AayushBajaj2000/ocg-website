@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type PortableTextBlockStyle = "normal" | "h2" | "h3" | "h4" | "blockquote";
+export type PortableTextBlockStyle = "normal" | "h2" | "h3" | "h4" | "h5" | "blockquote";
 
 export type PortableTextListItemType = "bullet" | "number";
 

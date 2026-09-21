@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Source-mapped build used by `pnpm lighthouse`.
     ".next-lighthouse/**",
+    // The Sanity Studio is its own npm package with its own toolchain.
+    "studio/**",
   ]),
 ]);
 

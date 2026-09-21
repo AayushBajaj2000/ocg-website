@@ -1,1 +1,7 @@
-export type BookingSource = "header" | "footer" | "contact" | "not-found" | "hero-pricing";
+export type BookingSource =
+  | "header"
+  | "footer"
+  | "contact"
+  | "not-found"
+  | "case-study"
+  | "hero-pricing";

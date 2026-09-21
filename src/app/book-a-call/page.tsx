@@ -1,10 +1,7 @@
-import { Metadata } from "next";
 import BookACall from "@/app/book-a-call/_components/BookACall";
+import { pageMetadata } from "@/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Book a Call | OpenCore Group",
-  description: "Book a 30-minute intro call with OpenCore Group.",
-};
+export const metadata = pageMetadata("bookACall");
 
 const BookACallPage = () => <BookACall />;
 

@@ -1,18 +1,7 @@
-import { Metadata } from "next";
 import Blogs from "@/app/blog/_components/Blogs";
+import { pageMetadata } from "@/lib/seo/pages";
 
-const DESCRIPTION =
-  "Field notes on design, development, and AI from OpenCore Group – what we're building, what we're learning, and what actually moves a business forward.";
-
-export const metadata: Metadata = {
-  title: "Blog | OpenCore Group",
-  description: DESCRIPTION,
-  openGraph: {
-    title: "Blog | OpenCore Group",
-    description: DESCRIPTION,
-    type: "website",
-  },
-};
+export const metadata = pageMetadata("blog");
 
 // ISR: statically generated, refreshed at most hourly. Must be a literal for Next's static
 // analysis — keep in sync with SANITY_REVALIDATE_SECONDS.

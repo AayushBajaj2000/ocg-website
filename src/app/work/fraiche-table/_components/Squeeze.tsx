@@ -70,7 +70,7 @@ const Squeeze: React.FC = () => {
         </StripeReveal>
         <Reveal
           as="p"
-          className="font-switzer text-black-3 tracing-[-2%] text-sm md:text-base"
+          className="font-switzer text-black-3 text-sm tracking-[-2%] md:text-base"
           byLine
         >
           We scoped it in to one interaction – see a meal and keep it or lose it and built it on the
