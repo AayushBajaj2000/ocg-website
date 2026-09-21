@@ -38,7 +38,7 @@ const Problem: React.FC = () => {
       </div>
       <Testimonial
         size="tall"
-        quote="Worth a separate ask from the platform quote — the angle is trust: what it took for him to be comfortable putting an AI in front of clinicians. That's the most credible thing anyone can say about this feature."
+        quote="“ A talented, motivated, professional team and has simply been a pleasure to work with”"
         name="Dr. Sanjib Adhikary"
         role="AnesthesiaOne"
       />
