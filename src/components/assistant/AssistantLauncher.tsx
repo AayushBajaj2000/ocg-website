@@ -22,7 +22,7 @@ const AssistantLauncher: React.FC = () => {
       aria-expanded={isOpen}
       tabIndex={isOpen ? -1 : 0}
       className={cn(
-        "assistant-launcher group bg-brand-blue focus-visible:outline-brand-blue fixed right-4 bottom-4 z-1050 flex h-12 cursor-pointer items-center overflow-hidden rounded-full text-white shadow-[0_8px_30px_rgb(32_104_204/0.35)] transition duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none md:right-6 md:bottom-6",
+        "assistant-launcher group bg-brand-blue focus-visible:outline-brand-blue fixed right-4 bottom-4 z-1050 flex h-12 cursor-pointer items-center overflow-hidden rounded-full text-white shadow-[0_4px_14px_rgb(0_0_0/0.18)] transition duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none md:right-6 md:bottom-6",
         isOpen ? "pointer-events-none translate-y-3 opacity-0" : "translate-y-0 opacity-100",
       )}
     >

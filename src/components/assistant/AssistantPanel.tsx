@@ -122,162 +122,167 @@ const AssistantPanel: React.FC = () => {
             exit={reduced ? { opacity: 0 } : { x: "100%" }}
             transition={{ duration: 0.4, ease: EASE }}
             ref={panelRef}
-            className="border-hairline bg-page-alt fixed top-[var(--vv-top,0px)] right-0 z-1100 flex h-[var(--vv-height,100dvh)] w-full flex-col border-l shadow-[-24px_0_80px_rgb(0_0_0/0.12)] sm:inset-y-0 sm:h-auto sm:w-105"
+            // On phones this element is only the backdrop: it covers the whole screen, including the
+            // strip behind Safari's translucent floating bars, which sit outside the visual viewport
+            // and would otherwise show the page. The content inside is what tracks the keyboard.
+            className="border-hairline bg-page-alt fixed inset-0 z-1100 sm:left-auto sm:w-105 sm:border-l sm:shadow-[-24px_0_80px_rgb(0_0_0/0.12)]"
           >
-            <header className="border-hairline flex h-14 shrink-0 items-center justify-between border-b pr-3 pl-5">
-              <p className="font-jetbrains-mono text-black-1 flex items-center gap-2 text-xs tracking-wide uppercase">
-                <AssistantLogoIcon className="text-brand-blue size-4.5" />
-                {ASSISTANT.name}
-              </p>
-              <div className="flex items-center gap-1">
-                {messages.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={agent.reset}
-                    className={`${ICON_BUTTON} w-auto px-2 text-xs`}
-                  >
-                    New chat
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={close}
-                  aria-label="Close assistant"
-                  className={ICON_BUTTON}
-                >
-                  <svg
-                    viewBox="0 0 16 16"
-                    aria-hidden
-                    className="size-4 fill-none stroke-current stroke-[1.5]"
-                  >
-                    <path d="M3.5 3.5l9 9m0-9l-9 9" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
-            </header>
-
-            <div
-              className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 py-6"
-              aria-live="polite"
-            >
-              {messages.length === 0 ? (
-                <div className="mt-auto flex flex-col gap-5">
-                  <p className="text-black-1 text-2xl font-medium tracking-[-0.03em]">
-                    {ASSISTANT.greeting}
-                  </p>
-                  <ul className="flex flex-col gap-1">
-                    {ASSISTANT.starters.map((starter) => (
-                      <li key={starter}>
-                        <button
-                          type="button"
-                          onClick={() => submit(starter)}
-                          className="text-black-3 hover:text-black-1 focus-visible:outline-brand-blue flex cursor-pointer items-baseline gap-2 py-1.5 text-left text-sm transition-colors focus-visible:outline-2"
-                        >
-                          <span aria-hidden className="text-neutral-400">
-                            ↳
-                          </span>
-                          {starter}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <ol className="flex flex-col gap-5 text-sm leading-relaxed">
-                  {messages.map((message) =>
-                    message.role === "user" ? (
-                      <li
-                        key={message.id}
-                        className="bg-sunken text-black-1 ml-8 self-end px-3.5 py-2.5 whitespace-pre-wrap"
-                      >
-                        {message.content}
-                      </li>
-                    ) : (
-                      <li key={message.id} className="text-black-2 mr-4">
-                        <AssistantMessage content={message.content} onNavigate={close} />
-                      </li>
-                    ),
-                  )}
-                  {isWaiting && (
-                    <li className="text-black-3 flex items-center gap-2" aria-label="Thinking">
-                      <AssistantLogoIcon
-                        className="text-brand-blue size-4.5"
-                        starClassName="animate-pulse motion-reduce:animate-none"
-                      />
-                      Thinking…
-                    </li>
-                  )}
-                </ol>
-              )}
-
-              {error && (
-                <p
-                  role="alert"
-                  className="border-hairline text-black-2 mt-5 border bg-white p-3 text-sm"
-                >
-                  {error}{" "}
-                  <Link
-                    href={ASSISTANT.fallback.href}
-                    onClick={close}
-                    className="text-brand-blue underline underline-offset-2"
-                  >
-                    {ASSISTANT.fallback.label}
-                  </Link>
+            <div className="absolute inset-x-0 top-[var(--vv-top,0px)] flex h-[var(--vv-height,100%)] flex-col sm:static sm:h-full">
+              <header className="border-hairline flex h-14 shrink-0 items-center justify-between border-b pr-3 pl-5">
+                <p className="font-jetbrains-mono text-black-1 flex items-center gap-2 text-xs tracking-wide uppercase">
+                  <AssistantLogoIcon className="text-brand-blue size-4.5" />
+                  {ASSISTANT.name}
                 </p>
-              )}
-              <div ref={endRef} />
-            </div>
-
-            <form onSubmit={onSubmit} className="border-hairline shrink-0 border-t p-4">
-              <div className="border-field-border focus-within:border-brand-blue flex items-end gap-2 border bg-white p-2 transition-colors">
-                <textarea
-                  ref={inputRef}
-                  value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
-                  onKeyDown={onInputKeyDown}
-                  rows={1}
-                  maxLength={ASSISTANT.maxMessageChars}
-                  placeholder={ASSISTANT.placeholder}
-                  aria-label={ASSISTANT.placeholder}
-                  className="text-black-1 field-sizing-content max-h-32 min-h-8 flex-1 resize-none bg-transparent px-1.5 py-1 text-base outline-none placeholder:text-neutral-400 sm:py-1.5 sm:text-sm"
-                />
-                {isBusy ? (
+                <div className="flex items-center gap-1">
+                  {messages.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={agent.reset}
+                      className={`${ICON_BUTTON} w-auto px-2 text-xs`}
+                    >
+                      New chat
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={() => void agent.cancel()}
-                    aria-label="Stop answering"
-                    className="bg-black-1 grid size-8 shrink-0 cursor-pointer place-items-center text-white"
-                  >
-                    <span aria-hidden className="size-2.5 bg-current" />
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={!draft.trim()}
-                    aria-label="Send"
-                    className="bg-brand-blue grid size-8 shrink-0 cursor-pointer place-items-center text-white transition-opacity disabled:cursor-default disabled:opacity-30"
+                    onClick={close}
+                    aria-label="Close assistant"
+                    className={ICON_BUTTON}
                   >
                     <svg
                       viewBox="0 0 16 16"
                       aria-hidden
-                      className="size-4 fill-none stroke-current stroke-[1.6]"
+                      className="size-4 fill-none stroke-current stroke-[1.5]"
                     >
-                      <path
-                        d="M8 13V3m0 0L3.5 7.5M8 3l4.5 4.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M3.5 3.5l9 9m0-9l-9 9" strokeLinecap="round" />
                     </svg>
                   </button>
+                </div>
+              </header>
+
+              <div
+                className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 py-6"
+                aria-live="polite"
+              >
+                {messages.length === 0 ? (
+                  <div className="mt-auto flex flex-col gap-5">
+                    <p className="text-black-1 text-2xl font-medium tracking-[-0.03em]">
+                      {ASSISTANT.greeting}
+                    </p>
+                    <ul className="flex flex-col gap-1">
+                      {ASSISTANT.starters.map((starter) => (
+                        <li key={starter}>
+                          <button
+                            type="button"
+                            onClick={() => submit(starter)}
+                            className="text-black-3 hover:text-black-1 focus-visible:outline-brand-blue flex cursor-pointer items-baseline gap-2 py-1.5 text-left text-sm transition-colors focus-visible:outline-2"
+                          >
+                            <span aria-hidden className="text-neutral-400">
+                              ↳
+                            </span>
+                            {starter}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <ol className="flex flex-col gap-5 text-sm leading-relaxed">
+                    {messages.map((message) =>
+                      message.role === "user" ? (
+                        <li
+                          key={message.id}
+                          className="bg-sunken text-black-1 ml-8 self-end px-3.5 py-2.5 whitespace-pre-wrap"
+                        >
+                          {message.content}
+                        </li>
+                      ) : (
+                        <li key={message.id} className="text-black-2 mr-4">
+                          <AssistantMessage content={message.content} onNavigate={close} />
+                        </li>
+                      ),
+                    )}
+                    {isWaiting && (
+                      <li className="text-black-3 flex items-center gap-2" aria-label="Thinking">
+                        <AssistantLogoIcon
+                          className="text-brand-blue size-4.5"
+                          starClassName="animate-pulse motion-reduce:animate-none"
+                        />
+                        Thinking…
+                      </li>
+                    )}
+                  </ol>
                 )}
+
+                {error && (
+                  <p
+                    role="alert"
+                    className="border-hairline text-black-2 mt-5 border bg-white p-3 text-sm"
+                  >
+                    {error}{" "}
+                    <Link
+                      href={ASSISTANT.fallback.href}
+                      onClick={close}
+                      className="text-brand-blue underline underline-offset-2"
+                    >
+                      {ASSISTANT.fallback.label}
+                    </Link>
+                  </p>
+                )}
+                <div ref={endRef} />
               </div>
-              <p className="mt-2 text-[11px] leading-snug text-neutral-500">
-                {ASSISTANT.disclaimer}{" "}
-                <Link href="/privacy" onClick={close} className="underline underline-offset-2">
-                  Privacy
-                </Link>
-              </p>
-            </form>
+
+              <form onSubmit={onSubmit} className="border-hairline shrink-0 border-t p-4">
+                <div className="border-field-border focus-within:border-brand-blue flex items-end gap-2 border bg-white p-2 transition-colors">
+                  <textarea
+                    ref={inputRef}
+                    value={draft}
+                    onChange={(event) => setDraft(event.target.value)}
+                    onKeyDown={onInputKeyDown}
+                    rows={1}
+                    maxLength={ASSISTANT.maxMessageChars}
+                    placeholder={ASSISTANT.placeholder}
+                    aria-label={ASSISTANT.placeholder}
+                    className="text-black-1 field-sizing-content max-h-32 min-h-8 flex-1 resize-none bg-transparent px-1.5 py-1 text-base outline-none placeholder:text-neutral-400 sm:py-1.5 sm:text-sm"
+                  />
+                  {isBusy ? (
+                    <button
+                      type="button"
+                      onClick={() => void agent.cancel()}
+                      aria-label="Stop answering"
+                      className="bg-black-1 grid size-8 shrink-0 cursor-pointer place-items-center text-white"
+                    >
+                      <span aria-hidden className="size-2.5 bg-current" />
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={!draft.trim()}
+                      aria-label="Send"
+                      className="bg-brand-blue grid size-8 shrink-0 cursor-pointer place-items-center text-white transition-opacity disabled:cursor-default disabled:opacity-30"
+                    >
+                      <svg
+                        viewBox="0 0 16 16"
+                        aria-hidden
+                        className="size-4 fill-none stroke-current stroke-[1.6]"
+                      >
+                        <path
+                          d="M8 13V3m0 0L3.5 7.5M8 3l4.5 4.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                <p className="mt-2 text-[11px] leading-snug text-neutral-500">
+                  {ASSISTANT.disclaimer}{" "}
+                  <Link href="/privacy" onClick={close} className="underline underline-offset-2">
+                    Privacy
+                  </Link>
+                </p>
+              </form>
+            </div>
           </m.aside>
         )}
       </AnimatePresence>
