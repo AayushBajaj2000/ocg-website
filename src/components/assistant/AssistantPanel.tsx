@@ -8,7 +8,7 @@ import { useEveAgent } from "eve/react";
 import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "motion/react";
 import AssistantMessage from "@/components/assistant/AssistantMessage";
 import { useAssistant } from "@/components/assistant/AssistantProvider";
-import { SparkleIcon } from "@/components/icons";
+import { AssistantLogoIcon } from "@/components/icons";
 import { ASSISTANT } from "@/lib/constants";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -107,7 +107,7 @@ const AssistantPanel: React.FC = () => {
           >
             <header className="border-hairline flex h-14 shrink-0 items-center justify-between border-b pr-3 pl-5">
               <p className="font-jetbrains-mono text-black-1 flex items-center gap-2 text-xs tracking-wide uppercase">
-                <SparkleIcon className="text-brand-blue size-4" />
+                <AssistantLogoIcon className="text-brand-blue size-4.5" />
                 {ASSISTANT.name}
               </p>
               <div className="flex items-center gap-1">
@@ -181,7 +181,10 @@ const AssistantPanel: React.FC = () => {
                   )}
                   {isWaiting && (
                     <li className="text-black-3 flex items-center gap-2" aria-label="Thinking">
-                      <SparkleIcon className="text-brand-blue size-4 animate-pulse motion-reduce:animate-none" />
+                      <AssistantLogoIcon
+                        className="text-brand-blue size-4.5"
+                        starClassName="animate-pulse motion-reduce:animate-none"
+                      />
                       Thinking…
                     </li>
                   )}

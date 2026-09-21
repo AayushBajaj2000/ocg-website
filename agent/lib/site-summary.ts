@@ -15,11 +15,12 @@ const summaryUrl = (): string => {
 };
 
 // /llms.txt links pages by absolute URL, which is right for outside crawlers. The chat panel
-// renders site-relative Markdown links, so hand the model paths it can use as they are.
+// navigates in-app, so hand the model site-relative paths, both inside Markdown links and where a
+// URL stands on its own ("Start a project: https://…/contact").
 const toSitePaths = (summary: string): string =>
   summary.replace(
-    /\]\(https?:\/\/(?:www\.)?opencoregroup\.com(\/[^)\s]*)?\)/g,
-    (_match, path) => `](${path || "/"})`,
+    /https?:\/\/(?:www\.)?opencoregroup\.com(\/[^)\s]*)?/g,
+    (_match, path: string | undefined) => path || "/",
   );
 
 /** `null` when the summary can't be fetched; the caller decides what the model is told then. */

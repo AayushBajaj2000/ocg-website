@@ -769,21 +769,43 @@ export const KeyIcon: React.FC<Props> = ({ className }) => {
   );
 };
 
-export const SparkleIcon: React.FC<Props> = ({ className }) => {
+type AssistantLogoIconProps = Props & {
+  /** Classes for the star alone, e.g. to spin it on hover while the ring stays put. */
+  starClassName?: string;
+};
+
+/**
+ * The OpenCore mark with its centre dot swapped for a four-point star: the AI assistant's logo.
+ * The ring is the brand path from /logo-mob.svg, untouched; the star sits on the dot's centre.
+ */
+export const AssistantLogoIcon: React.FC<AssistantLogoIconProps> = ({
+  className,
+  starClassName,
+}) => {
   return (
     <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
+      width="27"
+      height="27"
+      viewBox="0 0 26.7349 26.3529"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       className={className}
     >
       <path
-        d="M8 0.5C8.4 4.6 11.4 7.6 15.5 8C11.4 8.4 8.4 11.4 8 15.5C7.6 11.4 4.6 8.4 0.5 8C4.6 7.6 7.6 4.6 8 0.5Z"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M0 13.1765C0 21.1587 5.2324 26.3529 13.673 26.3529C21.6553 26.3529 26.7349 22.3809 26.7349 15.8882C26.7349 15.5718 26.4784 15.3153 26.162 15.3153H20.9296C20.6132 15.3153 20.3567 15.5718 20.3567 15.8882C20.3567 19.2491 18.4471 20.8532 13.7876 20.8532C8.17324 20.8532 5.51511 18.921 5.51511 13.2303C5.51511 7.53957 8.17324 5.49975 13.7876 5.49975C18.4471 5.49975 20.3567 7.10384 20.3567 10.4648C20.3567 10.7812 20.6132 11.0377 20.9296 11.0377H26.162C26.4784 11.0377 26.7349 10.7812 26.7349 10.4648C26.7349 3.97204 21.6171 0 13.673 0C5.2324 0 0 5.1942 0 13.1765Z"
         fill="currentColor"
       />
+      {/* Drawn around the origin and moved onto the dot's centre, so it can rotate in place. */}
+      <g transform="translate(13.365 13.176)">
+        <path
+          d="M0 -5.6Q1.5 -1.5 5.6 0Q1.5 1.5 0 5.6Q-1.5 1.5 -5.6 0Q-1.5 -1.5 0 -5.6Z"
+          fill="currentColor"
+          className={starClassName}
+        />
+      </g>
     </svg>
   );
 };

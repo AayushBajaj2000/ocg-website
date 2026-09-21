@@ -1,7 +1,7 @@
 "use client";
 
 import { useAssistant } from "@/components/assistant/AssistantProvider";
-import { SparkleIcon } from "@/components/icons";
+import { AssistantLogoIcon } from "@/components/icons";
 import { ASSISTANT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +27,10 @@ const AssistantLauncher: React.FC = () => {
       )}
     >
       <span className="grid size-12 shrink-0 place-items-center">
-        <SparkleIcon className="size-5 transition-transform duration-500 group-hover:rotate-90 motion-reduce:transition-none" />
+        <AssistantLogoIcon
+          className="size-6"
+          starClassName="transition-transform duration-700 ease-out group-hover:rotate-180 motion-reduce:transition-none"
+        />
       </span>
       {/* The label slides out on hover / keyboard focus; touch screens get the icon alone. */}
       <span
