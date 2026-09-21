@@ -110,6 +110,7 @@ const Hero: React.FC = () => {
             index={index}
             valueClassName={STAT_VALUE_CLASS}
             borderClassName="border!"
+            heightClassName="md:h-53.75"
           />
         ))}
       </ul>

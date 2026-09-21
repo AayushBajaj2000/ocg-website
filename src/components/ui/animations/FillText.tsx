@@ -17,6 +17,8 @@ type WordProps = {
 
 export const SPRING = { stiffness: 140, damping: 30, restDelta: 0.001 };
 
+export const FILL_OFFSET = ["start 0.8", "end 0.5"] as const;
+
 const FILL = ["#d0d5dd", "#131313"];
 
 export const toWords = (text: string): string[] => text.split(/\s+/).filter(Boolean);

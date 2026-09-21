@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type SectionElement = "section" | "div" | "header" | "footer" | "article" | "aside";
+export type SectionElement = "section" | "div" | "header" | "footer" | "article" | "aside";
 
 type Props = {
   as?: SectionElement;

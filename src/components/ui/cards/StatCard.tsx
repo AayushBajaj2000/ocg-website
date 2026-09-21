@@ -22,6 +22,7 @@ type Props = {
   index?: number;
   valueClassName?: string;
   borderClassName?: string;
+  heightClassName?: string;
 };
 
 type PlayProps = {
@@ -189,7 +190,13 @@ const HighlightContent: React.FC<PlayProps & { stat: IStatHighlight }> = ({
   );
 };
 
-const StatCard: React.FC<Props> = ({ stat, index = 0, valueClassName, borderClassName }) => {
+const StatCard: React.FC<Props> = ({
+  stat,
+  index = 0,
+  valueClassName,
+  borderClassName,
+  heightClassName,
+}) => {
   const cardRef = useRef<HTMLLIElement>(null);
   const reduced = Boolean(useReducedMotion());
   const play = useInView(cardRef, { once: true, amount: 0.35 });
@@ -200,10 +207,10 @@ const StatCard: React.FC<Props> = ({ stat, index = 0, valueClassName, borderClas
     <LazyMotion features={domAnimation}>
       <li
         ref={cardRef}
-        className={cn("group relative", {
-          "md:h-107.5": stat._type === "metric",
-          "h-107.5": stat._type !== "metric",
-        })}
+        className={cn(
+          "group relative",
+          heightClassName ?? (stat._type === "metric" ? "md:h-107.5" : "h-107.5"),
+        )}
       >
         <m.div
           custom={delay}
