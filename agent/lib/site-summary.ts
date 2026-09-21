@@ -14,6 +14,14 @@ const summaryUrl = (): string => {
   return `${site}/llms.txt`;
 };
 
+// /llms.txt links pages by absolute URL, which is right for outside crawlers. The chat panel
+// renders site-relative Markdown links, so hand the model paths it can use as they are.
+const toSitePaths = (summary: string): string =>
+  summary.replace(
+    /\]\(https?:\/\/(?:www\.)?opencoregroup\.com(\/[^)\s]*)?\)/g,
+    (_match, path) => `](${path || "/"})`,
+  );
+
 /** `null` when the summary can't be fetched; the caller decides what the model is told then. */
 export const loadSiteSummary = async (): Promise<string | null> => {
   if (cached && Date.now() - cached.at < TTL_MS) return cached.text;
@@ -21,7 +29,7 @@ export const loadSiteSummary = async (): Promise<string | null> => {
   try {
     const response = await fetch(summaryUrl(), { signal: AbortSignal.timeout(TIMEOUT_MS) });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const text = (await response.text()).trim();
+    const text = toSitePaths((await response.text()).trim());
     if (!text) throw new Error("empty summary");
     cached = { text, at: Date.now() };
     return text;

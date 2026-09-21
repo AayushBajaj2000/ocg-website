@@ -39,7 +39,12 @@ export const GET = async () => {
     `OpenCore Group is based in Toronto, Ontario, Canada. ${WORD_SECTION.description}`,
     `## Services\n${SERVICES_SECTION.description}\n\n${services.join("\n\n")}`,
     `## Work\n${WORK_SECTION.description}\n\n${WORK_SECTION.projects
-      .map((project) => `- [${project.title}](${site}${String(project.slug)}): ${project.caption}`)
+      // Led by the client's name: an assistant quoting this needs something it can say mid-sentence,
+      // which the headline isn't.
+      .map(
+        (project) =>
+          `- [${project.name ?? project.title}](${site}${String(project.slug)}): ${project.name ? `${project.title} ` : ""}${project.caption}`,
+      )
       .join("\n")}`,
     `## Blog\n${posts.map((post) => `- [${post.title}](${site}${blogPostHref(post.slug)})`).join("\n")}`,
     `## Frequently asked questions\n${faqs.map((faq) => `### ${faq.question}\n${faq.answer}`).join("\n\n")}`,

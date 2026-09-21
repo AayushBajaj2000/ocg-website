@@ -10,10 +10,12 @@ form when a person should take over.
   directory; `withEve(nextConfig)` in [next.config.ts](../next.config.ts) mounts it at same-origin
   `/eve/v1/*`. eve's guides ship inside the package at `node_modules/eve/docs/`. Read the relevant
   one before changing eve-facing code.
-- **Vercel AI Gateway.** The model is `deepseek/deepseek-v4-flash`: the job is short answers from a
-  brief that already contains them, which a small fast model does well. Override with
-  `ASSISTANT_MODEL`. Authenticated by `AI_GATEWAY_API_KEY` locally and by project OIDC on Vercel,
-  so no provider key lives in this repo.
+- **Vercel AI Gateway.** The model is `google/gemini-2.5-flash-lite` ($0.10 in / $0.40 out per
+  million tokens, roughly $0.30 per thousand answers). It was picked by running the cheapest
+  gateway models against this agent's brief: it was the only one in its price tier that stayed
+  accurate, refused off-topic requests and never invented a price. The reasoning is in
+  `agent.ts`. Override with `ASSISTANT_MODEL`. Authenticated by `AI_GATEWAY_API_KEY` locally and
+  by project OIDC on Vercel, so no provider key lives in this repo.
 
 ## This directory
 
@@ -62,6 +64,9 @@ The endpoint is public and anonymous. In order of how much each actually protect
    per IP per ten minutes. The limiter is in-memory, so on serverless it is a speed bump, not a
    wall. Move it to Redis/KV if abuse shows up in the `[assistant-spend]` logs.
 3. **The small model.** A flooded endpoint costs cents, not dollars, per thousand answers.
+
+The gateway's free tier rate-limits after a handful of requests a minute. Fine for development;
+a public site needs paid credits on the team, whatever the model.
 
 ## Frontend
 
