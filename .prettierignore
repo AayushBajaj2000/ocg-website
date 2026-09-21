@@ -5,3 +5,7 @@ pnpm-lock.yaml
 .lighthouse
 .next-lighthouse
 studio
+
+# eve agent runtime (generated)
+.eve
+.output

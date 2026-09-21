@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withEve } from "eve/next";
 
 // `pnpm lighthouse` builds with LIGHTHOUSE=1. Source maps let Lighthouse attribute
 // cost to real source files instead of hashed chunks, and the separate distDir keeps
@@ -48,4 +49,6 @@ const nextConfig: NextConfig = {
   ],
 };
 
-export default nextConfig;
+// Mounts the website assistant (agent/ at the repo root) under same-origin /eve/v1/*.
+// Who may call it, and how often, is decided in agent/channels/eve.ts.
+export default withEve(nextConfig);

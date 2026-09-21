@@ -196,6 +196,93 @@ body {
     }
   }
 
+  /* Custom cursor (CustomCursor.tsx). The class lands on <html> only once a real mouse moves,
+     so touch devices and no-JS visitors keep the native cursor. */
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  .has-custom-cursor :is(textarea, [contenteditable=""], [contenteditable="true"]),
+  .has-custom-cursor
+    input:not(
+      [type="button"],
+      [type="submit"],
+      [type="reset"],
+      [type="checkbox"],
+      [type="radio"],
+      [type="range"],
+      [type="file"],
+      [type="color"]
+    ) {
+    cursor: text !important;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2147483647;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  .custom-cursor[data-visible="true"] {
+    opacity: 1;
+  }
+
+  .custom-cursor[data-state="text"] {
+    opacity: 0;
+  }
+
+  .custom-cursor-dot {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    /* Centre the dot on the pointer: the hotspot is its middle. */
+    margin: -0.5rem 0 0 -0.5rem;
+    overflow: visible;
+    fill: var(--color-brand-blue);
+    /* A hairline of white keeps it readable on the blue buttons and the dark footer. */
+    stroke: var(--color-white);
+    stroke-width: 0.7;
+    paint-order: stroke;
+    transition:
+      scale 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      fill-opacity 220ms ease-out;
+  }
+
+  .custom-cursor[data-state="hover"] .custom-cursor-dot {
+    scale: 2.4;
+    /* See-through while enlarged, so it never hides the thing being clicked. */
+    fill-opacity: 0.3;
+    stroke-width: 0.3;
+  }
+
+  .custom-cursor[data-pressed="true"] .custom-cursor-dot {
+    scale: 0.75;
+  }
+
+  .custom-cursor[data-state="hover"][data-pressed="true"] .custom-cursor-dot {
+    scale: 1.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .custom-cursor,
+    .custom-cursor-dot {
+      transition: none;
+    }
+  }
+
+  /* On phones the cookie banner spans the bottom of the screen, so the floating assistant
+     button rides above it until the visitor has answered. */
+  @media (width < 48rem) {
+    body:has([data-consent-banner]) .assistant-launcher {
+      bottom: 12rem;
+    }
+  }
+
   .desktop-browser-progress {
     transform-origin: left;
     animation: desktop-browser-progress 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;

@@ -768,3 +768,22 @@ export const KeyIcon: React.FC<Props> = ({ className }) => {
     </svg>
   );
 };
+
+export const SparkleIcon: React.FC<Props> = ({ className }) => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M8 0.5C8.4 4.6 11.4 7.6 15.5 8C11.4 8.4 8.4 11.4 8 15.5C7.6 11.4 4.6 8.4 0.5 8C4.6 7.6 7.6 4.6 8 0.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+};

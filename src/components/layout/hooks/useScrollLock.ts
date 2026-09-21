@@ -1,10 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import { useLenis } from "lenis/react";
 
 export const useScrollLock = (isLocked: boolean): void => {
+  const lenis = useLenis();
+
   useEffect(() => {
     if (!isLocked) return;
+
+    // Pause smooth scrolling too: it would keep easing toward its last target while the body
+    // is pinned, then fight the restore below. `start()` re-reads the real position.
+    lenis?.stop();
 
     const { body, documentElement } = document;
     const offset = window.scrollY;
@@ -22,6 +29,7 @@ export const useScrollLock = (isLocked: boolean): void => {
     return () => {
       body.style.cssText = previousStyle;
       window.scrollTo(0, offset);
+      lenis?.start();
     };
-  }, [isLocked]);
+  }, [isLocked, lenis]);
 };

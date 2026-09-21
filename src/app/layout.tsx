@@ -7,6 +7,9 @@ import FaqSection from "@/components/layout/sections/FaqSection";
 import PageDivider from "@/components/ui/dividers/PageDivider";
 import BuildingSection from "@/components/layout/sections/BuildingSection";
 import HideOnRoutes from "@/components/layout/HideOnRoutes";
+import { AssistantProvider } from "@/components/assistant/AssistantProvider";
+import CustomCursor from "@/components/ui/misc/CustomCursor";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import QueryProvider from "@/components/providers/QueryProvider";
 import Analytics from "@/components/analytics/Analytics";
 import ConsentBanner from "@/components/analytics/ConsentBanner";
@@ -37,18 +40,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="bg-page-alt font-switzer flex min-h-full flex-col">
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
-        <QueryProvider>
-          <Header />
-          <main className="mt-19.25 md:mt-24.75">{children}</main>
-          <PageDivider />
-          <FaqSection />
-          <PageDivider />
-          <HideOnRoutes routes={["/contact"]}>
-            <BuildingSection />
-            <PageDivider />
-          </HideOnRoutes>
-          <Footer />
-        </QueryProvider>
+        <SmoothScrollProvider>
+          <QueryProvider>
+            <AssistantProvider>
+              <Header />
+              <main className="mt-19.25 md:mt-24.75">{children}</main>
+              <PageDivider />
+              <FaqSection />
+              <PageDivider />
+              <HideOnRoutes routes={["/contact"]}>
+                <BuildingSection />
+                <PageDivider />
+              </HideOnRoutes>
+              <Footer />
+            </AssistantProvider>
+          </QueryProvider>
+        </SmoothScrollProvider>
+        <CustomCursor />
         <ConsentBanner />
         <Analytics />
         {/* Cookieless, so it doesn't wait for consent. */}

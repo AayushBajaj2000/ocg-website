@@ -14,3 +14,4 @@ export * from "@/lib/constants/sanity";
 export * from "@/lib/constants/blog";
 export * from "@/lib/constants/resources";
 export * from "@/lib/constants/cards";
+export * from "@/lib/constants/assistant";

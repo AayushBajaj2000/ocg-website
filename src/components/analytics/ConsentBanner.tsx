@@ -25,6 +25,7 @@ const ConsentBanner: React.FC = () => {
   return (
     <section
       aria-label="Cookie preferences"
+      data-consent-banner
       className="border-hairline shadow-team-card fixed inset-x-4 bottom-4 z-50 flex flex-col gap-4 border bg-white p-4 md:inset-x-auto md:bottom-6 md:left-6 md:w-90 md:p-5"
     >
       <div className="flex flex-col gap-1.5">
