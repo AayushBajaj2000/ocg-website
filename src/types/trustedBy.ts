@@ -40,7 +40,7 @@ export interface IStatMetric {
   _type: "metric";
   _key: string;
   label: string;
-  value: number;
+  value: number | string;
   suffix?: string;
   accent?: boolean;
 }

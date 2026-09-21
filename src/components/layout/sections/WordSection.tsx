@@ -1,59 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  LazyMotion,
-  domAnimation,
-  m,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "motion/react";
+import { LazyMotion, domAnimation, useReducedMotion, useScroll, useSpring } from "motion/react";
 import Section from "@/components/layout/sections/Section";
+import FillText, { SPRING, toWords } from "@/components/ui/animations/FillText";
+import FillHeading from "@/components/ui/headings/FillHeading";
 import { WORD_SECTION } from "@/lib/constants";
-
-type FillTextProps = {
-  words: string[];
-  offset: number;
-  total: number;
-  progress: MotionValue<number>;
-};
-
-type WordProps = {
-  word: string;
-  range: [number, number];
-  progress: MotionValue<number>;
-};
-
-const SPRING = { stiffness: 140, damping: 30, restDelta: 0.001 };
-
-const FILL = ["#d0d5dd", "#131313"];
-
-const toWords = (text: string): string[] => text.split(/\s+/).filter(Boolean);
-
-// One colour-animated copy per word; a stacked overlay drifts off the base glyphs on mobile.
-const Word: React.FC<WordProps> = ({ word, range, progress }) => {
-  const color = useTransform(progress, range, FILL);
-
-  return <m.span style={{ color }}>{word}</m.span>;
-};
-
-const FillText: React.FC<FillTextProps> = ({ words, offset, total, progress }) => {
-  return (
-    <span aria-hidden>
-      {words.map((word, index) => {
-        const start = (offset + index) / total;
-        return (
-          <span key={index}>
-            <Word word={word} range={[start, start + 1 / total]} progress={progress} />{" "}
-          </span>
-        );
-      })}
-    </span>
-  );
-};
 
 const WordSection: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -73,10 +25,7 @@ const WordSection: React.FC = () => {
           ref={targetRef}
           className="relative mx-auto flex max-w-257 flex-col gap-6 text-neutral-300 md:gap-10"
         >
-          <h2 className="md:text-hero-mobile font-switzer text-xl tracking-[-2%]">
-            <span className="sr-only">{WORD_SECTION.heading}</span>
-            <FillText words={headingWords} offset={0} total={total} progress={progress} />
-          </h2>
+          <FillHeading text={WORD_SECTION.heading} offset={0} total={total} progress={progress} />
           <p className="font-switzer text-sm tracking-[-1%] md:text-2xl">
             <span className="sr-only">{WORD_SECTION.description}</span>
             <FillText

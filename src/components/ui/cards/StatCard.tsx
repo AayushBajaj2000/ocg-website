@@ -20,6 +20,8 @@ import { cn } from "@/lib/utils";
 type Props = {
   stat: StatItem;
   index?: number;
+  valueClassName?: string;
+  borderClassName?: string;
 };
 
 type PlayProps = {
@@ -47,7 +49,7 @@ const cardReducedVariants: Variants = {
   visible: { opacity: 1, transition: { duration: 0.2 } },
 };
 
-const Odometer: React.FC<PlayProps & { value: number; suffix?: string }> = ({
+const Odometer: React.FC<PlayProps & { value: number | string; suffix?: string }> = ({
   value,
   suffix,
   play,
@@ -110,10 +112,22 @@ const Odometer: React.FC<PlayProps & { value: number; suffix?: string }> = ({
   );
 };
 
-const MetricContent: React.FC<PlayProps & { stat: IStatMetric }> = ({ stat, ...play }) => {
+const MetricContent: React.FC<
+  PlayProps & { stat: IStatMetric; valueClassName?: string; borderClassName?: string }
+> = ({ stat, valueClassName, borderClassName, ...play }) => {
   return (
-    <div className="border-hairline relative flex size-full flex-col justify-between gap-10 border border-x-0 p-5 md:gap-0 md:border-x">
-      <p className="font-switzer text-black-1 relative text-[4rem] leading-none font-light tracking-[-5%] md:text-[6.25rem]">
+    <div
+      className={cn(
+        "border-hairline relative flex size-full flex-col justify-between gap-10 p-5 md:gap-0",
+        borderClassName ?? "border border-x-0 md:border-x",
+      )}
+    >
+      <p
+        className={cn(
+          "font-switzer text-black-1 relative leading-none font-light tracking-[-5%]",
+          valueClassName ?? "text-[4rem] md:text-[6.25rem]",
+        )}
+      >
         <span className="sr-only">
           {stat.value}
           {stat.suffix}
@@ -175,7 +189,7 @@ const HighlightContent: React.FC<PlayProps & { stat: IStatHighlight }> = ({
   );
 };
 
-const StatCard: React.FC<Props> = ({ stat, index = 0 }) => {
+const StatCard: React.FC<Props> = ({ stat, index = 0, valueClassName, borderClassName }) => {
   const cardRef = useRef<HTMLLIElement>(null);
   const reduced = Boolean(useReducedMotion());
   const play = useInView(cardRef, { once: true, amount: 0.35 });
@@ -199,7 +213,12 @@ const StatCard: React.FC<Props> = ({ stat, index = 0 }) => {
           className="size-full"
         >
           {stat._type === "metric" ? (
-            <MetricContent stat={stat} {...playProps} />
+            <MetricContent
+              stat={stat}
+              valueClassName={valueClassName}
+              borderClassName={borderClassName}
+              {...playProps}
+            />
           ) : (
             <HighlightContent stat={stat} {...playProps} />
           )}

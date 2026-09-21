@@ -4,7 +4,7 @@ export const PROJECTS: IProject[] = [
   {
     title:
       "Rebuild the mobile first web app and design system for a meal planning platform with 500+ paid users & 300,000+ users",
-    slug: "/work/project-1",
+    slug: "/work/fraiche-table",
     tags: ["B2C", "SaaS"],
     caption:
       "We partnered with Fraiche Table to built an AI pipeline that automated hours of manual recipe entry every week, build their web app with mobile first approach and full design system, shipped product features that cut churn by 15% and grew revenue.",
