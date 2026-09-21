@@ -27,11 +27,18 @@ export const PFHeading: React.FC<{
   title?: string;
   description?: string;
   titleClassName?: string;
-}> = ({ caption, title, description, titleClassName }) => {
+  captionClassName?: string;
+  descriptionClassName?: string;
+}> = ({ caption, title, description, titleClassName, captionClassName, descriptionClassName }) => {
   return (
     <div className="flex flex-col gap-4">
       {caption && (
-        <span className="font-switzer text-xs font-medium tracking-[-2%] text-black uppercase sm:text-sm">
+        <span
+          className={cn(
+            "font-switzer text-xs font-medium tracking-[-2%] text-black uppercase sm:text-sm",
+            captionClassName,
+          )}
+        >
           {caption}
         </span>
       )}
@@ -49,7 +56,10 @@ export const PFHeading: React.FC<{
       {description && (
         <Reveal
           as="p"
-          className="font-switzer text-black-3 text-sm tracking-[-2%] md:text-base"
+          className={cn(
+            "font-switzer text-black-3 text-sm tracking-[-2%] md:text-base",
+            descriptionClassName,
+          )}
           byLine
         >
           {description}

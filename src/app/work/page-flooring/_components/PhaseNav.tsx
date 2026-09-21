@@ -12,6 +12,32 @@ type Phase = {
 type Props = {
   phases: readonly Phase[];
   label: string;
+  /** Background behind the phases and the pinned tab bar. */
+  className?: string;
+  /** `solid` fills the active tab black; `outlined` lifts it onto a white, orange-bordered card. */
+  variant?: Variant;
+};
+
+type Variant = "solid" | "outlined";
+
+const STYLES: Record<
+  Variant,
+  { bar: string; list: string; tab: string; active: string; inactive: string }
+> = {
+  solid: {
+    bar: "h-22 sm:h-25",
+    list: "h-full rounded-lg bg-white p-2",
+    tab: "h-full flex-1 rounded-lg px-6 text-base font-bold tracking-[-2%] sm:px-14 md:text-lg",
+    active: "bg-black text-white",
+    inactive: "text-black-1 hover:bg-neutral-100",
+  },
+  outlined: {
+    bar: "",
+    list: "w-full max-w-122 gap-2.5 rounded-2xl border border-[#a6a6a6]/20 bg-neutral-50 p-2 shadow-[0_0.25rem_1.6875rem_0_rgba(0,0,0,0.08)] sm:w-auto",
+    tab: "h-14 flex-1 rounded-lg border px-4 text-base tracking-[-1%] sm:h-18 sm:w-57.5 sm:flex-none sm:text-xl/7.5",
+    active: "border-anesthesia-orange bg-white text-black",
+    inactive: "border-transparent text-neutral-500 hover:text-black",
+  },
 };
 
 /**
@@ -19,7 +45,13 @@ type Props = {
  * viewport. The bar is `sticky` inside the phase wrapper, so it rides up with
  * the last section of the active phase instead of covering the footer.
  */
-const PhaseNav: React.FC<Props> = ({ phases, label }) => {
+const PhaseNav: React.FC<Props> = ({
+  phases,
+  label,
+  className = "bg-neutral-50",
+  variant = "solid",
+}) => {
+  const styles = STYLES[variant];
   const [activeId, setActiveId] = useState(phases[0]?.id);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const baseId = useId();
@@ -55,17 +87,22 @@ const PhaseNav: React.FC<Props> = ({ phases, label }) => {
   if (!active) return null;
 
   return (
-    <div className="bg-neutral-50">
+    <div className={className}>
       <div role="tabpanel" id={`${baseId}-panel`} aria-labelledby={`${baseId}-tab-${active.id}`}>
         {active.content}
       </div>
 
-      <div className="sticky bottom-0 z-99 flex h-22 items-center justify-center px-4 py-4 backdrop-blur-xs sm:h-25">
+      <div
+        className={cn(
+          "sticky bottom-0 z-99 flex items-center justify-center px-4 py-4 backdrop-blur-xs",
+          styles.bar,
+        )}
+      >
         <div
           role="tablist"
           aria-label={label}
           onKeyDown={onKeyDown}
-          className="flex h-full rounded-lg bg-white p-2"
+          className={cn("flex", styles.list)}
         >
           {phases.map((phase, i) => {
             const isActive = phase.id === active.id;
@@ -83,8 +120,9 @@ const PhaseNav: React.FC<Props> = ({ phases, label }) => {
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => select(i)}
                 className={cn(
-                  "font-switzer focus-visible:outline-brand-blue h-full flex-1 cursor-pointer rounded-lg px-6 text-base font-bold tracking-[-2%] whitespace-nowrap transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none sm:px-14 md:text-lg",
-                  isActive ? "bg-black text-white" : "text-black-1 hover:bg-neutral-100",
+                  "font-switzer focus-visible:outline-brand-blue cursor-pointer whitespace-nowrap transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none",
+                  styles.tab,
+                  isActive ? styles.active : styles.inactive,
                 )}
               >
                 {phase.label}

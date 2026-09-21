@@ -2,72 +2,16 @@ import { IProject, IWork } from "@/types";
 
 export const PROJECTS: IProject[] = [
   {
-    title:
-      "Rebuild the mobile first web app and design system for a meal planning platform with 500+ paid users & 300,000+ users",
+    title: "A vision that outgrew its platform. We built one that could keep up.",
     slug: "/work/fraiche-table",
     tags: ["B2C", "SaaS"],
     caption:
-      "We partnered with Fraiche Table to built an AI pipeline that automated hours of manual recipe entry every week, build their web app with mobile first approach and full design system, shipped product features that cut churn by 15% and grew revenue.",
-    startDate: "01-01-2025",
+      "Fraîche Table had a growing audience and a meal-planning platform running on a tool that was never built for it. We rebuilt the foundation, then shipped three years of roadmap in one.",
+    startDate: "01-01-2024",
     present: true,
     cardImg: {
-      url: "/placeholders/work.webp",
-      alt: "Project Card image",
-    },
-    heroImg: {
-      url: "/placeholders/work-main.webp",
-      alt: "Hero image",
-    },
-    intro: {
-      name: "Fraiche Table",
-      description:
-        "OpenCore transformed our complex meal planning vision into a scalable platform, delivering seamless user experiences and supporting sustainable business growth",
-      timeFrame: "1 year",
-      roles: ["Brand", "Website", "App Development"],
-      url: "https://fraichetable.com",
-    },
-    scope: {
-      scopes: [
-        { title: "UI/UX Design & Design System", content: "" },
-        { title: "Web App Development & Migration to Sanity", content: "" },
-      ],
-      img: {
-        url: "/placeholders/work-main.webp",
-        alt: "Second image",
-      },
-      stack: [{ url: "/placeholders/node.webp", alt: "NodeJS" }],
-      font: [
-        {
-          name: "Poppins",
-          source: "google",
-          fallback: "sans-serif",
-          variants: [
-            { weight: 700, style: "normal", file: null },
-            { weight: 600, style: "normal", file: null },
-            { weight: 500, style: "normal", file: null },
-            { weight: 400, style: "normal", file: null },
-          ],
-        },
-      ],
-      colors: [
-        { hex: "#EBE4DF", name: "Soft Ivory" },
-        { hex: "#BED5E5", name: "Light Powder Blue" },
-        { hex: "#FFB383", name: "Warm Peach" },
-      ],
-      moreImgs: [
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-      ],
+      url: "/fraiche-table/card.webp",
+      alt: "Fraîche Table meal-planning web app",
     },
     testimonial: {
       feedback:
@@ -75,184 +19,49 @@ export const PROJECTS: IProject[] = [
       client: {
         name: "Victoria",
         role: "Founder, FraicheTable",
-        img: {
-          url: "/placeholders/client.webp",
-          alt: "Client image",
-        },
-        logo: {
-          url: "/placeholders/client-logo.svg",
-          alt: "Client logo",
-        },
       },
     },
   },
   {
     title:
-      "Rebuild the mobile first web app and design system for a meal planning platform with 500+ paid users & 300,000+ users",
-    slug: "/work/project-1",
-    tags: ["B2C", "SaaS"],
+      "Five systems, three logins, and a dozen workarounds, replaced with one platform they own.",
+    slug: "/work/page-flooring",
+    tags: ["B2B", "Platform"],
     caption:
-      "We partnered with Fraiche Table to built an AI pipeline that automated hours of manual recipe entry every week, build their web app with mobile first approach and full design system, shipped product features that cut churn by 15% and grew revenue.",
-    startDate: "01-01-2025",
+      "Page Flooring was paying prices for software that didn't do what their business does. We consolidated the whole stack into one piece of software built around their workflow – then gave the company a face that matched what it had become.",
+    startDate: "01-01-2024",
     present: true,
     cardImg: {
-      url: "/placeholders/work.webp",
-      alt: "Project Card image",
-    },
-    heroImg: {
-      url: "/placeholders/work-main.webp",
-      alt: "Hero image",
-    },
-    intro: {
-      name: "Fraiche Table",
-      description:
-        "OpenCore transformed our complex meal planning vision into a scalable platform, delivering seamless user experiences and supporting sustainable business growth",
-      timeFrame: "1 year",
-      roles: ["Brand", "Website", "App Development"],
-      url: "https://fraichetable.com",
-    },
-    scope: {
-      scopes: [
-        { title: "UI/UX Design & Design System", content: "" },
-        { title: "Web App Development & Migration to Sanity", content: "" },
-      ],
-      img: {
-        url: "/placeholders/work-main.webp",
-        alt: "Second image",
-      },
-      stack: [{ url: "/placeholders/node.webp", alt: "NodeJS" }],
-      font: [
-        {
-          name: "Poppins",
-          source: "google",
-          fallback: "sans-serif",
-          variants: [
-            { weight: 700, style: "normal", file: null },
-            { weight: 600, style: "normal", file: null },
-            { weight: 500, style: "normal", file: null },
-            { weight: 400, style: "normal", file: null },
-          ],
-        },
-      ],
-      colors: [
-        { hex: "#EBE4DF", name: "Soft Ivory" },
-        { hex: "#BED5E5", name: "Light Powder Blue" },
-        { hex: "#FFB383", name: "Warm Peach" },
-      ],
-      moreImgs: [
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-      ],
+      url: "/page-flooring/platform/hero.webp",
+      alt: "Page Flooring project management platform",
     },
     testimonial: {
       feedback:
-        "OpenCore transformed our complex meal planning vision into a scalable platform, delivering seamless user experiences and supporting sustainable business growth",
+        "Very knowledgeable team! I must say from the start of our dealings right up until the end - I was thoroughly impressed with their communication, efficiency and ability to listen to our needs and translate that into a finished product! Highly recommend using OpenCore!",
       client: {
-        name: "Victoria",
-        role: "Founder, FraicheTable",
-        img: {
-          url: "/placeholders/client.webp",
-          alt: "Client image",
-        },
-        logo: {
-          url: "/placeholders/client-logo.svg",
-          alt: "Client logo",
-        },
+        name: "Dylan Page",
+        role: "Page Flooring",
       },
     },
   },
   {
-    title:
-      "Rebuild the mobile first web app and design system for a meal planning platform with 500+ paid users & 300,000+ users",
-    slug: "/work/project-1",
-    tags: ["B2C", "SaaS"],
+    title: "Clinical reference software, built to the standard clinicians expect.",
+    slug: "/work/anesthesia-one",
+    tags: ["Healthcare", "App & Web"],
     caption:
-      "We partnered with Fraiche Table to built an AI pipeline that automated hours of manual recipe entry every week, build their web app with mobile first approach and full design system, shipped product features that cut churn by 15% and grew revenue.",
-    startDate: "01-01-2025",
+      "A physician came to us with a tool anesthesia professionals needed and no way to build it. We designed and developed the mobile app, rebuilt the web platform and created the brand, and stayed on to keep it current.",
+    startDate: "01-01-2024",
     present: true,
     cardImg: {
-      url: "/placeholders/work.webp",
-      alt: "Project Card image",
-    },
-    heroImg: {
-      url: "/placeholders/work-main.webp",
-      alt: "Hero image",
-    },
-    intro: {
-      name: "Fraiche Table",
-      description:
-        "OpenCore transformed our complex meal planning vision into a scalable platform, delivering seamless user experiences and supporting sustainable business growth",
-      timeFrame: "1 year",
-      roles: ["Brand", "Website", "App Development"],
-      url: "https://fraichetable.com",
-    },
-    scope: {
-      scopes: [
-        { title: "UI/UX Design & Design System", content: "" },
-        { title: "Web App Development & Migration to Sanity", content: "" },
-      ],
-      img: {
-        url: "/placeholders/work-main.webp",
-        alt: "Second image",
-      },
-      stack: [{ url: "/placeholders/node.webp", alt: "NodeJS" }],
-      font: [
-        {
-          name: "Poppins",
-          source: "google",
-          fallback: "sans-serif",
-          variants: [
-            { weight: 700, style: "normal", file: null },
-            { weight: 600, style: "normal", file: null },
-            { weight: 500, style: "normal", file: null },
-            { weight: 400, style: "normal", file: null },
-          ],
-        },
-      ],
-      colors: [
-        { hex: "#EBE4DF", name: "Soft Ivory" },
-        { hex: "#BED5E5", name: "Light Powder Blue" },
-        { hex: "#FFB383", name: "Warm Peach" },
-      ],
-      moreImgs: [
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-        {
-          url: "/placeholders/work-main.webp",
-          alt: "work image",
-        },
-      ],
+      url: "/anesthesia-one/card.webp",
+      alt: "AnesthesiaOne mobile app and web platform",
     },
     testimonial: {
       feedback:
-        "OpenCore transformed our complex meal planning vision into a scalable platform, delivering seamless user experiences and supporting sustainable business growth",
+        "A talented, motivated, professional team and has simply been a pleasure to work with",
       client: {
-        name: "Victoria",
-        role: "Founder, FraicheTable",
-        img: {
-          url: "/placeholders/client.webp",
-          alt: "Client image",
-        },
-        logo: {
-          url: "/placeholders/client-logo.svg",
-          alt: "Client logo",
-        },
+        name: "Dr. Sanjib Adhikary",
+        role: "AnesthesiaOne",
       },
     },
   },
