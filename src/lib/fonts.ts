@@ -1,5 +1,12 @@
 import localFont from "next/font/local";
-import { Inter, Dancing_Script, Allura, JetBrains_Mono, Caveat } from "next/font/google";
+import {
+  Inter,
+  Dancing_Script,
+  Allura,
+  JetBrains_Mono,
+  Caveat,
+  Gloria_Hallelujah,
+} from "next/font/google";
 
 export const switzer = localFont({
   src: [
@@ -55,6 +62,14 @@ export const caveat = Caveat({
   subsets: ["latin"],
   weight: ["400", "600"],
   variable: "--font-caveat",
+  display: "swap",
+  preload: false,
+});
+
+export const gloriaHallelujah = Gloria_Hallelujah({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-gloria-hallelujah",
   display: "swap",
   preload: false,
 });

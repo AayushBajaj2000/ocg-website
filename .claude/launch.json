@@ -4,14 +4,29 @@
     {
       "name": "opencore-website",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeArgs": [
+        "dev"
+      ],
       "port": 3000
     },
     {
       "name": "opencore-website-prod",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["start", "-p", "3001"],
+      "runtimeArgs": [
+        "start",
+        "-p",
+        "3001"
+      ],
       "port": 3001
+    },
+    {
+      "name": "opencore-website-npm",
+      "runtimeExecutable": "/bin/zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=/Users/abajaj/.nvm/versions/node/v24.19.0/bin:$PATH && npm run dev"
+      ],
+      "port": 3000
     }
   ]
 }

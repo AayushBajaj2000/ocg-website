@@ -7,15 +7,26 @@ type Props = {
   as?: ElementType;
   title?: string;
   description?: string;
+  /** Extra classes for the title, e.g. to widen it past the default measure. */
+  titleClassName?: string;
   children?: ReactNode;
 };
 
-const BannerHeading: React.FC<Props> = ({ as = "h1", title, description, children }) => {
+const BannerHeading: React.FC<Props> = ({
+  as = "h1",
+  title,
+  description,
+  titleClassName,
+  children,
+}) => {
   return (
     <div className="z-50 flex w-full flex-wrap items-end justify-between gap-5 lg:flex-nowrap">
       <StripeReveal
         as={as}
-        className="md:text-hero-desktop text-hero-mobile text-black-1 max-w-77.25 font-medium tracking-[-4%] md:max-w-125"
+        className={cn(
+          "md:text-hero-desktop text-hero-mobile text-black-1 max-w-77.25 font-medium tracking-[-4%] md:max-w-125",
+          titleClassName,
+        )}
       >
         {title}
       </StripeReveal>
