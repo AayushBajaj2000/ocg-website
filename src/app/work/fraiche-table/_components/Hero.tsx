@@ -51,12 +51,6 @@ const HERO_STATS: IStatMetric[] = [
 
 const STAT_VALUE_CLASS = "text-[4rem] md:text-[3.5rem]";
 
-const STAT_BORDER_CLASS: Record<string, string> = {
-  shipment: "border-y md:border-r",
-  launch: "border-y md:border-l lg:border-r",
-  stall: "border-y md:border-r lg:border-l lg:border-r-0",
-};
-
 const Hero: React.FC = () => {
   return (
     <Section

@@ -15,13 +15,13 @@ const HowWeWork: React.FC = () => {
             as="h2"
             className="md:text-h3 font-switzer text-black-1 text-2xl font-medium tracking-[-2%]"
           >
-            Three years in, we're still building Fraiche together.
+            Three years in, we&apos;re still building Fraiche together.
           </StripeReveal>
           <Reveal
             as="p"
             className="text-black-3 font-switzer max-w-245.5 text-sm tracking-[-2%] md:text-xl"
           >
-            We joined their team's channels and worked alongside them every day. We answered
+            We joined their team&apos;s channels and worked alongside them every day. We answered
             questions within minutes, on Slack, ran weekly sprints, and held regular calls to make
             sure we worked as an extension of their team.
           </Reveal>

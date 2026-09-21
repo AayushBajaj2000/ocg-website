@@ -1,6 +1,6 @@
 "use client";
 
-import { ElementType, useRef } from "react";
+import { useRef } from "react";
 import { LazyMotion, domAnimation, useMotionValue, type MotionValue } from "motion/react";
 import Section, { SectionElement } from "@/components/layout/sections/Section";
 import FillText, { toWords } from "@/components/ui/animations/FillText";

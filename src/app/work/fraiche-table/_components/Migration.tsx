@@ -4,7 +4,6 @@ import { Reveal } from "@/components/ui/animations/Reveal";
 import { StripeReveal } from "@/components/ui/animations/StripeReveal";
 import PageDivider from "@/components/ui/dividers/PageDivider";
 import { cn } from "@/lib/utils";
-import { m } from "motion/react";
 import Image from "next/image";
 
 const MIGRATION_STEPS = [
@@ -104,7 +103,7 @@ const Migration: React.FC = () => {
           as="h2"
           className="md:text-hero-mobile font-switzer text-black-1 text-2xl font-medium tracking-[-2%]"
         >
-          The platform was working. It just wasn't going to keep working.
+          The platform was working. It just wasn&apos;t going to keep working.
         </StripeReveal>
         <div className="flex flex-col gap-2">
           {PROBLEM_TEXTS.map((t, i) => (
@@ -232,8 +231,8 @@ const Migration: React.FC = () => {
             size.
           </Reveal>
           <Reveal as="li" className="font-switzer text-black-3 text-base tracking-[-2%]">
-            Pluralization, quantities and prep steps resolve automatically. No more "(s)" in
-            brackets and no hand-written prep each week.
+            Pluralization, quantities and prep steps resolve automatically. No more &quot;(s)&quot;
+            in brackets and no hand-written prep each week.
           </Reveal>
           <Reveal as="li" className="font-switzer text-black-3 text-base tracking-[-2%]">
             Swap an ingredient and nothing downstream breaks. The grocery list, the nutrition and
