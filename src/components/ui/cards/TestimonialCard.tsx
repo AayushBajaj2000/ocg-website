@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { StarIcon } from "@/components/icons";
 import { sanityCropLoader } from "@/lib/sanity/image";
 import type { ITestimonialCard, ITestimonialMetric } from "@/types";
 
@@ -15,9 +16,21 @@ const TestimonialMetric: React.FC<ITestimonialMetric> = ({ value, label }) => {
 
 const photoLoader = sanityCropLoader({ aspectRatio: 1 });
 
+// Placeholder: every card shows five stars until the CMS carries a real rating per customer.
+const PLACEHOLDER_RATING = 5;
+
 const TestimonialCard: React.FC<ITestimonialCard> = ({ feedback, client, metrics }) => {
   return (
     <div className="flex h-full flex-col items-center gap-6 bg-white px-3.5 pt-6 pb-6 text-center md:pt-10 md:pb-5">
+      <div
+        role="img"
+        aria-label={`Rated ${PLACEHOLDER_RATING} out of 5`}
+        className="text-brand-blue flex items-center gap-1.5"
+      >
+        {Array.from({ length: PLACEHOLDER_RATING }).map((_, i) => (
+          <StarIcon key={i} />
+        ))}
+      </div>
       <blockquote className="text-black-1 font-switzer mx-auto max-w-102.75 text-base font-medium tracking-[-2%] md:text-xl">
         &ldquo;{feedback}&rdquo;
       </blockquote>

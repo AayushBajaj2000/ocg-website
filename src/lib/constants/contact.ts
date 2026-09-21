@@ -1,9 +1,9 @@
 import { bookingHref } from "@/lib/constants";
 import { IDiscoveryCall } from "@/types";
 
-// wa.me link for the "Chat on WhatsApp" button, e.g. "https://wa.me/16475550123". The button is
-// hidden while this is empty, rather than pointing somewhere that isn't WhatsApp.
-export const WHATSAPP_HREF = "";
+// wa.me link for the "Chat on WhatsApp" button: +1 (647) 493-2673. The button is hidden when this
+// is empty, rather than pointing somewhere that isn't WhatsApp.
+export const WHATSAPP_HREF = "https://wa.me/16474932673";
 
 export const DISCOVERY: IDiscoveryCall = {
   heading: "Prefer to discuss your project on live call?",
