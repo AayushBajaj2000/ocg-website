@@ -1,10 +1,7 @@
-import { Metadata } from "next";
 import Contact from "@/app/contact/_components/Contact";
+import { pageMetadata } from "@/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Contact | OpenCore Group",
-  description: "Need a squad on your team? Let's talk!",
-};
+export const metadata = pageMetadata("contact");
 
 const ContactPage = () => <Contact />;
 

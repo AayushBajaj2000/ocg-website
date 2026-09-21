@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/seo/JsonLd";
 import BlogPost from "@/app/blog/[slug]/_components/BlogPost";
 import { fetchBlogPost, fetchBlogPosts, fetchBlogPostSlugs } from "@/lib/blog/server";
 import { blogPostHref } from "@/lib/constants";
@@ -68,11 +69,7 @@ const BlogPostPage = async ({ params }: PageProps<"/blog/[slug]">) => {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        // `<` is escaped so a title can never close the script element.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      <JsonLd data={jsonLd} />
       <BlogPost post={post} related={related} />
     </>
   );

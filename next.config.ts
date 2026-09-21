@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
     },
     { source: "/projects/:slug", destination: "/work", permanent: true },
     { source: "/resources/:slug", destination: "/resources?resource=:slug", permanent: true },
+    // Share images the old site's pages pointed at; links already posted on social still load them.
+    { source: "/openGraph/:file", destination: "/og/home", permanent: true },
   ],
 };
 
