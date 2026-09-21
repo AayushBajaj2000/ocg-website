@@ -33,7 +33,7 @@ export const TRUSTED_BY_SECTION: ITrustedBy = {
     {
       _type: "metric",
       _key: "experience",
-      label: "Years of experiences - only A players",
+      label: "Years of experience",
       value: 5,
       suffix: "+",
     },
