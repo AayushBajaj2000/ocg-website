@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import Link from "next/link";
 import { ClientError } from "eve/client";
@@ -8,7 +8,10 @@ import { useEveAgent } from "eve/react";
 import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "motion/react";
 import AssistantMessage from "@/components/assistant/AssistantMessage";
 import { useAssistant } from "@/components/assistant/AssistantProvider";
+import { useMediaQuery } from "@/components/assistant/useMediaQuery";
+import { useVisualViewport } from "@/components/assistant/useVisualViewport";
 import { AssistantLogoIcon } from "@/components/icons";
+import { useScrollLock } from "@/components/layout/hooks/useScrollLock";
 import { ASSISTANT } from "@/lib/constants";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -57,9 +60,24 @@ const AssistantPanel: React.FC = () => {
   const isWaiting = isBusy && messages.at(-1)?.role !== "assistant";
   const error = agent.status === "error" ? describeError(agent.error) : null;
 
+  // Below `sm` the panel is a full-screen sheet; from `sm` up it is a side panel beside the page.
+  const isSheet = useMediaQuery("(max-width: 639px)");
+  // Touch keyboards: focusing the input throws the keyboard over half the screen.
+  const hasTouchKeyboard = useMediaQuery("(pointer: coarse)");
+
+  const panelRef = useRef<HTMLElement | null>(null);
+  const scrollToEnd = useCallback(() => endRef.current?.scrollIntoView({ block: "end" }), []);
+
+  // As a sheet it covers the page, so the page must not scroll behind it; otherwise iOS scrolls
+  // it into view under the keyboard. As a side panel the page stays usable.
+  useScrollLock(isOpen && isSheet);
+  useVisualViewport(panelRef, isOpen && isSheet, scrollToEnd);
+
   useEffect(() => {
-    if (isOpen) inputRef.current?.focus();
-  }, [isOpen]);
+    // With a hardware keyboard, land in the input. On touch, let the visitor read the greeting
+    // and starter questions first; they tap the input when they want the keyboard.
+    if (isOpen && !hasTouchKeyboard) inputRef.current?.focus();
+  }, [isOpen, hasTouchKeyboard]);
 
   // Follow the answer as it streams in.
   useEffect(() => {
@@ -103,7 +121,8 @@ const AssistantPanel: React.FC = () => {
             animate={reduced ? { opacity: 1 } : { x: 0 }}
             exit={reduced ? { opacity: 0 } : { x: "100%" }}
             transition={{ duration: 0.4, ease: EASE }}
-            className="border-hairline bg-page-alt fixed inset-y-0 right-0 z-1100 flex w-full flex-col border-l shadow-[-24px_0_80px_rgb(0_0_0/0.12)] sm:w-105"
+            ref={panelRef}
+            className="border-hairline bg-page-alt fixed top-[var(--vv-top,0px)] right-0 z-1100 flex h-[var(--vv-height,100dvh)] w-full flex-col border-l shadow-[-24px_0_80px_rgb(0_0_0/0.12)] sm:inset-y-0 sm:h-auto sm:w-105"
           >
             <header className="border-hairline flex h-14 shrink-0 items-center justify-between border-b pr-3 pl-5">
               <p className="font-jetbrains-mono text-black-1 flex items-center gap-2 text-xs tracking-wide uppercase">
@@ -138,7 +157,7 @@ const AssistantPanel: React.FC = () => {
             </header>
 
             <div
-              className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 py-6"
+              className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 py-6"
               aria-live="polite"
             >
               {messages.length === 0 ? (
@@ -220,7 +239,7 @@ const AssistantPanel: React.FC = () => {
                   maxLength={ASSISTANT.maxMessageChars}
                   placeholder={ASSISTANT.placeholder}
                   aria-label={ASSISTANT.placeholder}
-                  className="text-black-1 field-sizing-content max-h-32 min-h-8 flex-1 resize-none bg-transparent px-1.5 py-1.5 text-sm outline-none placeholder:text-neutral-400"
+                  className="text-black-1 field-sizing-content max-h-32 min-h-8 flex-1 resize-none bg-transparent px-1.5 py-1 text-base outline-none placeholder:text-neutral-400 sm:py-1.5 sm:text-sm"
                 />
                 {isBusy ? (
                   <button
