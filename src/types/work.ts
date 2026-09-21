@@ -43,6 +43,8 @@ export interface IProjectScope {
 }
 
 export interface IProject {
+  /** The client / product name, e.g. for the home desktop's Projects folder. */
+  name?: string;
   title?: string;
   caption?: string;
   /** Required: the card prints its year, and a made-up default would be a false claim. */

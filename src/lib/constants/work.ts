@@ -3,6 +3,7 @@ import { IProject, IWork } from "@/types";
 export const PROJECTS: IProject[] = [
   {
     title: "A vision that outgrew its platform. We built one that could keep up.",
+    name: "Fraîche Table",
     slug: "/work/fraiche-table",
     tags: ["B2C", "SaaS"],
     caption:
@@ -25,6 +26,7 @@ export const PROJECTS: IProject[] = [
   {
     title:
       "Five systems, three logins, and a dozen workarounds, replaced with one platform they own.",
+    name: "Page Flooring",
     slug: "/work/page-flooring",
     tags: ["B2B", "Platform"],
     caption:
@@ -46,6 +48,7 @@ export const PROJECTS: IProject[] = [
   },
   {
     title: "Clinical reference software, built to the standard clinicians expect.",
+    name: "AnesthesiaOne",
     slug: "/work/anesthesia-one",
     tags: ["Healthcare", "App & Web"],
     caption:

@@ -10,11 +10,15 @@ type DesktopModeContext = {
   isFull: boolean;
   /** The page open in the OS browser, if any. */
   browser: DesktopWindow | null;
+  isFinderOpen: boolean;
   toggle: () => void;
   exit: () => void;
   /** Opens a page in the OS browser, extending the desktop to full screen to make room. */
   open: (page: DesktopWindow) => void;
   close: () => void;
+  /** Opens the Projects folder, extending the desktop to full screen to make room. */
+  openFinder: () => void;
+  closeFinder: () => void;
 };
 
 const Context = createContext<DesktopModeContext | null>(null);
@@ -29,24 +33,32 @@ export const useDesktopMode = (): DesktopModeContext => {
 export const DesktopModeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isFull, setIsFull] = useState(false);
   const [browser, setBrowser] = useState<DesktopWindow | null>(null);
+  const [isFinderOpen, setIsFinderOpen] = useState(false);
 
   const exit = useCallback(() => {
     setIsFull(false);
     setBrowser(null);
+    setIsFinderOpen(false);
   }, []);
   const toggle = useCallback(() => {
     setIsFull((prev) => !prev);
     setBrowser(null);
+    setIsFinderOpen(false);
   }, []);
   const open = useCallback((page: DesktopWindow) => {
     setIsFull(true);
     setBrowser(page);
   }, []);
   const close = useCallback(() => setBrowser(null), []);
+  const openFinder = useCallback(() => {
+    setIsFull(true);
+    setIsFinderOpen(true);
+  }, []);
+  const closeFinder = useCallback(() => setIsFinderOpen(false), []);
 
   const value = useMemo(
-    () => ({ isFull, browser, toggle, exit, open, close }),
-    [isFull, browser, toggle, exit, open, close],
+    () => ({ isFull, browser, isFinderOpen, toggle, exit, open, close, openFinder, closeFinder }),
+    [isFull, browser, isFinderOpen, toggle, exit, open, close, openFinder, closeFinder],
   );
 
   return <Context value={value}>{children}</Context>;

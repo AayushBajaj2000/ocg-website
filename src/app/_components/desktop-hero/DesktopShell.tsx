@@ -39,7 +39,7 @@ type Props = {
  * re-laying out every frame so the wallpaper and its hotspots never stretch.
  */
 const DesktopShell: React.FC<Props> = ({ className, children }) => {
-  const { isFull, browser, exit, close } = useDesktopMode();
+  const { isFull, browser, isFinderOpen, exit, close, closeFinder } = useDesktopMode();
   const slotRef = useRef<HTMLDivElement | null>(null);
   const screenRef = useRef<HTMLDivElement | null>(null);
   const wasFull = useRef(false);
@@ -85,13 +85,14 @@ const DesktopShell: React.FC<Props> = ({ className, children }) => {
     if (!isFull) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      // Escape peels one layer at a time: the browser window first, then full screen.
+      // Escape peels one layer at a time: browser window, then folder, then full screen.
       if (browser) close();
+      else if (isFinderOpen) closeFinder();
       else exit();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isFull, browser, exit, close]);
+  }, [isFull, browser, isFinderOpen, exit, close, closeFinder]);
 
   return (
     <div ref={slotRef} className={cn("relative", className)}>

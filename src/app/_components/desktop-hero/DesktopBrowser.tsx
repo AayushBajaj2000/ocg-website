@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "motion/react";
 import { useDesktopMode } from "@/app/_components/desktop-hero/DesktopMode";
+import DesktopWindowLights from "@/app/_components/desktop-hero/DesktopWindowLights";
 import type { DesktopWindow } from "@/app/_components/desktop-hero/DesktopMode";
 
 const HOST = "opencoregroup.com";
@@ -68,19 +69,7 @@ const BrowserWindow: React.FC<{ page: DesktopWindow }> = ({ page }) => {
       className="flex size-full flex-col overflow-hidden rounded-xl bg-white shadow-[0_24px_80px_rgb(0_0_0/0.45)] ring-1 ring-black/15"
     >
       <div className="flex h-10 shrink-0 items-end gap-2 bg-[#dee1e6] pr-2 pl-3">
-        <div className="group/lights flex h-full items-center gap-2 pr-2">
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={close}
-            aria-label="Close window"
-            className="grid size-3 cursor-pointer place-items-center rounded-full bg-[#ff5f57] text-[8px] leading-none font-bold text-black/0 outline-none group-hover/lights:text-black/60 focus-visible:ring-2 focus-visible:ring-[#1a73e8]"
-          >
-            ×
-          </button>
-          <span aria-hidden className="size-3 rounded-full bg-[#febc2e]" />
-          <span aria-hidden className="size-3 rounded-full bg-[#28c840]" />
-        </div>
+        <DesktopWindowLights onClose={close} closeRef={closeRef} />
         <div className="flex h-8 max-w-60 min-w-0 flex-1 items-center gap-2 rounded-t-lg bg-white px-3">
           <Image src="/logo-mob.svg" alt="" width={14} height={14} className="size-3.5 shrink-0" />
           <span className="truncate text-xs text-[#1f1f1f]">{current.title}</span>
@@ -153,7 +142,7 @@ const DesktopBrowser: React.FC = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.35, ease: EASE, delay: reduced ? 0 : 0.2 }}
-            className="absolute inset-x-2 top-11 bottom-2 z-10 md:inset-x-8 md:top-14 md:bottom-6 lg:inset-x-36"
+            className="absolute inset-x-2 top-11 bottom-2 z-20 md:inset-x-8 md:top-14 md:bottom-6 lg:inset-x-36"
           >
             <BrowserWindow page={browser} />
           </m.div>

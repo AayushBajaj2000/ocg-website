@@ -4,14 +4,14 @@ type Props = {
   people: IHomeDesktopPerson[];
 };
 
-/** Hotspots over the figures painted into the wallpaper; each reveals a name tag. */
+/** Hotspots over the figures in the wallpaper; each reveals a name tag. */
 const DesktopPeople: React.FC<Props> = ({ people }) => {
   return (
     <ul>
       {people.map(({ name, x }, index) => (
         <li
           key={index}
-          className="absolute top-[74.5%] h-[9.5%] w-[4.6%] -translate-x-1/2"
+          className="absolute top-[72.5%] h-[8%] w-[4.6%] -translate-x-1/2"
           style={{ left: `${x}%` }}
         >
           <button

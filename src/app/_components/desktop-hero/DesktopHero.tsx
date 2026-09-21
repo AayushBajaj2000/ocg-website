@@ -1,12 +1,14 @@
 import Image from "next/image";
 import DesktopBrowser from "@/app/_components/desktop-hero/DesktopBrowser";
+import DesktopFinder from "@/app/_components/desktop-hero/DesktopFinder";
+import DesktopFolder from "@/app/_components/desktop-hero/DesktopFolder";
 import DesktopClock from "@/app/_components/desktop-hero/DesktopClock";
 import DesktopIcon from "@/app/_components/desktop-hero/DesktopIcon";
 import DesktopShell from "@/app/_components/desktop-hero/DesktopShell";
+import DesktopWallpaperVideo from "@/app/_components/desktop-hero/DesktopWallpaperVideo";
 import DesktopPeople from "@/app/_components/desktop-hero/DesktopPeople";
 import { PlusIcon } from "@/components/icons";
 import Section from "@/components/layout/sections/Section";
-import { WallpaperShader } from "@/components/shaders/wallpaper-shader";
 import BannerHeading from "@/components/ui/headings/BannerHeading";
 import { AnimatedIconButton } from "@/components/ui/buttons/AnimatedIconButton";
 import { HOME_SECTION } from "@/lib/constants";
@@ -27,7 +29,7 @@ const DesktopHero: React.FC = () => {
         <div className="desktop-hero-stage">
           <Image
             src={desktop.wallpaper}
-            alt="Five OpenCore teammates working at desks in a grassy field while whales drift through clouds spelling OpenCore"
+            alt="Five OpenCore teammates working at desks in a grassy field, under clouds that gather to spell OpenCore as whales drift past"
             fill
             priority
             // The stage overflows the hero to cover it, so it is wider than the viewport on phones.
@@ -35,7 +37,7 @@ const DesktopHero: React.FC = () => {
             className="object-cover select-none"
             draggable={false}
           />
-          <WallpaperShader />
+          <DesktopWallpaperVideo {...desktop.video} />
           <DesktopPeople people={desktop.people} />
         </div>
 
@@ -58,17 +60,25 @@ const DesktopHero: React.FC = () => {
             column that wraps into a new one when the desktop is too short to hold it. */}
         <nav aria-label="Desktop shortcuts" className="absolute top-14 bottom-4 left-2 md:left-6">
           <ul className="desktop-icons grid grid-flow-col grid-rows-[auto_auto] content-start gap-x-2 gap-y-5 md:gap-x-8">
-            {[...desktop.icons, ...desktop.projects].map((icon) => (
+            {desktop.icons.map((icon) => (
               <li key={icon.label}>
                 <DesktopIcon {...icon} />
               </li>
             ))}
+            <li>
+              <DesktopFolder {...desktop.folder} />
+            </li>
           </ul>
         </nav>
 
         <div className="absolute top-14 right-2 hidden group-data-[full=true]/desktop:block md:right-6">
           <DesktopIcon {...desktop.contact} />
         </div>
+        <DesktopFinder
+          title={desktop.folder.label}
+          files={desktop.folder.files}
+          shortcuts={desktop.folder.shortcuts}
+        />
         <DesktopBrowser />
       </DesktopShell>
 

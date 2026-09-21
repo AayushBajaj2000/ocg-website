@@ -168,13 +168,13 @@ body {
   }
 
   /* Home OS hero: the stage mimics `object-fit: cover` as a real box, so the name-tag
-     hotspots placed in % stay glued to the figures painted into the wallpaper. */
+     hotspots placed in % stay glued to the figures in the wallpaper video. */
   .desktop-hero {
     container-type: size;
   }
 
   .desktop-hero-stage {
-    --stage-ratio: calc(3344 / 1882);
+    --stage-ratio: calc(16 / 9);
     --stage-width: max(100cqw, 100cqh * var(--stage-ratio));
     position: absolute;
     top: calc((100cqh - var(--stage-width) / var(--stage-ratio)) * 0.586);

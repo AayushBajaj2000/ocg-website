@@ -1,14 +1,32 @@
 import { IHome } from "@/types";
 import { bookingHref } from "@/lib/constants/booking";
+import { PROJECTS } from "@/lib/constants/work";
 
-// The seated figures in the wallpaper, left to right (`x` is % of the image's width).
+// The seated figures in the wallpaper video (they never move), left to right (`x` is % of the image's width).
 const DESKTOP_PEOPLE = [
-  { name: "Austin Page", x: 38.9 },
-  { name: "Aayush Bajaj", x: 44.85 },
-  { name: "Waleed Ali Khan", x: 50 },
-  { name: "Ally Majelan", x: 55.15 },
-  { name: "Sameer Siddiqui", x: 60.65 },
+  { name: "Austin Page", x: 38.2 },
+  { name: "Aayush Bajaj", x: 44.05 },
+  { name: "Waleed Ali Khan", x: 49.1 },
+  { name: "Ally Majelan", x: 54.3 },
+  { name: "Sameer Siddiqui", x: 59.75 },
 ];
+
+// "page-flooring" -> "Page Flooring": the fallback for a project without a `name`.
+const toTitle = (slug: string) =>
+  slug.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+// Every case study becomes a file in the desktop's Projects folder, named after the client.
+const DESKTOP_PROJECT_FILES = PROJECTS.flatMap((project) => {
+  if (typeof project.slug !== "string" || !project.cardImg) return [];
+  return [
+    {
+      name: project.name ?? toTitle(project.slug.split("/").pop() ?? ""),
+      href: project.slug,
+      kind: project.tags?.join(" · "),
+      img: { url: String(project.cardImg.url), alt: project.cardImg.alt ?? "" },
+    },
+  ];
+});
 
 export const HOME_SECTION: IHome = {
   hero: {
@@ -19,6 +37,16 @@ export const HOME_SECTION: IHome = {
   },
   desktop: {
     wallpaper: "/hero-os/wallpaper.webp",
+    video: {
+      // 2560px for desktops (the screen goes full-bleed); phones show a crop, so 1920px is plenty.
+      sources: [
+        { src: "/hero-os/wallpaper-sm.webm", type: "video/webm", media: "(max-width: 767px)" },
+        { src: "/hero-os/wallpaper-sm.mp4", type: "video/mp4", media: "(max-width: 767px)" },
+        { src: "/hero-os/wallpaper.webm", type: "video/webm" },
+        { src: "/hero-os/wallpaper.mp4", type: "video/mp4" },
+      ],
+      stillAt: 2.5,
+    },
     contact: {
       label: "Contact Us",
       href: "/contact",
@@ -46,18 +74,17 @@ export const HOME_SECTION: IHome = {
         img: { url: "/hero-os/company.svg", alt: "", width: 32, height: 32 },
       },
     ],
-    projects: [
-      {
-        label: "Fraiche.project",
-        href: "/work/fraiche-table",
-        img: { url: "/hero-os/fraiche.webp", alt: "", width: 80, height: 52 },
-      },
-      {
-        label: "PF1.project",
-        href: "/work",
-        img: { url: "/hero-os/pf1.webp", alt: "", width: 80, height: 52 },
-      },
-    ],
+    folder: {
+      label: "Projects",
+      href: "/work",
+      files: DESKTOP_PROJECT_FILES,
+      shortcuts: [
+        { label: "All work", href: "/work" },
+        { label: "Services", href: "/services" },
+        { label: "Company", href: "/company" },
+        { label: "Contact", href: "/contact" },
+      ],
+    },
     people: DESKTOP_PEOPLE,
   },
   services: {

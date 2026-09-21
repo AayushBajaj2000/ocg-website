@@ -18,11 +18,19 @@ export interface IHomeHeading {
 export interface IHome {
   hero: IHomeHero;
   desktop: {
+    /** Poster for the wallpaper video: the loop's first frame, so playback starts without a jump. */
     wallpaper: string;
+    video: { sources: IHomeDesktopVideoSource[]; stillAt: number };
     /** Extra shortcut pinned top-right, only in full screen. */
     contact: IHomeDesktopIcon;
     icons: IHomeDesktopIcon[];
-    projects: IHomeDesktopIcon[];
+    /** The Projects folder. Its files are the case studies, so new ones appear on their own. */
+    folder: {
+      label: string;
+      href: string;
+      files: IHomeDesktopFile[];
+      shortcuts: { label: string; href: string }[];
+    };
     people: IHomeDesktopPerson[];
   };
   services: IHomeHeading;
@@ -36,6 +44,21 @@ export interface IHomeDesktopIcon {
   /** Omitted for the icon that extends the OS desktop to full screen. */
   href?: string;
   img: { url: string; alt: string; width: number; height: number };
+}
+
+/** A file inside a desktop folder; opens in the OS browser. */
+export interface IHomeDesktopFile {
+  name: string;
+  href: string;
+  kind?: string;
+  img: { url: string; alt: string };
+}
+
+export interface IHomeDesktopVideoSource {
+  src: string;
+  type: string;
+  /** Limits the source to matching viewports, e.g. the lighter encode for phones. */
+  media?: string;
 }
 
 /** A seated figure in the wallpaper, placed as a percentage of the image's width. */
