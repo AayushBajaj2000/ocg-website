@@ -18,7 +18,7 @@ const RESULTS = [
   {
     icon: <KeyIcon className="size-15.5 md:size-26" />,
     description:
-      "The business owns its software and its data, which changes what the company is worth to an acquirer.ƒ",
+      "The business owns its software and its data, which changes what the company is worth to an acquirer.",
   },
 ];
 const Result: React.FC = () => {

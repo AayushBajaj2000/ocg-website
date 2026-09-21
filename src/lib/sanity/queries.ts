@@ -108,3 +108,23 @@ export const BLOG_POST_QUERY = defineQuery(`
     }, [])
   }
 `);
+
+// Homepage testimonials: every customer with a complete quote, each with the first two results of
+// the linked project's case study (the real numbers, e.g. "-15%" / "Churn").
+export const TESTIMONIALS_QUERY = defineQuery(`
+  *[_type == "customerTestimonial" && defined(customerName) && defined(testimonial)]
+    | order(order asc, _createdAt asc) {
+    "id": _id,
+    company,
+    customerName,
+    customerPosition,
+    testimonial,
+    "photo": customerPhoto.asset->${SANITY_IMAGE_PROJECTION},
+    "logo": logo.asset->${SANITY_IMAGE_PROJECTION},
+    "metrics": coalesce(
+      *[_type == "caseStudy" && project._ref == ^.project._ref][0]
+        .pageBuilder[_type == "summary"][0].results[0...2]{ "value": metric, "label": description },
+      []
+    )
+  }
+`);

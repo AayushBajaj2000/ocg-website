@@ -1,5 +1,5 @@
-import { StarIcon } from "@/components/icons";
 import Image from "next/image";
+import { sanityCropLoader } from "@/lib/sanity/image";
 import type { ITestimonialCard, ITestimonialMetric } from "@/types";
 
 const TestimonialMetric: React.FC<ITestimonialMetric> = ({ value, label }) => {
@@ -13,39 +13,48 @@ const TestimonialMetric: React.FC<ITestimonialMetric> = ({ value, label }) => {
   );
 };
 
-const TestimonialCard: React.FC<ITestimonialCard> = ({ feedback, rating, client, metrics }) => {
+const photoLoader = sanityCropLoader({ aspectRatio: 1 });
+
+const TestimonialCard: React.FC<ITestimonialCard> = ({ feedback, client, metrics }) => {
   return (
     <div className="flex h-full flex-col items-center gap-6 bg-white px-3.5 pt-6 pb-6 text-center md:pt-10 md:pb-5">
-      <div
-        role="img"
-        aria-label={`Rated ${rating} out of 5`}
-        className="text-brand-blue flex items-center gap-1.5"
-      >
-        {Array.from({ length: rating }).map((_, i) => (
-          <StarIcon key={i} />
-        ))}
-      </div>
       <blockquote className="text-black-1 font-switzer mx-auto max-w-102.75 text-base font-medium tracking-[-2%] md:text-xl">
         &ldquo;{feedback}&rdquo;
       </blockquote>
       <div className="flex items-center justify-center gap-1.5">
-        <Image
-          src={client.logo.url}
-          alt={client.logo.alt}
-          width={38}
-          height={38}
-          className="object-cover"
-        />
+        {client.img?.kind === "photo" && (
+          <Image
+            src={client.img.url}
+            alt=""
+            width={38}
+            height={38}
+            loader={photoLoader}
+            className="size-9.5 rounded-full object-cover"
+          />
+        )}
+        {client.img?.kind === "logo" && (
+          // An SVG from the CMS: nothing for an image optimizer to resize.
+          <Image
+            src={client.img.url}
+            alt=""
+            width={client.img.width}
+            height={client.img.height}
+            unoptimized
+            className="mr-1.5 h-6 w-auto max-w-24 object-contain"
+          />
+        )}
         <div className="flex flex-col text-left">
           <p className="text-black-1 font-switzer text-sm tracking-[-2%]">{client.name}</p>
           <span className="text-black-3 font-switzer text-xs tracking-[-2%]">{client.role}</span>
         </div>
       </div>
-      <div className="mt-auto grid w-full grid-cols-2 gap-2">
-        {metrics.map((metric, index) => (
-          <TestimonialMetric key={index} {...metric} />
-        ))}
-      </div>
+      {metrics.length > 0 && (
+        <div className="mt-auto grid w-full grid-cols-2 gap-2">
+          {metrics.map((metric, index) => (
+            <TestimonialMetric key={index} {...metric} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

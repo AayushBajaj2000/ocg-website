@@ -55,6 +55,15 @@ export default defineType({
             type: 'number',
         }),
         defineField({
+            name: 'project',
+            title: 'Project',
+            description:
+                'Optional. The project this customer belongs to. The homepage testimonial shows the first two results from that project’s case study.',
+            type: 'reference',
+            // @ts-ignore
+            to: [{ type: 'project' }],
+        }),
+        defineField({
             name: 'customerName',
             title: 'Customer Name',
             description:

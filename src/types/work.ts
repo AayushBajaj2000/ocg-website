@@ -45,11 +45,13 @@ export interface IProjectScope {
 export interface IProject {
   title?: string;
   caption?: string;
-  startDate?: string;
+  /** Required: the card prints its year, and a made-up default would be a false claim. */
+  startDate: string;
   endDate?: string;
   present?: boolean;
   tags?: string[];
-  slug?: LinkProps["href"];
+  /** Required: the whole card is a link, and there is no generic page to fall back to. */
+  slug: LinkProps["href"];
   testimonial?: ITestimonial;
   cardImg?: IImage;
   heroImg?: IImage;

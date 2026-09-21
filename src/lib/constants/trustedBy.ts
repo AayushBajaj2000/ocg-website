@@ -16,12 +16,16 @@ export const TRUSTED_BY_SECTION: ITrustedBy = {
       _type: "highlight",
       _key: "founders",
       label: "Trusted by 20+ founders, operators, and growing businesses across Canada.",
-      image: { url: "/avatars/austin-page-lg.webp", alt: "Austin, OpenCore client" },
+      image: {
+        url: "/avatars/austin-page-lg.webp",
+        alt: "Austin Page, Co-Founder of OpenCore Group",
+      },
     },
     {
       _type: "metric",
-      _key: "retention",
-      label: "Retention increase for our clients",
+      _key: "churn",
+      // From the Fraîche Table case study results in Sanity ("-15% Churn").
+      label: "Less churn for Fraîche Table after the rebuild",
       value: 15,
       suffix: "%",
       accent: true,

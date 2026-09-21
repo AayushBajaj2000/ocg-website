@@ -110,7 +110,7 @@ const Migration: React.FC = () => {
             <Reveal
               key={`${t}-${i}`}
               as="p"
-              className="font-switzer text-black-3 tracing-[-2%] text-sm md:text-base"
+              className="font-switzer text-black-3 text-sm tracking-[-2%] md:text-base"
               byLine
             >
               {t}
@@ -155,7 +155,7 @@ const Migration: React.FC = () => {
             <Reveal
               key={`${t}-${i}`}
               as="p"
-              className="font-switzer text-black-3 tracing-[-2%] text-sm md:text-base"
+              className="font-switzer text-black-3 text-sm tracking-[-2%] md:text-base"
               byLine
             >
               {t}
@@ -196,7 +196,7 @@ const Migration: React.FC = () => {
         </StripeReveal>
         <Reveal
           as="p"
-          className="font-switzer text-black-3 tracing-[-2%] text-sm md:text-base"
+          className="font-switzer text-black-3 text-sm tracking-[-2%] md:text-base"
           byLine
         >
           The old setup stored a recipe as a page of text. We moved Fraîche Table onto a structured
