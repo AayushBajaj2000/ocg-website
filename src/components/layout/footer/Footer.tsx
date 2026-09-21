@@ -1,5 +1,6 @@
 import { Fragment, type CSSProperties } from "react";
 import Link from "next/link";
+import CookiePreferencesButton from "@/components/analytics/CookiePreferencesButton";
 import {
   ChatGPTIcon,
   ClaudeIcon,
@@ -183,6 +184,8 @@ const Footer: React.FC = () => {
                 )}
               </Fragment>
             ))}
+          <span className="bg-black-3 hidden size-1 rounded-full min-[348px]:block" />
+          <CookiePreferencesButton className="text-black-3 font-switzer cursor-pointer text-sm tracking-[-2%] underline underline-offset-2" />
         </div>
         <div className="w-full text-center md:w-auto md:text-left">
           <p className="text-black-3 text-sm">

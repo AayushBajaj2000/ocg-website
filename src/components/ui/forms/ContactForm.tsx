@@ -24,6 +24,7 @@ import {
 import { useMeasuredHeight } from "@/components/ui/hooks/useMeasuredHeight";
 import { useTurnstile } from "@/components/ui/hooks/useTurnstile";
 import { clientEnv } from "@/lib/env/client";
+import { trackEvent } from "@/lib/analytics/gtag";
 import {
   SERVICE_OPTIONS,
   STEP_ONE_FIELDS,
@@ -147,6 +148,7 @@ const ContactForm: React.FC = () => {
 
       if (body.ok) {
         setSubmitState("success");
+        trackEvent("generate_lead", { form: "contact" });
         return;
       }
 

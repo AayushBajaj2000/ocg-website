@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
+import { trackEvent } from "@/lib/analytics/gtag";
 import { BOOKING } from "@/lib/constants/booking";
 
 type Props = {
@@ -21,8 +22,13 @@ const CalEmbed: React.FC<Props> = ({ config }) => {
         hideEventTypeDetails: false,
         layout: BOOKING.layout,
       });
+
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: () => trackEvent("book_call", { source: config.utm_campaign ?? "direct" }),
+      });
     })();
-  }, []);
+  }, [config.utm_campaign]);
 
   return (
     <Cal

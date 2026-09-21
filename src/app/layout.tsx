@@ -8,7 +8,10 @@ import PageDivider from "@/components/ui/dividers/PageDivider";
 import BuildingSection from "@/components/layout/sections/BuildingSection";
 import HideOnRoutes from "@/components/layout/HideOnRoutes";
 import QueryProvider from "@/components/providers/QueryProvider";
+import Analytics from "@/components/analytics/Analytics";
+import ConsentBanner from "@/components/analytics/ConsentBanner";
 import JsonLd from "@/components/seo/JsonLd";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, pageMetadata } from "@/lib/seo/pages";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/structuredData";
 import "./globals.css";
@@ -46,6 +49,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </HideOnRoutes>
           <Footer />
         </QueryProvider>
+        <ConsentBanner />
+        <Analytics />
+        {/* Cookieless, so it doesn't wait for consent. */}
+        <SpeedInsights />
       </body>
     </html>
   );
