@@ -65,7 +65,7 @@ export const FOOTER: IFooter = {
     { label: "Contact", href: "/contact" },
     { label: "Privacy Policy", href: "/pdfs/ocg-website-privacy-policy.pdf" },
     { label: "Work", href: "/work" },
-    { label: "blog", href: "/blog" },
+    { label: "Blog", href: "/blog" },
     { label: "Terms of Use", href: "/pdfs/ocg-website-terms-of-use.pdf" },
   ],
   footerText: [

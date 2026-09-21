@@ -1,15 +1,5 @@
 @import "tailwindcss";
 
-/* `static` always emits these variables. Tailwind otherwise drops theme variables it can't find
-   written out in source, and the footer builds these names at runtime: var(--color-${name}). */
-@theme static {
-  --color-perplexity: #fbfaf4;
-  --color-gemini: #4796e3;
-  --color-chatgpt: #10a37f;
-  --color-claude: #d97757;
-  --color-grok: #fa4202;
-}
-
 @theme inline {
   --font-switzer: var(--font-switzer-local), ui-sans-serif, system-ui, sans-serif;
   --font-book-call: var(--font-inter), ui-sans-serif, system-ui, sans-serif;

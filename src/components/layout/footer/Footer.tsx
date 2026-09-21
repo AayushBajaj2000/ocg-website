@@ -93,7 +93,6 @@ export const FooterAILinks: React.FC<IFooterAiFooterLink> = ({ title, links }) =
               href={l.href!}
               variant="book-call"
               className="grid size-12! place-content-center"
-              hoverTextColor={`${l.name ? `var(--color-${l.name})` : "#ffffff"}`}
               key={`${l.name}-${i}`}
               target="_blank"
               rel="noopener noreferrer"
