@@ -5,8 +5,11 @@ import { Reveal } from "@/components/ui/animations/Reveal";
 import TeamCarousel from "@/components/ui/carousels/TeamCarousel";
 import { TeamCardWrapper } from "@/components/ui/cards/TeamCard";
 import { TEAM_SECTION } from "@/lib/constants";
+import { fetchTeamMembers } from "@/lib/team/server";
 
-const Team: React.FC = () => {
+const Team = async () => {
+  const team = await fetchTeamMembers();
+
   return (
     <Section container containerClassName="md:py-20 py-10 border-x xl:px-0! 2xl:px-16!">
       <div className="flex flex-col gap-8 md:gap-16">
@@ -46,7 +49,7 @@ const Team: React.FC = () => {
             </div>
           </TeamCardWrapper>
           <TeamCardWrapper className="flex-1 xl:border-r-0 2xl:border-r">
-            <TeamCarousel team={TEAM_SECTION.team ?? []} className="flex-1" />
+            <TeamCarousel team={team} className="flex-1" />
             <div className="flex flex-col gap-8 px-4 pb-10 lg:hidden">
               <div className="flex flex-col gap-4">
                 <Reveal as="span" className="font-switzer text-sm text-black/70 md:text-xl" byLine>

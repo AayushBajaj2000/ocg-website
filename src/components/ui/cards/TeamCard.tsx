@@ -1,5 +1,6 @@
 import Image from "next/image";
 import SequentialDrawSvg from "@/components/ui/animations/SequentialDrawSvg";
+import { sanityCropLoader } from "@/lib/sanity/image";
 import { cn } from "@/lib/utils";
 import { ITeamCard } from "@/types";
 
@@ -43,8 +44,12 @@ const DOODLE_POSITIONS: Record<TeamCardTilt, { top: string; bottom: string }> = 
   },
 };
 
+// Desktop photo window (254 × 197px); the mobile one (184 × 140px) is within 2% of it.
+const PHOTO_ASPECT_RATIO = 254 / 197;
+
 const TeamCard: React.FC<Props> = ({
   img,
+  imgFocus,
   name,
   role,
   topDoodle,
@@ -55,6 +60,8 @@ const TeamCard: React.FC<Props> = ({
   loadDoodles,
 }) => {
   const doodleClass = "z-10 w-16 md:w-30";
+  // CMS photos are cropped and resized by Sanity's image CDN; local ones go through `/_next/image`.
+  const isRemote = typeof img.url === "string" && img.url.startsWith("http");
 
   return (
     <div className="relative">
@@ -77,7 +84,18 @@ const TeamCard: React.FC<Props> = ({
             src={img.url}
             alt={img.alt}
             fill
-            sizes="(min-width: 768px) 254px, 124px"
+            sizes="(min-width: 768px) 254px, 184px"
+            loader={
+              isRemote
+                ? sanityCropLoader({ aspectRatio: PHOTO_ASPECT_RATIO, focus: imgFocus })
+                : undefined
+            }
+            placeholder={"blurDataURL" in img && img.blurDataURL ? "blur" : "empty"}
+            blurDataURL={"blurDataURL" in img ? img.blurDataURL : undefined}
+            style={{
+              // The mobile window is a touch wider than the crop, so the remainder follows the hotspot too.
+              objectPosition: imgFocus && `${imgFocus.x * 100}% ${imgFocus.y * 100}%`,
+            }}
             className="object-cover"
           />
         </div>

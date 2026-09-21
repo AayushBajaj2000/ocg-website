@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore, type FocusEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 import { PauseIcon, PlayIcon } from "@/components/icons";
 import {
@@ -64,8 +64,6 @@ const TeamCarousel: React.FC<Props> = ({ team, label = "Team members", className
   const isPageShown = useSyncExternalStore(subscribeToVisibility, isPageVisible, () => true);
 
   const [choice, setChoice] = useState<PlaybackChoice>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
   const [active, setActive] = useState(0);
   const [phase, setPhase] = useState<Phase>("enter");
 
@@ -76,9 +74,8 @@ const TeamCarousel: React.FC<Props> = ({ team, label = "Team members", className
 
   const wantsAutoplay = choice === null ? !prefersReducedMotion : choice === "play";
   const autoplay = canRotate && wantsAutoplay;
-  // Hover and focus pause the rotation, unless the user explicitly pressed Play.
-  const isInteracting = choice !== "play" && (isHovered || hasFocus);
-  const isPlaying = autoplay && isInView && isPageShown && !isInteracting;
+  // Only the Pause button stops the rotation; hovering or focusing the carousel never does.
+  const isPlaying = autoplay && isInView && isPageShown;
 
   // A pause during the erase draws the doodles back in rather than leaving
   // the card half-erased while it waits.
@@ -102,14 +99,6 @@ const TeamCarousel: React.FC<Props> = ({ team, label = "Team members", className
     return () => clearTimeout(timer);
   }, [phase, isPlaying, isInView, count, prefersReducedMotion]);
 
-  const onHover = (hovered: boolean) => (event: React.PointerEvent) => {
-    if (event.pointerType === "mouse") setIsHovered(hovered);
-  };
-
-  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!event.currentTarget.contains(event.relatedTarget)) setHasFocus(false);
-  };
-
   if (!count) return null;
 
   const current = team[active % team.length];
@@ -120,10 +109,6 @@ const TeamCarousel: React.FC<Props> = ({ team, label = "Team members", className
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
-      onPointerEnter={onHover(true)}
-      onPointerLeave={onHover(false)}
-      onFocus={() => setHasFocus(true)}
-      onBlur={onBlur}
       className={cn(
         "group relative min-h-90 w-full overflow-hidden [--step:16rem] md:min-h-150 md:[--step:24rem]",
         className,

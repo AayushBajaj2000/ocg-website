@@ -1,5 +1,5 @@
 import { BlogIcon, OpenSourceIcon } from "@/components/icons";
-import { IFaq, IFooter, INavLink } from "@/types";
+import { IFooter, INavLink } from "@/types";
 import { bookingHref } from "@/lib/constants/booking";
 
 export const DESKTOP_MEDIA_QUERY = "(min-width: 64rem)";
@@ -32,29 +32,6 @@ export const NAV_LINKS: INavLink[] = [
   },
   { label: "Contact", href: "/contact" },
 ];
-
-export const FAQS: IFaq[] = [
-  {
-    question: "Do you work with businesses after launch?",
-    answer:
-      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
-  },
-  {
-    question: "Do you work with businesses after launch?",
-    answer:
-      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
-  },
-  {
-    question: "Do you work with businesses after launch?",
-    answer:
-      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
-  },
-  {
-    question: "Do you work with businesses after launch?",
-    answer:
-      "We partner with growing businesses that are ready to invest in their next stage of growth. That could mean launching a new brand, redesigning a website, building custom software, or improving the systems behind the business. Most of our clients come from SaaS, healthcare, construction, home services, and professional services.",
-  },
-] as const;
 
 // Prompt pre-filled into each AI assistant by the footer "Ask AI" links.
 const AI_PROMPT = encodeURIComponent(

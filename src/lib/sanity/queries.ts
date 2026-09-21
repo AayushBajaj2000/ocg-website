@@ -21,7 +21,8 @@ export const BLOG_POSTS_QUERY = defineQuery(`
     "tags": coalesce(tags, []),
     "author": author->name,
     "readingTime": math::max([1, round(length(pt::text(pageContent)) / 5 / 180)]),
-    "image": image.asset->${SANITY_IMAGE_PROJECTION}
+    "image": image.asset->${SANITY_IMAGE_PROJECTION},
+    "focus": image.hotspot{x, y}
   }
 `);
 
@@ -40,5 +41,39 @@ export const RESOURCES_QUERY = defineQuery(`
     "overview": coalesce(overview, []),
     "image": image.asset->${SANITY_IMAGE_PROJECTION},
     "preview": preview.asset->${SANITY_IMAGE_PROJECTION}
+  }
+`);
+
+// Card fields only. `order` ties (two members share a slot) fall back to creation date. The hotspot
+// centre is where Sanity centres the crop to the card's landscape photo window.
+export const TEAM_MEMBERS_QUERY = defineQuery(`
+  *[_type == "teamMember" && defined(name)] | order(order asc, _createdAt asc) {
+    "id": _id,
+    name,
+    role,
+    "image": image.asset->${SANITY_IMAGE_PROJECTION},
+    "focus": image.hotspot{x, y}
+  }
+`);
+
+// The `faq` type has no order field, so the list follows creation order.
+export const FAQS_QUERY = defineQuery(`
+  *[_type == "faq" && defined(question) && defined(answer)] | order(_createdAt asc) {
+    question,
+    answer
+  }
+`);
+
+// One document per logo in the "Trusted by" grid. The customer fields are optional: a logo without
+// a testimonial renders as a plain tile. SVG logos report their drawn size as `dimensions`.
+export const CUSTOMER_TESTIMONIALS_QUERY = defineQuery(`
+  *[_type == "customerTestimonial" && defined(logo.asset)] | order(order asc, _createdAt asc) {
+    "id": _id,
+    company,
+    "logo": logo.asset->${SANITY_IMAGE_PROJECTION},
+    customerName,
+    customerPosition,
+    testimonial,
+    "photo": customerPhoto.asset->${SANITY_IMAGE_PROJECTION}
   }
 `);

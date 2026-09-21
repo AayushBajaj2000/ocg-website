@@ -31,7 +31,7 @@ export const FOUNDER_BOOK: IFounderBook = {
     name: "Austin Page",
     role: "Co-Founder, OpenCore Group",
     portrait: {
-      url: "/avatars/austin-lg.webp",
+      url: "/avatars/austin-page-lg.webp",
       alt: "Austin Page, Co-Founder of OpenCore Group",
       width: 688,
       height: 860,

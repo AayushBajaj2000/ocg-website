@@ -1,20 +1,15 @@
-"use client";
-
-import { useState } from "react";
-
 import Section from "@/components/layout/sections/Section";
-import Accordion from "@/components/ui/accordions/Accordion";
 import AskMe from "@/components/layout/sections/AskMe";
-import { Reveal } from "@/components/ui/animations/Reveal";
+import FaqAccordions from "@/components/layout/sections/FaqAccordions";
 import { StripeReveal } from "@/components/ui/animations/StripeReveal";
-import { FAQS } from "@/lib/constants";
+import { fetchFaqs } from "@/lib/faq/server";
 
 const STEP = 0.06;
 const ASK_ME_DELAY = STEP;
 const FAQ_DELAY = STEP * 5;
 
-const FaqSection: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+const FaqSection = async () => {
+  const faqs = await fetchFaqs();
 
   return (
     <Section
@@ -32,18 +27,7 @@ const FaqSection: React.FC = () => {
           <AskMe delay={ASK_ME_DELAY} step={STEP} />
         </div>
       </div>
-      <div className="flex w-full flex-col gap-5">
-        {FAQS.map((faq, index) => (
-          <Reveal key={`${faq.question}-${index}`} delay={FAQ_DELAY + index * STEP}>
-            <Accordion
-              question={faq.question}
-              answer={faq.answer}
-              isOpen={openIndex === index}
-              onToggle={() => setOpenIndex((current) => (current === index ? null : index))}
-            />
-          </Reveal>
-        ))}
-      </div>
+      <FaqAccordions faqs={faqs} delay={FAQ_DELAY} step={STEP} />
       <div className="lg:hidden">
         <AskMe delay={ASK_ME_DELAY} step={STEP} />
       </div>

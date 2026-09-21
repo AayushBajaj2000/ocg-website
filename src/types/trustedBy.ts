@@ -1,5 +1,6 @@
 import type { ImageProps } from "next/image";
 import type { LinkProps } from "next/link";
+import type { SanityImageAsset } from "@/types/sanity";
 import type { ITestimonial } from "@/types/work";
 
 export interface ITrustedByLogo {
@@ -49,6 +50,20 @@ export type StatItem = IStatHighlight | IStatMetric;
 
 export interface ITrustedBy {
   title: string;
-  items: TrustedByItem[];
+  /** Tile that invites the visitor to become the next logo; the client tiles come from Sanity. */
+  cta: ITrustedByCta;
+  /** Zero-based slot the CTA tile takes in the grid. */
+  ctaIndex: number;
   stats: StatItem[];
+}
+
+/** Raw shape returned by `CUSTOMER_TESTIMONIALS_QUERY`, before normalization. */
+export interface SanityCustomerTestimonial {
+  id: string;
+  company: string | null;
+  logo: SanityImageAsset | null;
+  customerName: string | null;
+  customerPosition: string | null;
+  testimonial: string | null;
+  photo: SanityImageAsset | null;
 }
