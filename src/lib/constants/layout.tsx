@@ -63,10 +63,10 @@ export const FOOTER: IFooter = {
     { label: "Resources", href: "/resources" },
     { label: "Company", href: "/company" },
     { label: "Contact", href: "/contact" },
-    { label: "Privacy Policy", href: "/pdfs/ocg-website-privacy-policy.pdf" },
+    { label: "Privacy Policy", href: "/privacy" },
     { label: "Work", href: "/work" },
     { label: "Blog", href: "/blog" },
-    { label: "Terms of Use", href: "/pdfs/ocg-website-terms-of-use.pdf" },
+    { label: "Terms of Use", href: "/terms" },
   ],
   footerText: [
     { text: "Toronto, ON, Canada" },

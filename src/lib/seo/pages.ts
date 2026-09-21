@@ -105,6 +105,22 @@ export const PAGE_SEO = {
     eyebrow: "Book a call",
     headline: "Book an intro call with the team.",
   },
+  privacy: {
+    path: "/privacy",
+    title: "Privacy Policy",
+    description:
+      "What OpenCore Group collects when you visit opencoregroup.com, why, which services help us process it, and how to change your cookie choice.",
+    eyebrow: "Legal",
+    headline: "Privacy Policy",
+  },
+  terms: {
+    path: "/terms",
+    title: "Terms of Use",
+    description:
+      "The terms that cover your use of opencoregroup.com, including our free resources. Governed by the laws of Ontario, Canada.",
+    eyebrow: "Legal",
+    headline: "Terms of Use",
+  },
 } as const satisfies Record<string, IPageSeo>;
 
 export type PageSeoKey = keyof typeof PAGE_SEO;

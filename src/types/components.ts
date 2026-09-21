@@ -109,3 +109,9 @@ export interface IDiscoveryCall {
     href: LinkProps["href"];
   };
 }
+
+/** A heading the table of contents links to. */
+export interface ITocItem {
+  id: string;
+  text: string;
+}

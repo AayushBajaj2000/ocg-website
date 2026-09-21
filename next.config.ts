@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
     },
     { source: "/projects/:slug", destination: "/work", permanent: true },
     { source: "/resources/:slug", destination: "/resources?resource=:slug", permanent: true },
+    // The legal documents used to be PDFs; they are pages now.
+    { source: "/pdfs/ocg-website-privacy-policy.pdf", destination: "/privacy", permanent: true },
+    { source: "/pdfs/ocg-website-terms-of-use.pdf", destination: "/terms", permanent: true },
     // Share images the old site's pages pointed at; links already posted on social still load them.
     { source: "/openGraph/:file", destination: "/og/home", permanent: true },
   ],

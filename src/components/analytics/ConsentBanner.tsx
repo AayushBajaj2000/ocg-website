@@ -1,9 +1,8 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import Link from "next/link";
 import { readConsent, subscribeToConsent, writeConsent } from "@/lib/analytics/consent";
-
-const PRIVACY_POLICY_HREF = "/pdfs/ocg-website-privacy-policy.pdf";
 
 const BUTTON_BASE =
   "h-10 flex-1 cursor-pointer px-4 text-sm font-medium tracking-[-2%] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue";
@@ -34,14 +33,12 @@ const ConsentBanner: React.FC = () => {
         </p>
         <p className="text-black-2 text-sm tracking-[-2%]">
           We use analytics cookies to see how the site is used. No ads, and nothing is sold.{" "}
-          <a
-            href={PRIVACY_POLICY_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/privacy"
             className="text-black-1 underline underline-offset-2 hover:no-underline"
           >
             Privacy policy
-          </a>
+          </Link>
         </p>
       </div>
       <div className="flex gap-2">

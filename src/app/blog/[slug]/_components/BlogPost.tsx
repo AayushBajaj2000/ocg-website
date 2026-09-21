@@ -1,11 +1,11 @@
 import Link from "next/link";
 import BlogBody from "@/app/blog/[slug]/_components/BlogBody";
 import BlogPostCta from "@/app/blog/[slug]/_components/BlogPostCta";
-import BlogToc from "@/app/blog/[slug]/_components/BlogToc";
 import RelatedPosts from "@/app/blog/[slug]/_components/RelatedPosts";
 import Section from "@/components/layout/sections/Section";
 import PageDivider from "@/components/ui/dividers/PageDivider";
 import SanityImage from "@/components/ui/misc/SanityImage";
+import TableOfContents from "@/components/ui/misc/TableOfContents";
 import { BLOG_PATH } from "@/lib/constants";
 import { formatBlogDate } from "@/lib/blog/utils";
 import type { IBlogPost, IBlogPostDetail } from "@/types";
@@ -97,7 +97,7 @@ const BlogPost: React.FC<Props> = ({ post, related }) => {
       <Section container containerClassName="border-x py-10 md:py-15 overflow-visible!">
         {/* Without a contents rail (a post with no headings) the article centres on the page. */}
         <div className="mx-auto flex max-w-330 flex-col gap-8 lg:flex-row lg:justify-center lg:gap-16">
-          {hasToc && <BlogToc items={post.toc} />}
+          {hasToc && <TableOfContents items={post.toc} />}
           <div className="min-w-0 flex-1 lg:max-w-250">
             <BlogBody body={post.body} headingIds={post.headingIds} />
             <BlogPostCta />

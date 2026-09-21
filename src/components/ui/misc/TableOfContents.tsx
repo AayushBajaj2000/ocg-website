@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { IBlogTocItem } from "@/types";
+import type { ITocItem } from "@/types";
 
 type Props = {
-  items: IBlogTocItem[];
+  items: ITocItem[];
 };
 
 // A heading counts as reached once it is this far from the top: just under the fixed header.
@@ -15,7 +15,7 @@ const ACTIVE_LINE = 160;
  * Table of contents. A plain list of jump links on small screens; on desktop it sticks beside the
  * article and marks the section being read: the last heading to have passed the top of the view.
  */
-const BlogToc: React.FC<Props> = ({ items }) => {
+const TableOfContents: React.FC<Props> = ({ items }) => {
   const [activeId, setActiveId] = useState(items[0]?.id);
 
   useEffect(() => {
@@ -74,4 +74,4 @@ const BlogToc: React.FC<Props> = ({ items }) => {
   );
 };
 
-export default BlogToc;
+export default TableOfContents;

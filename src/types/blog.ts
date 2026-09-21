@@ -1,3 +1,4 @@
+import type { ITocItem } from "@/types/components";
 import type { PortableTextBlock } from "@/types/portableText";
 import type { ISanityImage, SanityImageAsset } from "@/types/sanity";
 
@@ -41,12 +42,6 @@ export interface IBlogAuthor {
 
 export type BlogHeadingLevel = 2 | 3 | 4 | 5;
 
-/** A heading the table of contents links to. */
-export interface IBlogTocItem {
-  id: string;
-  text: string;
-}
-
 /** The post body, regrouped for rendering: runs of text, fenced code, and inline images. */
 export type BlogBodyNode =
   | { kind: "text"; key: string; blocks: PortableTextBlock[] }
@@ -63,7 +58,7 @@ export interface IBlogPostDetail extends Omit<IBlogPost, "author"> {
   body: BlogBodyNode[];
   /** Heading `_key` → anchor id, for every heading in the body. */
   headingIds: Record<string, string>;
-  toc: IBlogTocItem[];
+  toc: ITocItem[];
 }
 
 export interface SanityBlogImageBlock {

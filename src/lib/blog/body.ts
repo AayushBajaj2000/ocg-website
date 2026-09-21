@@ -1,7 +1,7 @@
 import { toSanityImage } from "@/lib/sanity/image";
 import type {
   BlogBodyNode,
-  IBlogTocItem,
+  ITocItem,
   PortableTextBlock,
   SanityBlogImageBlock,
   SanityBlogPostDetail,
@@ -88,7 +88,7 @@ export const toBlogBody = (blocks: RawBlock[]): BlogBodyNode[] =>
  */
 export const toBlogHeadings = (
   body: BlogBodyNode[],
-): { headingIds: Record<string, string>; toc: IBlogTocItem[] } => {
+): { headingIds: Record<string, string>; toc: ITocItem[] } => {
   const headings = body
     .flatMap((node) => (node.kind === "text" ? node.blocks : []))
     .filter((block) => HEADING_STYLES.some((style) => style === block.style));
