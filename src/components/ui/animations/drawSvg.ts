@@ -16,8 +16,11 @@ export const DRAW_STYLES = [
   "stroke-dasharray",
   "stroke-dashoffset",
   "fill-opacity",
-  "vector-effect",
 ];
+
+// Slightly past the dash: at exactly 1 the dash ends where a closed shape starts, which leaves a
+// dot there. The wider gap in the dasharray keeps the next dash from entering instead.
+const HIDDEN_DASHOFFSET = "1.02";
 
 export const DRAW_EASING = "cubic-bezier(0.65, 0, 0.35, 1)";
 
@@ -63,8 +66,14 @@ export const parseSvg = (markup: string, idPrefix: string): SVGSVGElement | null
 };
 
 // Computed styles need the svg attached, so this runs after it is in the DOM.
-export const hideShapes = (svg: SVGSVGElement): DrawTarget[] =>
-  [...svg.querySelectorAll<SVGGeometryElement>(SHAPES)]
+export const hideShapes = (svg: SVGSVGElement): DrawTarget[] => {
+  // A 1px hairline, sized in user units. `vector-effect: non-scaling-stroke` would do the same, but
+  // it also measures the dashes on screen: once the svg is drawn larger than its viewBox, a
+  // `pathLength` dash no longer spans the whole shape and its tail stays visible after the erase.
+  const scale = svg.clientWidth / (svg.viewBox.baseVal?.width || svg.clientWidth);
+  const hairline = String(1 / (scale || 1));
+
+  return [...svg.querySelectorAll<SVGGeometryElement>(SHAPES)]
     .filter((el) => !el.closest("defs, clipPath, mask, pattern, symbol"))
     .map((el) => {
       const { fill, stroke, fillOpacity } = getComputedStyle(el);
@@ -72,18 +81,18 @@ export const hideShapes = (svg: SVGSVGElement): DrawTarget[] =>
       el.setAttribute("pathLength", "1");
       if (addedStroke) {
         el.style.setProperty("stroke", fill === "none" ? "currentColor" : fill);
-        el.style.setProperty("stroke-width", "1");
-        el.style.setProperty("vector-effect", "non-scaling-stroke");
+        el.style.setProperty("stroke-width", hairline);
       }
-      el.style.setProperty("stroke-dasharray", "1");
-      el.style.setProperty("stroke-dashoffset", "1");
+      el.style.setProperty("stroke-dasharray", "1 2");
+      el.style.setProperty("stroke-dashoffset", HIDDEN_DASHOFFSET);
       el.style.setProperty("fill-opacity", "0");
       return { el, fillOpacity, addedStroke };
     });
+};
 
 /** Stroke traces in over the first 60%, then the fill settles in. */
 export const drawKeyframes = ({ fillOpacity, addedStroke }: DrawTarget): Keyframe[] => [
-  { strokeDashoffset: "1", fillOpacity: "0", strokeOpacity: "1" },
+  { strokeDashoffset: HIDDEN_DASHOFFSET, fillOpacity: "0", strokeOpacity: "1" },
   { strokeDashoffset: "0", fillOpacity: "0", strokeOpacity: "1", offset: 0.6 },
   { strokeDashoffset: "0", fillOpacity, strokeOpacity: addedStroke ? "0" : "1" },
 ];

@@ -28,6 +28,7 @@ import {
   dropdownItemReducedVariants,
   dropdownItemVariants,
 } from "@/components/layout/header/headerDropdownMotion";
+import { sanityImageLoader } from "@/lib/sanity/image";
 import { cn } from "@/lib/utils";
 import type { ITrustedByClient, ITrustedByCta, ITrustedByLogo } from "@/types";
 
@@ -73,6 +74,8 @@ const ClientLogo: React.FC<{ logo: ITrustedByLogo }> = ({ logo }) => (
       src={logo.url}
       alt={logo.alt}
       fill
+      // Logos are SVGs straight from the CMS: there is nothing for an image optimizer to resize.
+      unoptimized
       sizes={`${logo.width}px`}
       className="object-contain"
     />
@@ -263,6 +266,7 @@ const TrustedByCard: React.FC<Props> = ({ client, cta }) => {
                             alt={testimonial.client.img.alt ?? ""}
                             width={48}
                             height={48}
+                            loader={sanityImageLoader}
                             className="size-10 rounded-full object-cover md:size-12"
                           />
                         </m.span>
@@ -283,12 +287,15 @@ const TrustedByCard: React.FC<Props> = ({ client, cta }) => {
           </div>
         )}
 
-        <QuoteIcon
-          className={cn(
-            "absolute right-2 bottom-2 h-auto w-2.5 transition-colors duration-300 md:right-4 md:bottom-4 md:w-4.5",
-            isOpen ? "text-brand-blue" : "group-hover:text-brand-blue text-neutral-300",
-          )}
-        />
+        {/* The mark promises a quote, so a logo-only tile goes without it. */}
+        {hasBubble && (
+          <QuoteIcon
+            className={cn(
+              "absolute right-2 bottom-2 h-auto w-2.5 transition-colors duration-300 md:right-4 md:bottom-4 md:w-4.5",
+              isOpen ? "text-brand-blue" : "group-hover:text-brand-blue text-neutral-300",
+            )}
+          />
+        )}
       </li>
     </LazyMotion>
   );

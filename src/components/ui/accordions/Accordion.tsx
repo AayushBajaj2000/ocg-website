@@ -92,7 +92,7 @@ const Accordion: React.FC<Props> = ({
                 animate={{ y: 0 }}
                 exit={{ y: prefersReducedMotion ? 0 : -6 }}
                 transition={{ duration, ease: EASE }}
-                className="pt-2 text-sm text-black/60"
+                className="pt-2 text-sm whitespace-pre-line text-black/60"
               >
                 {answer}
               </m.p>

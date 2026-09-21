@@ -2,6 +2,7 @@ import Section from "@/components/layout/sections/Section";
 import StatCard from "@/components/ui/cards/StatCard";
 import TrustedByCards from "@/components/ui/cards/TrustedByCards";
 import { TRUSTED_BY_SECTION } from "@/lib/constants";
+import { fetchTrustedByItems } from "@/lib/trustedBy/server";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -9,7 +10,9 @@ type Props = {
   hasStats?: boolean;
 };
 
-const TrustedBy: React.FC<Props> = ({ hasHeading = true, hasStats = true }) => {
+const TrustedBy = async ({ hasHeading = true, hasStats = true }: Props) => {
+  const items = await fetchTrustedByItems();
+
   return (
     <Section
       as="section"
@@ -30,7 +33,7 @@ const TrustedBy: React.FC<Props> = ({ hasHeading = true, hasStats = true }) => {
             {TRUSTED_BY_SECTION.title}
           </h2>
         )}
-        <TrustedByCards />
+        <TrustedByCards items={items} />
       </div>
       {hasStats && (
         <ul className="grid grid-cols-1 gap-5 py-6 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
